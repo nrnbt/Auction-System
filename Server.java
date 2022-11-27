@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
+import admin.LoginAdmin;
 
 class Server {
 
@@ -92,7 +93,7 @@ class Server {
 										LocalDateTime now = LocalDateTime.now();
 										String insertQuery = "insert into users(userName, passWord, email, firstName, lastName, phone, birthDay, registeredAt, role) values ('"
 												+ regUser.userName + "',sha1('" + regUser.passWord + "'),'"
-												+ regUser.email 
+												+ regUser.email
 												+ "','" + regUser.firstName
 												+ "','" + regUser.lastName
 												+ "','" + regUser.phone
@@ -119,10 +120,32 @@ class Server {
 							&& (logUser = (LoginUser) obj) != null) {
 						try {
 							String getUserQuery = "select * from users where email = '" +
-									logUser.userName + "' and passWord = sha1('" + logUser.passWord + "');";
+									logUser.email + "' and passWord = md5('" + logUser.passWord + "');";
 							CallableStatement cstmt = connection.prepareCall(getUserQuery);
 							ResultSet rs = cstmt.executeQuery(getUserQuery);
 							if (rs.next()) {
+								out.println("access successful");
+							} else {
+								out.println("username or password didn't match");
+							}
+							connection.close();
+							obj = null;
+						} catch (Exception e) {
+							out.println(e);
+						}
+					}
+
+					LoginAdmin loginAdmin;
+
+					if (obj.getClass().getName().equals("admin.LoginAdmin")
+							&& (loginAdmin = (LoginAdmin) obj) != null) {
+						try {
+							String getUserQuery = "select * from admin where username = '" +
+									loginAdmin.username + "' and password = md5('" + loginAdmin.passWord + "');";
+							CallableStatement cstmt = connection.prepareCall(getUserQuery);
+							ResultSet rs = cstmt.executeQuery(getUserQuery);
+							if (rs.next()) {
+								System.out.println();
 								out.println("access successful");
 							} else {
 								out.println("username or password didn't match");

@@ -49,7 +49,7 @@ public class Database {
                 cstmt.execute();
             }
             if (createAdmin == 0) {
-                String createTb = "Create table admins(adminId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, adminName nvarchar(20), passWord nvarchar(20))";
+                String createTb = "Create table admin(adminId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username nvarchar(20), password nvarchar(32))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
