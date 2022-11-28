@@ -3,12 +3,16 @@ import java.net.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
+import admin.Auction;
+import admin.FetchAuctionRequest;
+import admin.FetchAuctionResponse;
 
 class Server {
 
@@ -38,6 +42,39 @@ class Server {
 		}
 	}
 
+	public static ArrayList<Auction> auctionData() {
+		ArrayList<Auction> auctionList = new ArrayList<>();
+		try {
+			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
+			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
+			Statement stat = connection.createStatement();
+			String query = "Select * from auction";
+			ResultSet rs = stat.executeQuery(query);
+			Auction data;
+			while (rs.next()) {
+				data = new Auction(
+					rs.getInt("id"),
+					rs.getString("title"),
+					rs.getString("user"),
+					rs.getString("startPrice"),
+					rs.getString("endPrice"),
+					rs.getString("startTime"),
+					rs.getString("endTime"),
+					rs.getString("status"),
+					rs.getString("img"),
+					rs.getString("winner"),
+					rs.getString("description")
+				);
+				auctionList.add(data);
+			}
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return auctionList;
+	}
+
 	private static class ClientHandler implements Runnable {
 
 		private final Socket clientSocket;
@@ -49,11 +86,14 @@ class Server {
 		public void run() {
 			PrintWriter out = null;
 			ObjectInputStream ois = null;
+			ObjectOutputStream objOut = null;
 
 			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
 
 			try {
 				out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+				objOut = new ObjectOutputStream(clientSocket.getOutputStream());
 
 				ois = new ObjectInputStream(clientSocket.getInputStream());
 
@@ -145,7 +185,6 @@ class Server {
 							CallableStatement cstmt = connection.prepareCall(getUserQuery);
 							ResultSet rs = cstmt.executeQuery(getUserQuery);
 							if (rs.next()) {
-								System.out.println();
 								out.println("access successful");
 							} else {
 								out.println("username or password didn't match");
@@ -155,6 +194,27 @@ class Server {
 						} catch (Exception e) {
 							out.println(e);
 						}
+					}
+
+					FetchAuctionRequest fetchAuction;
+					if (obj.getClass().getName().equals("admin.FetchAuctionRequest")
+							&& (fetchAuction = (FetchAuctionRequest) obj) != null) {
+						try {
+							if (fetchAuction.str.equals("auctions")) {
+								FetchAuctionResponse response =  new FetchAuctionResponse(auctionData());
+								try {
+									objOut.writeObject(response);
+								} catch (Exception e) {
+									throw e;
+								}
+							} else {
+								out.println("invalid request");
+							}
+							objOut.close();
+						} catch (Exception e) {
+							throw e;
+						}
+
 					}
 				}
 			} catch (SQLException e1) {
