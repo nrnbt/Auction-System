@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,22 +30,22 @@ public class Home extends javax.swing.JFrame {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            FetchAuction regUser = new FetchAuction();
+            FetchAuction request = new FetchAuction("auctions");
 
-            oos.writeObject(regUser);
+            oos.writeObject(request);
             oos.flush();
-            ArrayList list = new ArrayList(in.read());
-            DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
-            Object[] row = new Object[6];
-            for (int i = 0; i < list.size(); i++) {
-                row[0] = i + 1;
-                row[1] = list.get(i).title();
-                row[2] = list.get(i).user();
-                row[3] = list.get(i).status();
-                row[4] = list.get(i).startPrice();
-                row[5] = list.get(i).status();
-                model.addRow(row);
-            }
+//            ArrayList list = new ArrayList(in.read());
+//            DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
+//            Object[] row = new Object[6];
+//            for (int i = 0; i < list.size(); i++) {
+//                row[0] = i + 1;
+////                row[1] = list.get(i).title();
+////                row[2] = list.get(i).user();
+////                row[3] = list.get(i).status();
+////                row[4] = list.get(i).startPrice();
+////                row[5] = list.get(i).status();
+//                model.addRow(row);
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();
