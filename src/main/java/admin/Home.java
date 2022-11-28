@@ -4,11 +4,13 @@
  */
 package admin;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,14 +27,23 @@ public class Home extends javax.swing.JFrame {
     }
     
     
-    public void show_data() {
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+    public void show_data() throws ClassNotFoundException {
+        try (Socket socket = new Socket("192.168.25.79", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             FetchAuction request = new FetchAuction("auctions");
 
             oos.writeObject(request);
+            
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            Object obj = in.readObject();
+            
+            System.out.println(obj);
+            ArrayList auctionList = new ArrayList<Auction>();
+            auctionList = (ArrayList<Auction>) obj;
+            System.out.println(auctionList.get(1));
+            
             oos.flush();
 //            ArrayList list = new ArrayList(in.read());
 //            DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
@@ -128,7 +139,11 @@ public class Home extends javax.swing.JFrame {
         for (int i = rowCount - 1; i >= 0; i--) {
             dm.removeRow(i);
         }
-        show_data();
+        try {
+            show_data();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_showButtonActionPerformed
 
     /**
