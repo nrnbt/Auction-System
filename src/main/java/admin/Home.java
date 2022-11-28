@@ -28,35 +28,36 @@ public class Home extends javax.swing.JFrame {
     
     
     public void show_data() throws ClassNotFoundException {
-        try (Socket socket = new Socket("192.168.25.79", 1234)) {
+        ArrayList<FetchAuctionResponse> auctionList = new ArrayList<>();
+        try (Socket socket = new Socket("192.168.1.42", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            FetchAuction request = new FetchAuction("auctions");
-
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            
+            FetchAuctionRequest request = new FetchAuctionRequest("auctions");
             oos.writeObject(request);
+   
+            Object obj = ois.readObject();
+            FetchAuctionResponse adminList;
             
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            if (obj.getClass().getName().equals("admin.FetchAuctionResponse")
+		&& (adminList = (FetchAuctionResponse) obj) != null) {
 
-            Object obj = in.readObject();
+                DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
+                Object[] row = new Object[6];
+                for (int i = 0; i < adminList.auctionList.size(); i++) {
+                    row[0] = i + 1;
+                    row[1] = adminList.auctionList.get(i).title;
+                    row[2] = adminList.auctionList.get(i).user;
+                    row[3] = adminList.auctionList.get(i).status;
+                    row[4] = adminList.auctionList.get(i).startPrice;
+                    row[5] = adminList.auctionList.get(i).status;
+                    model.addRow(row);
+                }
+            }
             
-            System.out.println(obj);
-            ArrayList auctionList = new ArrayList<Auction>();
-            auctionList = (ArrayList<Auction>) obj;
-            System.out.println(auctionList.get(1));
-            
-            oos.flush();
-//            ArrayList list = new ArrayList(in.read());
-//            DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
-//            Object[] row = new Object[6];
-//            for (int i = 0; i < list.size(); i++) {
-//                row[0] = i + 1;
-////                row[1] = list.get(i).title();
-////                row[2] = list.get(i).user();
-////                row[3] = list.get(i).status();
-////                row[4] = list.get(i).startPrice();
-////                row[5] = list.get(i).status();
-//                model.addRow(row);
-//            }
+            oos.close();
+            ois.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -134,13 +135,13 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
-        DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
-        int rowCount = dm.getRowCount();
-        for (int i = rowCount - 1; i >= 0; i--) {
-            dm.removeRow(i);
-        }
         try {
-            show_data();
+            //        DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
+//        int rowCount = dm.getRowCount();
+//        for (int i = rowCount - 1; i >= 0; i--) {
+//            dm.removeRow(i);
+//        }
+        show_data();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }

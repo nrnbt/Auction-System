@@ -2,10 +2,10 @@ package admin;
 
 import java.io.Serializable;
 
-public class FetchAuction implements Serializable {
+public class FetchAuctionRequest implements Serializable {
     public String str;
 
-    public FetchAuction(String str) {
+    public FetchAuctionRequest(String str) {
         this.str = str;
     }
 
