@@ -44,14 +44,13 @@ public class Home extends javax.swing.JFrame {
 		&& (adminList = (FetchAuctionResponse) obj) != null) {
 
                 DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
-                Object[] row = new Object[6];
+                Object[] row = new Object[5];
                 for (int i = 0; i < adminList.auctionList.size(); i++) {
                     row[0] = i + 1;
                     row[1] = adminList.auctionList.get(i).title;
                     row[2] = adminList.auctionList.get(i).user;
-                    row[3] = adminList.auctionList.get(i).status;
-                    row[4] = adminList.auctionList.get(i).startPrice;
-                    row[5] = adminList.auctionList.get(i).status;
+                    row[3] = adminList.auctionList.get(i).startPrice;
+                    row[4] = adminList.auctionList.get(i).status;
                     model.addRow(row);
                 }
             }
