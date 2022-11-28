@@ -1,19 +1,20 @@
 package admin;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class FetchAuction implements Serializable {
-    public String str;
+public class FetchAuctionResponse implements Serializable {
+    public ArrayList<Auction> auctionList;
 
-    public FetchAuction(String str) {
-        this.str = str;
+    public FetchAuctionResponse(ArrayList<Auction> auctionList) {
+        this.auctionList = auctionList;
     }
 
-    public String getStr() {
-        return str;
+    public ArrayList<Auction> getAuction() {
+        return auctionList;
     }
 
-    public void setStr(String str) {
-        this.str = str;
+    public void setAuction(ArrayList<Auction> auctionList) {
+        this.auctionList = auctionList;
     }
 }
