@@ -26,12 +26,12 @@ public class Registration extends javax.swing.JFrame {
      */
     public Registration() {
         initComponents();
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        int xsize = (int) tk.getScreenSize().getWidth();
-        int ysize = (int) tk.getScreenSize().getHeight();
-        Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
-        int taskBarSize = scnMax.bottom;
-        this.setSize(xsize,ysize - taskBarSize);
+//        Toolkit tk = Toolkit.getDefaultToolkit();
+//        int xsize = (int) tk.getScreenSize().getWidth();
+//        int ysize = (int) tk.getScreenSize().getHeight();
+//        Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+//        int taskBarSize = scnMax.bottom;
+//        this.setSize(xsize,ysize - taskBarSize);
     }
 
     /**
@@ -45,15 +45,11 @@ public class Registration extends javax.swing.JFrame {
 
         JDesktopPane = new javax.swing.JDesktopPane();
         number = new javax.swing.JTextField();
-        msg = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         mail = new javax.swing.JTextField();
         terms = new javax.swing.JCheckBox();
-        date_chooser = new com.toedter.calendar.JDateChooser();
         pword = new javax.swing.JPasswordField();
         user = new javax.swing.JTextField();
-        submit = new javax.swing.JButton();
-        clear = new javax.swing.JButton();
         lname = new javax.swing.JTextField();
         pword2 = new javax.swing.JPasswordField();
         fname = new javax.swing.JTextField();
@@ -65,11 +61,20 @@ public class Registration extends javax.swing.JFrame {
         emsg6 = new javax.swing.JLabel();
         emsg7 = new javax.swing.JLabel();
         esmg8 = new javax.swing.JLabel();
+        kGradientPanel1 = new com.k33ptoo.components.KGradientPanel();
+        kButton1 = new com.k33ptoo.components.KButton();
+        kButton2 = new com.k33ptoo.components.KButton();
+        msg = new javax.swing.JLabel();
+        date_chooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        number.setForeground(new java.awt.Color(153, 153, 153));
+        JDesktopPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        number.setForeground(new java.awt.Color(255, 255, 255));
         number.setText("Phone number");
+        number.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        number.setOpaque(false);
         number.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 numberFocusGained(evt);
@@ -88,20 +93,17 @@ public class Registration extends javax.swing.JFrame {
                 numberKeyTyped(evt);
             }
         });
-        JDesktopPane.add(number);
-        number.setBounds(349, 218, 362, 31);
-
-        msg.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        JDesktopPane.add(msg);
-        msg.setBounds(10, 430, 1084, 49);
+        JDesktopPane.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 218, 362, 31));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Sign Up");
-        JDesktopPane.add(jLabel2);
-        jLabel2.setBounds(447, 6, 151, 58);
+        JDesktopPane.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(447, 6, 151, 58));
 
-        mail.setForeground(new java.awt.Color(153, 153, 153));
+        mail.setForeground(new java.awt.Color(255, 255, 255));
         mail.setText("e-mail");
+        mail.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        mail.setOpaque(false);
         mail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 mailFocusGained(evt);
@@ -120,27 +122,20 @@ public class Registration extends javax.swing.JFrame {
                 mailKeyReleased(evt);
             }
         });
-        JDesktopPane.add(mail);
-        mail.setBounds(349, 181, 362, 31);
+        JDesktopPane.add(mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 181, 362, 31));
 
-        terms.setBackground(new java.awt.Color(230, 235, 240));
+        terms.setBackground(new java.awt.Color(255, 204, 204));
         terms.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        terms.setForeground(new java.awt.Color(255, 255, 255));
         terms.setText("Accept terms and conditions");
         terms.setBorder(null);
-        JDesktopPane.add(terms);
-        terms.setBounds(416, 365, 211, 18);
+        JDesktopPane.add(terms, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 365, 211, 18));
 
-        date_chooser.setToolTipText("");
-        date_chooser.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                date_chooserFocusLost(evt);
-            }
-        });
-        JDesktopPane.add(date_chooser);
-        date_chooser.setBounds(349, 255, 362, 31);
-
-        pword.setForeground(new java.awt.Color(153, 153, 153));
+        pword.setForeground(new java.awt.Color(255, 255, 255));
         pword.setText("Password");
+        pword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        pword.setEchoChar('\u0000');
+        pword.setOpaque(false);
         pword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 pwordFocusGained(evt);
@@ -154,11 +149,12 @@ public class Registration extends javax.swing.JFrame {
                 pwordActionPerformed(evt);
             }
         });
-        JDesktopPane.add(pword);
-        pword.setBounds(349, 292, 362, 31);
+        JDesktopPane.add(pword, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 292, 362, 31));
 
-        user.setForeground(new java.awt.Color(153, 153, 153));
+        user.setForeground(new java.awt.Color(255, 255, 255));
         user.setText("Username");
+        user.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        user.setOpaque(false);
         user.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 userFocusGained(evt);
@@ -167,42 +163,12 @@ public class Registration extends javax.swing.JFrame {
                 userFocusLost(evt);
             }
         });
-        JDesktopPane.add(user);
-        user.setBounds(349, 144, 362, 31);
+        JDesktopPane.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 144, 362, 31));
 
-        submit.setBackground(new java.awt.Color(0, 102, 255));
-        submit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        submit.setForeground(new java.awt.Color(255, 255, 255));
-        submit.setText("Submit");
-        submit.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        submit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                submitMouseClicked(evt);
-            }
-        });
-        submit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitActionPerformed(evt);
-            }
-        });
-        JDesktopPane.add(submit);
-        submit.setBounds(384, 389, 140, 35);
-
-        clear.setBackground(new java.awt.Color(0, 102, 255));
-        clear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        clear.setForeground(new java.awt.Color(255, 255, 255));
-        clear.setText("Back");
-        clear.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        clear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearActionPerformed(evt);
-            }
-        });
-        JDesktopPane.add(clear);
-        clear.setBounds(536, 389, 138, 35);
-
-        lname.setForeground(new java.awt.Color(153, 153, 153));
+        lname.setForeground(new java.awt.Color(255, 255, 255));
         lname.setText("Last name");
+        lname.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        lname.setOpaque(false);
         lname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 lnameFocusGained(evt);
@@ -216,11 +182,14 @@ public class Registration extends javax.swing.JFrame {
                 lnameKeyReleased(evt);
             }
         });
-        JDesktopPane.add(lname);
-        lname.setBounds(349, 107, 362, 31);
+        JDesktopPane.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 107, 362, 31));
 
-        pword2.setForeground(new java.awt.Color(153, 153, 153));
+        pword2.setForeground(new java.awt.Color(255, 255, 255));
         pword2.setText("Repeat password");
+        pword2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        pword2.setEchoChar('\u0000');
+        pword2.setOpaque(false
+        );
         pword2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 pword2FocusGained(evt);
@@ -229,11 +198,13 @@ public class Registration extends javax.swing.JFrame {
                 pword2FocusLost(evt);
             }
         });
-        JDesktopPane.add(pword2);
-        pword2.setBounds(349, 329, 362, 30);
+        JDesktopPane.add(pword2, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 329, 362, 30));
 
-        fname.setForeground(new java.awt.Color(153, 153, 153));
+        fname.setBackground(new Color(0,0,0,0));
+        fname.setForeground(new java.awt.Color(255, 255, 255));
         fname.setText("First name");
+        fname.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        fname.setOpaque(false);
         fname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fnameFocusGained(evt);
@@ -252,36 +223,68 @@ public class Registration extends javax.swing.JFrame {
                 fnameKeyReleased(evt);
             }
         });
-        JDesktopPane.add(fname);
-        fname.setBounds(349, 70, 362, 31);
-        JDesktopPane.add(emsg1);
-        emsg1.setBounds(729, 70, 124, 19);
-        JDesktopPane.add(emsg2);
-        emsg2.setBounds(729, 107, 124, 19);
-        JDesktopPane.add(emsg3);
-        emsg3.setBounds(729, 144, 124, 19);
-        JDesktopPane.add(emsg4);
-        emsg4.setBounds(729, 181, 124, 19);
-        JDesktopPane.add(emsg5);
-        emsg5.setBounds(729, 218, 124, 15);
-        JDesktopPane.add(emsg6);
-        emsg6.setBounds(729, 255, 104, 19);
-        JDesktopPane.add(emsg7);
-        emsg7.setBounds(729, 292, 124, 25);
-        JDesktopPane.add(esmg8);
-        esmg8.setBounds(729, 339, 104, 20);
+        JDesktopPane.add(fname, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 70, 362, 31));
+        JDesktopPane.add(emsg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 70, 124, 19));
+        JDesktopPane.add(emsg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 107, 124, 19));
+        JDesktopPane.add(emsg3, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 144, 124, 19));
+        JDesktopPane.add(emsg4, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 181, 124, 19));
+        JDesktopPane.add(emsg5, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 218, 124, 15));
+        JDesktopPane.add(emsg6, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 255, 104, 19));
+        JDesktopPane.add(emsg7, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 292, 124, 25));
+        JDesktopPane.add(esmg8, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 339, 104, 20));
+
+        kGradientPanel1.setkEndColor(new java.awt.Color(255, 204, 204));
+        kGradientPanel1.setkStartColor(new java.awt.Color(255, 153, 255));
+        kGradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        kButton1.setText("Submit");
+        kButton1.setkBackGroundColor(new java.awt.Color(0, 0, 255));
+        kButton1.setkEndColor(new java.awt.Color(51, 51, 255));
+        kButton1.setkStartColor(new java.awt.Color(204, 204, 255));
+        kButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton1ActionPerformed(evt);
+            }
+        });
+        kGradientPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 390, 130, -1));
+
+        kButton2.setText("Back");
+        kButton2.setkBackGroundColor(new java.awt.Color(0, 0, 255));
+        kButton2.setkEndColor(new java.awt.Color(102, 102, 255));
+        kButton2.setkHoverEndColor(new java.awt.Color(255, 153, 153));
+        kButton2.setkStartColor(new java.awt.Color(153, 153, 255));
+        kButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton2ActionPerformed(evt);
+            }
+        });
+        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 130, -1));
+
+        msg.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        kGradientPanel1.add(msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 1084, 49));
+
+        date_chooser.setBackground(new java.awt.Color(255, 204, 204));
+        date_chooser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        date_chooser.setToolTipText("");
+        date_chooser.setOpaque(false);
+        date_chooser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                date_chooserFocusLost(evt);
+            }
+        });
+        kGradientPanel1.add(date_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, 360, 31));
+
+        JDesktopPane.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, 590));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE)
+            .addComponent(JDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 952, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(JDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(JDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         JDesktopPane.getAccessibleContext().setAccessibleName("");
@@ -310,7 +313,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (fname.getText().equals("")){
             fname.setText("First name");
-            fname.setForeground(new Color(153,153,153));
+            
         }
     }//GEN-LAST:event_fnameFocusLost
 
@@ -326,7 +329,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (pword2.getText().equals("")){
             //pword2.setText("Repeat password");
-            pword2.setForeground(new Color(153,153,153));
+            
 
         }
     }//GEN-LAST:event_pword2FocusLost
@@ -358,7 +361,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (lname.getText().equals("")){
             lname.setText("Last name");
-            lname.setForeground(new Color(153,153,153));
+            
         }
     }//GEN-LAST:event_lnameFocusLost
 
@@ -370,17 +373,113 @@ public class Registration extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lnameFocusGained
 
-    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+    private void userFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusLost
         // TODO add your handling code here:
-        this.hide();
-       HomePage frm = new HomePage();
-               frm.setVisible(true);
-    }//GEN-LAST:event_clearActionPerformed
+        if (user.getText().equals("")){
+            user.setText("Username");
+            
+        }
+    }//GEN-LAST:event_userFocusLost
 
-    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+    private void userFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusGained
+        // TODO add your handling code here:
+        if (user.getText().equals("Username")){
+            user.setText("");
+            user.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_userFocusGained
+
+    private void pwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pwordActionPerformed
+
+    private void pwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusLost
+        // TODO add your handling code here:
+        if (pword.getText().equals("")){
+            //pword.setText("Password");
+            
+
+        }
+    }//GEN-LAST:event_pwordFocusLost
+
+    private void pwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusGained
+        // TODO add your handling code here:
+        if (pword.getText().equals("Password")){
+            pword.setText("");
+            pword.setForeground(new Color(0,0,0));
+            pword.setEchoChar('*');
+        }
+    }//GEN-LAST:event_pwordFocusGained
+
+    private void date_chooserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_date_chooserFocusLost
         // TODO add your handling code here:
 
-        String email = mail.getText().toString();
+    }//GEN-LAST:event_date_chooserFocusLost
+
+    private void mailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mailKeyReleased
+        // TODO add your handling code here:
+        String PATTERN = "^[a-zA-Z0-9]{0,30}[@][a-zA-Z0-9]{0,10}[.][a-zA-Z]{0,5}$";
+        Pattern patt = Pattern.compile(PATTERN);
+        Matcher match=patt.matcher(mail.getText());
+        if(!match.matches()){
+            emsg4.setText("Email is incorrect!");
+        }
+        else{
+            emsg4.setText(null);
+        }
+    }//GEN-LAST:event_mailKeyReleased
+
+    private void mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_mailActionPerformed
+
+    private void mailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusLost
+        // TODO add your handling code here:
+        if (mail.getText().equals("")){
+            mail.setText("e-mail");
+            
+        }
+    }//GEN-LAST:event_mailFocusLost
+
+    private void mailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusGained
+        // TODO add your handling code here:
+        if (mail.getText().equals("e-mail")){
+            mail.setText("");
+            mail.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_mailFocusGained
+
+    private void numberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numberKeyTyped
+        // TODO add your handling code here:
+        if (!Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_numberKeyTyped
+
+    private void numberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberActionPerformed
+
+    private void numberFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_numberFocusLost
+        // TODO add your handling code here:
+        if (number.getText().equals("")){
+            number.setText("Phone number");
+            
+        }
+    }//GEN-LAST:event_numberFocusLost
+
+    private void numberFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_numberFocusGained
+        // TODO add your handling code here:
+        if (number.getText().equals("Phone number")){
+            number.setText("");
+            number.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_numberFocusGained
+
+    private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
+        // TODO add your handling code here
+         String email = mail.getText().toString();
         System.out.println(email);
         String stname = fname.getText().toString();
         System.out.println(stname);
@@ -449,116 +548,14 @@ public class Registration extends javax.swing.JFrame {
         } else {
             msg.setText("Please accept terms and conditions to submit.");
         }
+    }//GEN-LAST:event_kButton1ActionPerformed
 
-    }//GEN-LAST:event_submitActionPerformed
-
-    private void submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitMouseClicked
+    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_submitMouseClicked
-
-    private void userFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusLost
-        // TODO add your handling code here:
-        if (user.getText().equals("")){
-            user.setText("Username");
-            user.setForeground(new Color(153,153,153));
-        }
-    }//GEN-LAST:event_userFocusLost
-
-    private void userFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusGained
-        // TODO add your handling code here:
-        if (user.getText().equals("Username")){
-            user.setText("");
-            user.setForeground(new Color(0,0,0));
-        }
-    }//GEN-LAST:event_userFocusGained
-
-    private void pwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pwordActionPerformed
-
-    private void pwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusLost
-        // TODO add your handling code here:
-        if (pword.getText().equals("")){
-            //pword.setText("Password");
-            pword.setForeground(new Color(153,153,153));
-
-        }
-    }//GEN-LAST:event_pwordFocusLost
-
-    private void pwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusGained
-        // TODO add your handling code here:
-        if (pword.getText().equals("Password")){
-            pword.setText("");
-            pword.setForeground(new Color(0,0,0));
-            pword.setEchoChar('*');
-        }
-    }//GEN-LAST:event_pwordFocusGained
-
-    private void date_chooserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_date_chooserFocusLost
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_date_chooserFocusLost
-
-    private void mailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mailKeyReleased
-        // TODO add your handling code here:
-        String PATTERN = "^[a-zA-Z0-9]{0,30}[@][a-zA-Z0-9]{0,10}[.][a-zA-Z]{0,5}$";
-        Pattern patt = Pattern.compile(PATTERN);
-        Matcher match=patt.matcher(mail.getText());
-        if(!match.matches()){
-            emsg4.setText("Email is incorrect!");
-        }
-        else{
-            emsg4.setText(null);
-        }
-    }//GEN-LAST:event_mailKeyReleased
-
-    private void mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_mailActionPerformed
-
-    private void mailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusLost
-        // TODO add your handling code here:
-        if (mail.getText().equals("")){
-            mail.setText("e-mail");
-            mail.setForeground(new Color(153,153,153));
-        }
-    }//GEN-LAST:event_mailFocusLost
-
-    private void mailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusGained
-        // TODO add your handling code here:
-        if (mail.getText().equals("e-mail")){
-            mail.setText("");
-            mail.setForeground(new Color(0,0,0));
-        }
-    }//GEN-LAST:event_mailFocusGained
-
-    private void numberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numberKeyTyped
-        // TODO add your handling code here:
-        if (!Character.isDigit(evt.getKeyChar())){
-            evt.consume();
-        }
-    }//GEN-LAST:event_numberKeyTyped
-
-    private void numberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_numberActionPerformed
-
-    private void numberFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_numberFocusLost
-        // TODO add your handling code here:
-        if (number.getText().equals("")){
-            number.setText("Phone number");
-            number.setForeground(new Color(153,153,153));
-        }
-    }//GEN-LAST:event_numberFocusLost
-
-    private void numberFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_numberFocusGained
-        // TODO add your handling code here:
-        if (number.getText().equals("Phone number")){
-            number.setText("");
-            number.setForeground(new Color(0,0,0));
-        }
-    }//GEN-LAST:event_numberFocusGained
+         this.hide();
+       HomePage frm = new HomePage();
+               frm.setVisible(true);
+    }//GEN-LAST:event_kButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -593,7 +590,6 @@ public class Registration extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane JDesktopPane;
-    private javax.swing.JButton clear;
     private com.toedter.calendar.JDateChooser date_chooser;
     private javax.swing.JLabel emsg1;
     private javax.swing.JLabel emsg2;
@@ -605,13 +601,15 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JLabel esmg8;
     private javax.swing.JTextField fname;
     private javax.swing.JLabel jLabel2;
+    private com.k33ptoo.components.KButton kButton1;
+    private com.k33ptoo.components.KButton kButton2;
+    private com.k33ptoo.components.KGradientPanel kGradientPanel1;
     private javax.swing.JTextField lname;
     private javax.swing.JTextField mail;
     private javax.swing.JLabel msg;
     private javax.swing.JTextField number;
     private javax.swing.JPasswordField pword;
     private javax.swing.JPasswordField pword2;
-    private javax.swing.JButton submit;
     private javax.swing.JCheckBox terms;
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
