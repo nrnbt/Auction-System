@@ -68,6 +68,7 @@ public class Registration extends javax.swing.JFrame {
         date_chooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         JDesktopPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
