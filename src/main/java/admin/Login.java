@@ -171,7 +171,7 @@ public class Login extends javax.swing.JFrame {
         }else if(pass.equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your password.");
         }else{
-            try (Socket socket = new Socket("192.168.1.42", 1234)) {
+            try (Socket socket = new Socket("192.168.25.121", 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -180,7 +180,16 @@ public class Login extends javax.swing.JFrame {
 
                 oos.writeObject(loginAdmin);
                 oos.flush();
-                JOptionPane.showMessageDialog(null, in.readLine());
+                
+                String result = in.readLine();
+                
+                if(result.equals("access successful")){
+                            this.hide();
+                    Home homeFrame = new Home();
+                        homeFrame.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(Background, result);
+                }
                 
             } catch (IOException e) {
                 e.printStackTrace();

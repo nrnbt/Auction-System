@@ -4,14 +4,23 @@
  */
 package admin;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -26,10 +35,13 @@ public class Home extends javax.swing.JFrame {
         initComponents();
     }
     
+    public static FetchAuctionResponse AuctionList;
+
+    
     
     public void show_data() throws ClassNotFoundException {
         ArrayList<FetchAuctionResponse> auctionList = new ArrayList<>();
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket("192.168.25.121", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -42,16 +54,21 @@ public class Home extends javax.swing.JFrame {
             
             if (obj.getClass().getName().equals("admin.FetchAuctionResponse")
 		&& (adminList = (FetchAuctionResponse) obj) != null) {
-
-                DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
-                Object[] row = new Object[5];
-                for (int i = 0; i < adminList.auctionList.size(); i++) {
-                    row[0] = i + 1;
-                    row[1] = adminList.auctionList.get(i).title;
-                    row[2] = adminList.auctionList.get(i).user;
-                    row[3] = adminList.auctionList.get(i).startPrice;
-                    row[4] = adminList.auctionList.get(i).status;
-                    model.addRow(row);
+                
+                if(adminList.auctionList.isEmpty()){
+                    JOptionPane.showMessageDialog(Background, "Nothing to show");
+                } else {
+                    AuctionList = adminList;
+                    DefaultTableModel model = (DefaultTableModel) auctionsTable.getModel();
+                    Object[] row = new Object[5];
+                    for (int i = 0; i < adminList.auctionList.size(); i++) {
+                        row[0] = i + 1;
+                        row[1] = adminList.auctionList.get(i).title;
+                        row[2] = adminList.auctionList.get(i).user;
+                        row[3] = adminList.auctionList.get(i).startPrice;
+                        row[4] = adminList.auctionList.get(i).status;
+                        model.addRow(row);
+                    }
                 }
             }
             
@@ -72,14 +89,19 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        kGradientPanel1 = new keeptoo.KGradientPanel();
+        Background = new keeptoo.KGradientPanel();
         tableScroll = new javax.swing.JScrollPane();
         auctionsTable = new javax.swing.JTable();
         showButton = new javax.swing.JButton();
+        CloseButton = new javax.swing.JLabel();
+        singleAuction = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
         setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         auctionsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -91,51 +113,42 @@ public class Home extends javax.swing.JFrame {
         ));
         tableScroll.setViewportView(auctionsTable);
 
+        Background.add(tableScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 1040, 400));
+
         showButton.setText("Show");
         showButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showButtonActionPerformed(evt);
             }
         });
+        Background.add(showButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 98, -1));
 
-        javax.swing.GroupLayout kGradientPanel1Layout = new javax.swing.GroupLayout(kGradientPanel1);
-        kGradientPanel1.setLayout(kGradientPanel1Layout);
-        kGradientPanel1Layout.setHorizontalGroup(
-            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tableScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE)
-            .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(showButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        kGradientPanel1Layout.setVerticalGroup(
-            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kGradientPanel1Layout.createSequentialGroup()
-                .addGap(0, 70, Short.MAX_VALUE)
-                .addComponent(showButton)
-                .addGap(18, 18, 18)
-                .addComponent(tableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        CloseButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        CloseButton.setForeground(new java.awt.Color(255, 255, 255));
+        CloseButton.setText("X");
+        CloseButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CloseButtonMouseClicked(evt);
+            }
+        });
+        Background.add(CloseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 10, 20, 20));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(kGradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 410, Short.MAX_VALUE))
-        );
+        singleAuction.setText("See Auction");
+        singleAuction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                singleAuctionActionPerformed(evt);
+            }
+        });
+        Background.add(singleAuction, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
+
+        getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-9, 0, 1070, 490));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
         try {
-            //        DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
+//                    DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
 //        int rowCount = dm.getRowCount();
 //        for (int i = rowCount - 1; i >= 0; i--) {
 //            dm.removeRow(i);
@@ -145,6 +158,54 @@ public class Home extends javax.swing.JFrame {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_showButtonActionPerformed
+
+    private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
+         System.exit(0);
+    }//GEN-LAST:event_CloseButtonMouseClicked
+
+    private void singleAuctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleAuctionActionPerformed
+        if(auctionsTable.getSelectedRowCount() > 0){
+            try (Socket socket = new Socket("192.168.25.121", 1234)) {
+
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+                GetImageRequest imgRequest = new GetImageRequest(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).img);
+                oos.writeObject(imgRequest);
+                
+                InputStream inputStream = socket.getInputStream();
+
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                
+                BufferedImage buffImg = new ImageIO.read(bufferedInputStream);
+                
+                
+                if (buffImg != null) {
+                        Object[] options = {"OK"};
+                        JOptionPane.showOptionDialog(
+                        Background, 
+                        AuctionList.auctionList.get(auctionsTable.getSelectedRow()).description, 
+                        auctionsTable.getValueAt(auctionsTable.getSelectedRow(), 1).toString(), 
+                        JOptionPane.PLAIN_MESSAGE, 
+                        JOptionPane.QUESTION_MESSAGE,
+                        new ImageIcon(buffImg),
+                        options,
+                        options[0]);
+                }
+
+                socket.close();
+//                ois.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            if(auctionsTable.getRowCount() == 0){
+                JOptionPane.showMessageDialog(Background, "Nothing to show");
+            } else {
+                JOptionPane.showMessageDialog(Background, "Select one or more rows");
+            }
+        }
+    }//GEN-LAST:event_singleAuctionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,9 +243,11 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private keeptoo.KGradientPanel Background;
+    private javax.swing.JLabel CloseButton;
     private javax.swing.JTable auctionsTable;
-    private keeptoo.KGradientPanel kGradientPanel1;
     private javax.swing.JButton showButton;
+    private javax.swing.JButton singleAuction;
     private javax.swing.JScrollPane tableScroll;
     // End of variables declaration//GEN-END:variables
 }
