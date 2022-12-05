@@ -54,12 +54,12 @@ public class Database {
                 cstmt.execute();
             }
             if (createBid == 0) {
-                String createTb = "Create table bids(bidId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, auctionId INT NOT NULL, bidTime DATE, price nvarchar(10), userId INT NULL)";
+                String createTb = "Create table bid(bidId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, auctionId INT NOT NULL, bidTime DATE, price nvarchar(10), userId INT NULL)";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
             if (createAuction == 0) {
-                String createTb = "Create table auctions(auctionId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, startPrice nvarchar(10), desciption nvarchar(1000), startTime DATE, endTime DATE, increment nvarchar(10), endPrice nvarchar(10), bids nvarchar(256), status varchar(10))";
+                String createTb = "Create table auction(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title nvarchar(40), user nvarchar(40), startPrice nvarchar(100), endPrice nvarchar(256), description nvarchar(1000), startTime DATETIME, endTime DATETIME, status varchar(10), img varchar(256), winner nvarchar(40))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }

@@ -28,6 +28,7 @@ public class Auction implements Serializable {
             String description) {
         this.id = id;
         this.title = title;
+        this.user = user;
         this.startPrice = startPrice;
         this.endPrice = endPrice;
         this.startTime = startTime;
