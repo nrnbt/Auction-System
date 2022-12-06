@@ -50,13 +50,18 @@ class Server {
 		}
 	}
 
-	public static ArrayList<Auction> auctionData() {
+	public static ArrayList<Auction> auctionData(String filterStatus) {
 		ArrayList<Auction> auctionList = new ArrayList<>();
 		try {
 			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
 			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
 			Statement stat = connection.createStatement();
-			String query = "Select * from auction";
+			String query ;
+			if(filterStatus.length() == 0){
+				query = "select * from auction";
+			} else {
+				query = "select * from auction where status = '" + filterStatus + "'";
+			}
 			ResultSet rs = stat.executeQuery(query);
 			Auction data;
 			while (rs.next()) {
@@ -209,7 +214,7 @@ class Server {
 							&& (fetchAuction = (FetchAuctionRequest) obj) != null) {
 						try {
 							if (fetchAuction.str.equals("auctions")) {
-								FetchAuctionResponse response =  new FetchAuctionResponse(auctionData());
+								FetchAuctionResponse response =  new FetchAuctionResponse(auctionData(fetchAuction.filterStatus));
 								try {
 									objOut.writeObject(response);
 									objOut.flush();
