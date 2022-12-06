@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Auction implements Serializable {
     public int id;
     public String title;
+    public String userId;
     public String user;
     public String startPrice;
     public String endPrice;
@@ -17,6 +18,7 @@ public class Auction implements Serializable {
 
     public Auction(int id,
             String title,
+            String userId,
             String user,
             String startPrice,
             String endPrice,
@@ -28,6 +30,7 @@ public class Auction implements Serializable {
             String description) {
         this.id = id;
         this.title = title;
+        this.userId = userId;
         this.startPrice = startPrice;
         this.endPrice = endPrice;
         this.startTime = startTime;

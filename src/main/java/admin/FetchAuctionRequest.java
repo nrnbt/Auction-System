@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 public class FetchAuctionRequest implements Serializable {
     public String str;
+    public String filterStatus;
 
-    public FetchAuctionRequest(String str) {
+    public FetchAuctionRequest(String str, String filterStatus) {
         this.str = str;
+        this.filterStatus = filterStatus;
     }
 
     public String getStr() {
@@ -15,5 +17,13 @@ public class FetchAuctionRequest implements Serializable {
 
     public void setStr(String str) {
         this.str = str;
+    }
+    
+     public String getStatusFilter() {
+        return filterStatus;
+    }
+
+    public void setStatusFilter(String filterStatus) {
+        this.filterStatus = filterStatus;
     }
 }

@@ -1,14 +1,13 @@
 package admin;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public class Image implements Serializable {
-  public BufferedImage image;
-  public byte[] size;
+  public byte[] imageByte;
+  public int size;
 
-    public Image( BufferedImage image, byte[] size) {
-        this.image = image;
+    public Image(byte[] imageByte, int size) {
+        this.imageByte = imageByte;
         this.size = size;
     }
 
