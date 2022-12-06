@@ -1,7 +1,6 @@
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
@@ -19,7 +20,6 @@ import admin.Auction;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.GetImageRequest;
-import admin.GetImageResponse;
 import admin.Image;
 
 class Server {
@@ -229,13 +229,17 @@ class Server {
 					if (obj.getClass().getName().equals("admin.GetImageRequest")
 							&& (getImageReq = (GetImageRequest) obj) != null) {
 						try {
-							ImageIcon image = new ImageIcon("/images/" + getImageReq.str);
-							java.awt.Image img = image.getImage();
-
+							BufferedImage bImage = ImageIO.read(new File("./images/" + getImageReq.str));
+							ByteArrayOutputStream bos = new ByteArrayOutputStream();
+							ImageIO.write(bImage, "png", bos );
+							byte [] data = bos.toByteArray();
+							Image img = new Image(data, data.length);
+							objOut.writeObject(img);
+							objOut.flush();
+							objOut.close();
 						} catch (Exception e) {
 							throw e;
 						}
-
 					}
 				}
 			} catch (SQLException e1) {
