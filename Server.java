@@ -9,9 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
@@ -19,6 +16,8 @@ import admin.LoginAdmin;
 import admin.Auction;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
+import admin.FetchUserInfoRequest;
+import admin.FetchUserInfoResponse;
 import admin.GetImageRequest;
 import admin.Image;
 
@@ -242,6 +241,26 @@ class Server {
 							objOut.writeObject(img);
 							objOut.flush();
 							objOut.close();
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+
+					FetchUserInfoRequest fetchUserInfoReq;
+					if (obj.getClass().getName().equals("admin.FetchUserInfoRequest")
+							&& (fetchUserInfoReq = (FetchUserInfoRequest) obj) != null) {
+						try {
+							Statement stat = connection.createStatement();
+							String query = "select * from user where id = " + fetchUserInfoReq.id ;
+							ResultSet rs = stat.executeQuery(query);
+							if(rs.next()){
+								FetchUserInfoResponse res = new FetchUserInfoResponse(rs.getString("userName"), rs.getString("email"), rs.getString("phone"), rs.getString("registerNumber"));
+								objOut.writeObject(res);
+								objOut.flush();
+								objOut.close();
+							} else {
+								out.println("user not found");
+							}
 						} catch (Exception e) {
 							throw e;
 						}

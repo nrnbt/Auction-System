@@ -44,7 +44,7 @@ public class Database {
                 }
             }
             if (createUsers == 0) {
-                String createTb = "Create table users(userId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userName nvarchar(40), firstName nvarchar(40), lastName nvarchar(40), passWord nvarchar(40), email nvarchar(40) NULL, phone char(8) NULL, birthDay Date NULL, registeredAt Date, role char(1))";
+                String createTb = "Create table user(userId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userName nvarchar(40), firstName nvarchar(40), lastName nvarchar(40), passWord nvarchar(40), email nvarchar(40) NULL, phone char(8) NULL, birthDay Date NULL, registeredAt Date, registerNumber nvarchar(10))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
@@ -63,6 +63,9 @@ public class Database {
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
+            String insert = "insert into user(userName, firstName, lastName, passWord, email, phone, birthDay, registeredAt, registerNumber) values ('user1', 'fname1', 'lname1', md5('123'), 'user1@gmail.com', '88888888', DATE '1999-03-13' , now(), 'uu12345678')";
+            CallableStatement cstmt = connection.prepareCall(insert);
+            cstmt.execute();
             connection.close();
         } catch (Exception e) {
             System.out.println(e);
