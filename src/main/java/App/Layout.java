@@ -35,7 +35,6 @@ public class Layout extends javax.swing.JFrame {
         kGradientPanel4 = new com.k33ptoo.components.KGradientPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -84,7 +83,6 @@ public class Layout extends javax.swing.JFrame {
         kGradientPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         kGradientPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 143, 37, -1));
         kGradientPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 259, 30, 29));
-        kGradientPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 206, 33, 35));
         kGradientPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 188, -1, -1));
         kGradientPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 329, 37, -1));
         kGradientPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 347, 43, -1));
@@ -97,7 +95,6 @@ public class Layout extends javax.swing.JFrame {
         jButton2.setBackground(kGradientPanel4.getkStartColor());
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-auction-30.png")); // NOI18N
         jButton2.setText("My Auctions");
         jButton2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -105,12 +102,11 @@ public class Layout extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 150, -1));
+        kGradientPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 220, 30));
 
         jButton3.setBackground(kGradientPanel4.getkStartColor());
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-about-32.png")); // NOI18N
         jButton3.setText("About Us");
         jButton3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -118,12 +114,11 @@ public class Layout extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 120, 30));
+        kGradientPanel4.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 220, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 204, 204));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-home-page-30.png")); // NOI18N
         jButton1.setText("Home");
         jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         jButton1.setBorderPainted(false);
@@ -133,12 +128,11 @@ public class Layout extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 100, 30));
+        kGradientPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 220, 30));
 
         jButton4.setBackground(kGradientPanel4.getkStartColor());
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-add-folder-24.png")); // NOI18N
         jButton4.setText("Create Bid");
         jButton4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -146,12 +140,11 @@ public class Layout extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 120, -1));
+        kGradientPanel4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 220, 30));
 
         jButton6.setBackground(kGradientPanel4.getkStartColor());
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-bid-30.png")); // NOI18N
         jButton6.setText("My Bid");
         jButton6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -159,12 +152,11 @@ public class Layout extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 110, 30));
+        kGradientPanel4.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 220, 30));
 
         jButton5.setBackground(kGradientPanel4.getkStartColor());
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Users\\asus\\Downloads\\icons8-logout-rounded-down-30.png")); // NOI18N
         jButton5.setText("Logout");
         jButton5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
         jButton5.setOpaque(false);
@@ -173,7 +165,7 @@ public class Layout extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 110, 30));
+        kGradientPanel4.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 630, 110, 30));
 
         jPanel1.add(kGradientPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -6, 220, 750));
 
@@ -184,7 +176,7 @@ public class Layout extends javax.swing.JFrame {
         kGradientPanel2.setkEndColor(new java.awt.Color(153, 153, 255));
         kGradientPanel2.setkStartColor(new java.awt.Color(204, 153, 255));
         kGradientPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(kGradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 540, 749));
+        jPanel3.add(kGradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 690, 750));
 
         jTabbedPane1.addTab("All auction", jPanel3);
 
@@ -204,14 +196,14 @@ public class Layout extends javax.swing.JFrame {
             .addGroup(kGradientPanel3Layout.createSequentialGroup()
                 .addGap(207, 207, 207)
                 .addComponent(jLabel14)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         kGradientPanel3Layout.setVerticalGroup(
             kGradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kGradientPanel3Layout.createSequentialGroup()
                 .addGap(76, 76, 76)
                 .addComponent(jLabel14)
-                .addContainerGap(653, Short.MAX_VALUE))
+                .addContainerGap(656, Short.MAX_VALUE))
         );
 
         jPanel4.add(kGradientPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 0, 534, 749));
@@ -283,7 +275,7 @@ public class Layout extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton7))
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         kGradientPanel5Layout.setVerticalGroup(
             kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +296,7 @@ public class Layout extends javax.swing.JFrame {
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(138, 138, 138)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jPanel5.add(kGradientPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 530, 750));
@@ -352,14 +344,14 @@ public class Layout extends javax.swing.JFrame {
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addGap(203, 203, 203)
                 .addComponent(jLabel7)
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
         kGradientPanel1Layout.setVerticalGroup(
             kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel7)
-                .addContainerGap(676, Short.MAX_VALUE))
+                .addContainerGap(679, Short.MAX_VALUE))
         );
 
         jPanel7.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 530, 740));
@@ -396,7 +388,7 @@ public class Layout extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Logout", jPanel2);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 550, 780));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 710, 780));
         jTabbedPane1.getAccessibleContext().setAccessibleName("Home");
 
         pack();
@@ -495,7 +487,6 @@ public class Layout extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
