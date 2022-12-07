@@ -225,13 +225,29 @@ public class Registration extends javax.swing.JFrame {
             }
         });
         JDesktopPane.add(fname, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 70, 362, 31));
+
+        emsg1.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 70, 124, 19));
+
+        emsg2.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 107, 124, 19));
+
+        emsg3.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg3, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 144, 124, 19));
+
+        emsg4.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg4, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 181, 124, 19));
+
+        emsg5.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg5, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 218, 124, 15));
+
+        emsg6.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg6, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 255, 104, 19));
+
+        emsg7.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(emsg7, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 292, 124, 25));
+
+        esmg8.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(esmg8, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 339, 104, 20));
 
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 204, 204));
@@ -262,7 +278,8 @@ public class Registration extends javax.swing.JFrame {
         kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 130, -1));
 
         msg.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        kGradientPanel1.add(msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 1084, 49));
+        msg.setForeground(new java.awt.Color(255, 255, 255));
+        kGradientPanel1.add(msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 440, 290, 30));
 
         date_chooser.setBackground(new java.awt.Color(255, 204, 204));
         date_chooser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
@@ -322,7 +339,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (fname.getText().equals("First name")){
             fname.setText("");
-            fname.setForeground(new Color(0,0,0));
+            
         }
     }//GEN-LAST:event_fnameFocusGained
 
@@ -339,7 +356,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (pword2.getText().equals("Repeat password")){
             pword2.setText("");
-            pword2.setForeground(new Color(0,0,0));
+            
             pword2.setEchoChar('*');
 
         }
@@ -370,7 +387,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (lname.getText().equals("Last name")){
             lname.setText("");
-            lname.setForeground(new Color(0,0,0));
+            
         }
     }//GEN-LAST:event_lnameFocusGained
 
@@ -386,7 +403,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (user.getText().equals("Username")){
             user.setText("");
-            user.setForeground(new Color(0,0,0));
+           
         }
     }//GEN-LAST:event_userFocusGained
 
@@ -407,7 +424,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (pword.getText().equals("Password")){
             pword.setText("");
-            pword.setForeground(new Color(0,0,0));
+           
             pword.setEchoChar('*');
         }
     }//GEN-LAST:event_pwordFocusGained
@@ -447,7 +464,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (mail.getText().equals("e-mail")){
             mail.setText("");
-            mail.setForeground(new Color(0,0,0));
+            
         }
     }//GEN-LAST:event_mailFocusGained
 
@@ -474,7 +491,7 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (number.getText().equals("Phone number")){
             number.setText("");
-            number.setForeground(new Color(0,0,0));
+            
         }
     }//GEN-LAST:event_numberFocusGained
 
