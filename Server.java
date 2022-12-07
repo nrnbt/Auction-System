@@ -1,3 +1,4 @@
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
@@ -15,7 +16,9 @@ import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
 import admin.UpdateAuctionDateRequest;
 import admin.UpdateAuctionWinnerRequest;
-import admin.Auction;
+import client.GetAllAuctionRequest;
+import client.GetAllAuctionResponse;
+import types.Auction;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.FetchUserInfoRequest;
@@ -57,8 +60,8 @@ class Server {
 			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
 			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
 			Statement stat = connection.createStatement();
-			String query ;
-			if(filterStatus.length() == 0){
+			String query;
+			if (filterStatus.length() == 0) {
 				query = "select * from auction";
 			} else {
 				query = "select * from auction where status = '" + filterStatus + "'";
@@ -67,19 +70,18 @@ class Server {
 			Auction data;
 			while (rs.next()) {
 				data = new Auction(
-					rs.getInt("id"),
-					rs.getString("title"),
-					rs.getString("user"),
-					rs.getString("userId"),
-					rs.getString("startPrice"),
-					rs.getString("endPrice"),
-					rs.getString("startDateTime"),
-					rs.getString("endDateTime"),
-					rs.getString("status"),
-					rs.getString("img"),
-					rs.getString("winner"),
-					rs.getString("description")
-				);
+						rs.getInt("id"),
+						rs.getString("title"),
+						rs.getString("user"),
+						rs.getString("userId"),
+						rs.getString("startPrice"),
+						rs.getString("endPrice"),
+						rs.getString("startDateTime"),
+						rs.getString("endDateTime"),
+						rs.getString("status"),
+						rs.getString("img"),
+						rs.getString("winner"),
+						rs.getString("description"));
 				auctionList.add(data);
 			}
 			rs.close();
@@ -112,13 +114,12 @@ class Server {
 
 				ois = new ObjectInputStream(clientSocket.getInputStream());
 
-				RegisterUser regUser;
-
 				Object obj = ois.readObject();
 
 				Connection connection;
 				connection = DriverManager.getConnection(dbUrl, "root", "");
 
+				RegisterUser regUser;
 				while (obj != null) {
 					if (obj.getClass().getName().equals("RegisterUser.RegisterUser")
 							&& (regUser = (RegisterUser) obj) != null) {
@@ -216,7 +217,8 @@ class Server {
 							&& (fetchAuction = (FetchAuctionRequest) obj) != null) {
 						try {
 							if (fetchAuction.str.equals("auctions")) {
-								FetchAuctionResponse response =  new FetchAuctionResponse(auctionData(fetchAuction.filterStatus));
+								FetchAuctionResponse response = new FetchAuctionResponse(
+										auctionData(fetchAuction.filterStatus));
 								try {
 									objOut.writeObject(response);
 									objOut.flush();
@@ -238,8 +240,8 @@ class Server {
 						try {
 							BufferedImage bImage = ImageIO.read(new File("./images/" + getImageReq.str));
 							ByteArrayOutputStream bos = new ByteArrayOutputStream();
-							ImageIO.write(bImage, "png", bos );
-							byte [] data = bos.toByteArray();
+							ImageIO.write(bImage, "png", bos);
+							byte[] data = bos.toByteArray();
 							Image img = new Image(data, data.length);
 							objOut.writeObject(img);
 							objOut.flush();
@@ -254,10 +256,11 @@ class Server {
 							&& (fetchUserInfoReq = (FetchUserInfoRequest) obj) != null) {
 						try {
 							Statement stat = connection.createStatement();
-							String query = "select * from user where id = " + fetchUserInfoReq.id ;
+							String query = "select * from user where id = " + fetchUserInfoReq.id;
 							ResultSet rs = stat.executeQuery(query);
-							if(rs.next()){
-								FetchUserInfoResponse res = new FetchUserInfoResponse(rs.getString("userName"), rs.getString("email"), rs.getString("phone"), rs.getString("registerNumber"));
+							if (rs.next()) {
+								FetchUserInfoResponse res = new FetchUserInfoResponse(rs.getString("userName"),
+										rs.getString("email"), rs.getString("phone"), rs.getString("registerNumber"));
 								objOut.writeObject(res);
 								objOut.flush();
 								objOut.close();
@@ -273,10 +276,14 @@ class Server {
 					if (obj.getClass().getName().equals("admin.UpdateAuctionDateRequest")
 							&& (updateAuctionDateRequest = (UpdateAuctionDateRequest) obj) != null) {
 						try {
-							String query = "UPDATE auction SET status = 'accepted', startDateTime = CAST('" + updateAuctionDateRequest.startDay + " " + updateAuctionDateRequest.startTime + "' AS DATETIME), endDateTime = CAST('" + updateAuctionDateRequest.endDay + " " + updateAuctionDateRequest.endTime + "' AS DATETIME) where id = " + updateAuctionDateRequest.auctionId;
+							String query = "UPDATE auction SET status = 'accepted', startDateTime = CAST('"
+									+ updateAuctionDateRequest.startDay + " " + updateAuctionDateRequest.startTime
+									+ "' AS DATETIME), endDateTime = CAST('" + updateAuctionDateRequest.endDay + " "
+									+ updateAuctionDateRequest.endTime + "' AS DATETIME) where id = "
+									+ updateAuctionDateRequest.auctionId;
 							PreparedStatement stat = connection.prepareStatement(query);
 							int rs = stat.executeUpdate();
-							if(rs == 1){
+							if (rs == 1) {
 								out.print("Updated");
 							} else {
 								out.print("Update action failed");
@@ -291,10 +298,11 @@ class Server {
 					if (obj.getClass().getName().equals("admin.UpdateAuctionWinnerRequest")
 							&& (updateAuctionWinnerRequest = (UpdateAuctionWinnerRequest) obj) != null) {
 						try {
-							String query = "UPDATE auction SET winner = '"+ updateAuctionWinnerRequest.winner + "' WHERE id =" + updateAuctionWinnerRequest.id;
+							String query = "UPDATE auction SET winner = '" + updateAuctionWinnerRequest.winner
+									+ "' WHERE id =" + updateAuctionWinnerRequest.id;
 							PreparedStatement stat = connection.prepareStatement(query);
 							int rs = stat.executeUpdate();
-							if(rs == 1){
+							if (rs == 1) {
 								out.print("Updated");
 							} else {
 								out.print("Update action failed");
@@ -304,6 +312,29 @@ class Server {
 							throw e;
 						}
 					}
+
+					GetAllAuctionRequest getAllAuctionRequest;
+					if (obj.getClass().getName().equals("client.GetAllAuctionRequest")
+							&& (getAllAuctionRequest = (GetAllAuctionRequest) obj) != null) {
+						try {
+							if (getAllAuctionRequest.str.equals("auctions")) {
+								GetAllAuctionResponse response = new GetAllAuctionResponse(
+										auctionData(getAllAuctionRequest.filterStatus));
+								try {
+									objOut.writeObject(response);
+									objOut.flush();
+								} catch (Exception e) {
+									throw e;
+								}
+							} else {
+								out.println("invalid request");
+							}
+							objOut.close();
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();

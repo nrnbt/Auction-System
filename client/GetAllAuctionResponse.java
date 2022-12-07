@@ -1,15 +1,16 @@
-package admin;
+package client;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import types.Auction;
 
-public class FetchAuctionResponse implements Serializable {
+public class GetAllAuctionResponse implements Serializable {
 
     public ArrayList<Auction> auctionList;
 
-    public FetchAuctionResponse(ArrayList<Auction> auctionList) {
+    public GetAllAuctionResponse(ArrayList<Auction> auctionList) {
         this.auctionList = auctionList;
     }
 

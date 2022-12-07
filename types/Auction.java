@@ -1,4 +1,4 @@
-package admin;
+package types;
 
 import java.io.Serializable;
 
