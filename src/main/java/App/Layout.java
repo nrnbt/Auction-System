@@ -90,7 +90,7 @@ public class Layout extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("AUBEY AUCTION");
-        kGradientPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 61));
+        kGradientPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 61));
 
         jButton2.setBackground(kGradientPanel4.getkStartColor());
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
