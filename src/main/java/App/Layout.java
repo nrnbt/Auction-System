@@ -6,7 +6,9 @@ package App;
  */
 
 
+import Login.Login;
 import Register.Registration;
+import java.awt.Color;
 import javax.swing.UIManager;
 
 /**
@@ -31,28 +33,17 @@ public class Layout extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        kGradientPanel4 = new com.k33ptoo.components.KGradientPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        kGradientPanel2 = new com.k33ptoo.components.KGradientPanel();
-        jPanel4 = new javax.swing.JPanel();
-        kGradientPanel3 = new com.k33ptoo.components.KGradientPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        kGradientPanel5 = new com.k33ptoo.components.KGradientPanel();
+        navbar = new com.k33ptoo.components.KGradientPanel();
+        AppTitle = new javax.swing.JLabel();
+        logOutButton = new com.k33ptoo.components.KButton();
+        aboutUSButton = new com.k33ptoo.components.KButton();
+        auctionsButton = new com.k33ptoo.components.KButton();
+        createAuctionButton = new com.k33ptoo.components.KButton();
+        myAuctionsButton = new com.k33ptoo.components.KButton();
+        myBidsButton = new com.k33ptoo.components.KButton();
+        tabs = new javax.swing.JTabbedPane();
+        auctionsPanel = new keeptoo.KGradientPanel();
+        createAuctionPanel = new com.k33ptoo.components.KGradientPanel();
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
@@ -60,164 +51,125 @@ public class Layout extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jTextField4 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        kGradientPanel7 = new com.k33ptoo.components.KGradientPanel();
-        jPanel7 = new javax.swing.JPanel();
-        kGradientPanel1 = new com.k33ptoo.components.KGradientPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        kGradientPanel6 = new com.k33ptoo.components.KGradientPanel();
-        jLabel2 = new javax.swing.JLabel();
+        myAuctionPanel = new keeptoo.KGradientPanel();
+        myBidsPanel = new keeptoo.KGradientPanel();
+        abousUsPanel = new keeptoo.KGradientPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 51, 51));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        navbar.setkBorderRadius(0);
+        navbar.setkEndColor(new java.awt.Color(0, 255, 204));
+        navbar.setkStartColor(new java.awt.Color(153, 0, 153));
+        navbar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        kGradientPanel4.setkEndColor(new java.awt.Color(204, 255, 255));
-        kGradientPanel4.setkStartColor(new java.awt.Color(255, 204, 204));
-        kGradientPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        kGradientPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 143, 37, -1));
-        kGradientPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 259, 30, 29));
-        kGradientPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 188, -1, -1));
-        kGradientPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 329, 37, -1));
-        kGradientPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 347, 43, -1));
+        AppTitle.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        AppTitle.setForeground(new java.awt.Color(255, 255, 255));
+        AppTitle.setText("ABEY AUCTION");
+        navbar.add(AppTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 61));
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("AUBEY AUCTION");
-        kGradientPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 61));
-
-        jButton2.setBackground(kGradientPanel4.getkStartColor());
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("My Auctions");
-        jButton2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        logOutButton.setText("Log Out");
+        logOutButton.setkBorderRadius(30);
+        logOutButton.setkEndColor(new java.awt.Color(51, 51, 255));
+        logOutButton.setkHoverEndColor(new java.awt.Color(0, 204, 204));
+        logOutButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        logOutButton.setkHoverStartColor(new java.awt.Color(0, 153, 153));
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                logOutButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 220, 30));
+        navbar.add(logOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
 
-        jButton3.setBackground(kGradientPanel4.getkStartColor());
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("About Us");
-        jButton3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        aboutUSButton.setText("About US");
+        aboutUSButton.setkBorderRadius(30);
+        aboutUSButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        aboutUSButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        aboutUSButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        aboutUSButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                aboutUSButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 220, 30));
+        navbar.add(aboutUSButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, 30));
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 204));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Home");
-        jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        jButton1.setBorderPainted(false);
-        jButton1.setOpaque(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        auctionsButton.setText("Auctions");
+        auctionsButton.setkBorderRadius(30);
+        auctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        auctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        auctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        auctionsButton.setkHoverStartColor(new java.awt.Color(153, 0, 153));
+        auctionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                auctionsButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 220, 30));
+        navbar.add(auctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, 30));
 
-        jButton4.setBackground(kGradientPanel4.getkStartColor());
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Create Bid");
-        jButton4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        createAuctionButton.setText("Create Auction");
+        createAuctionButton.setkBorderRadius(30);
+        createAuctionButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        createAuctionButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        createAuctionButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        createAuctionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                createAuctionButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 220, 30));
+        navbar.add(createAuctionButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, 30));
 
-        jButton6.setBackground(kGradientPanel4.getkStartColor());
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("My Bid");
-        jButton6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        myAuctionsButton.setText("My Auctions");
+        myAuctionsButton.setkBorderRadius(30);
+        myAuctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        myAuctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        myAuctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        myAuctionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                myAuctionsButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 220, 30));
+        navbar.add(myAuctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, 30));
 
-        jButton5.setBackground(kGradientPanel4.getkStartColor());
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Logout");
-        jButton5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(255, 255, 255)));
-        jButton5.setOpaque(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        myBidsButton.setText("My Bids");
+        myBidsButton.setkBorderRadius(30);
+        myBidsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        myBidsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        myBidsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        myBidsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                myBidsButtonActionPerformed(evt);
             }
         });
-        kGradientPanel4.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 630, 110, 30));
+        navbar.add(myBidsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, 30));
 
-        jPanel1.add(kGradientPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -6, 220, 750));
+        getContentPane().add(navbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 744));
+        tabs.setPreferredSize(new java.awt.Dimension(1000, 500));
 
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        auctionsPanel.setkStartColor(new java.awt.Color(204, 255, 204));
 
-        kGradientPanel2.setkEndColor(new java.awt.Color(153, 153, 255));
-        kGradientPanel2.setkStartColor(new java.awt.Color(204, 153, 255));
-        kGradientPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(kGradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 690, 750));
-
-        jTabbedPane1.addTab("All auction", jPanel3);
-
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        kGradientPanel3.setkEndColor(new java.awt.Color(255, 204, 204));
-        kGradientPanel3.setkStartColor(new java.awt.Color(255, 153, 102));
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("My Auctions");
-
-        javax.swing.GroupLayout kGradientPanel3Layout = new javax.swing.GroupLayout(kGradientPanel3);
-        kGradientPanel3.setLayout(kGradientPanel3Layout);
-        kGradientPanel3Layout.setHorizontalGroup(
-            kGradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel3Layout.createSequentialGroup()
-                .addGap(207, 207, 207)
-                .addComponent(jLabel14)
-                .addContainerGap(231, Short.MAX_VALUE))
+        javax.swing.GroupLayout auctionsPanelLayout = new javax.swing.GroupLayout(auctionsPanel);
+        auctionsPanel.setLayout(auctionsPanelLayout);
+        auctionsPanelLayout.setHorizontalGroup(
+            auctionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
-        kGradientPanel3Layout.setVerticalGroup(
-            kGradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel3Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(jLabel14)
-                .addContainerGap(656, Short.MAX_VALUE))
+        auctionsPanelLayout.setVerticalGroup(
+            auctionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
 
-        jPanel4.add(kGradientPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 0, 534, 749));
+        tabs.addTab("Auctions", auctionsPanel);
 
-        jTabbedPane1.addTab("My auctions", jPanel4);
-
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        kGradientPanel5.setkEndColor(new java.awt.Color(153, 204, 255));
-        kGradientPanel5.setkStartColor(new java.awt.Color(255, 204, 204));
+        createAuctionPanel.setkEndColor(new java.awt.Color(153, 204, 255));
+        createAuctionPanel.setkStartColor(new java.awt.Color(255, 204, 204));
+        createAuctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Create Bid");
+        jLabel5.setText("create Auction");
+        createAuctionPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 24, 150, 40));
 
         jTextField1.setText("Title");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -225,10 +177,13 @@ public class Layout extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
+        createAuctionPanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 225, -1));
 
         jTextField2.setText("Desciption");
+        createAuctionPanel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 225, 136));
 
         jTextField3.setText("Starting price");
+        createAuctionPanel.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 106, -1));
 
         jButton7.setText("Add Image");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -236,196 +191,55 @@ public class Layout extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
+        createAuctionPanel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, -1, -1));
 
         jTextField4.setText("IMG");
+        createAuctionPanel.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 86, -1));
 
         jLabel3.setText("jLabel3");
+        createAuctionPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, 224, 189));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setText("Create Bid");
+        tabs.addTab("createAcution", createAuctionPanel);
 
-        javax.swing.GroupLayout kGradientPanel5Layout = new javax.swing.GroupLayout(kGradientPanel5);
-        kGradientPanel5.setLayout(kGradientPanel5Layout);
-        kGradientPanel5Layout.setHorizontalGroup(
-            kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                .addGroup(kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kGradientPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(131, 131, 131))
-            .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7))
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(189, Short.MAX_VALUE))
+        myAuctionPanel.setkStartColor(new java.awt.Color(204, 255, 204));
+
+        javax.swing.GroupLayout myAuctionPanelLayout = new javax.swing.GroupLayout(myAuctionPanel);
+        myAuctionPanel.setLayout(myAuctionPanelLayout);
+        myAuctionPanelLayout.setHorizontalGroup(
+            myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
-        kGradientPanel5Layout.setVerticalGroup(
-            kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel5Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(kGradientPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(138, 138, 138)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+        myAuctionPanelLayout.setVerticalGroup(
+            myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
 
-        jPanel5.add(kGradientPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 530, 750));
+        tabs.addTab("myAuction", myAuctionPanel);
 
-        jTabbedPane1.addTab("Create bid", jPanel5);
+        myBidsPanel.setkStartColor(new java.awt.Color(204, 255, 204));
 
-        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("About us");
-        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 91, -1, -1));
-
-        kGradientPanel7.setkEndColor(new java.awt.Color(102, 102, 255));
-        kGradientPanel7.setkStartColor(new java.awt.Color(0, 204, 255));
-
-        javax.swing.GroupLayout kGradientPanel7Layout = new javax.swing.GroupLayout(kGradientPanel7);
-        kGradientPanel7.setLayout(kGradientPanel7Layout);
-        kGradientPanel7Layout.setHorizontalGroup(
-            kGradientPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 530, Short.MAX_VALUE)
+        javax.swing.GroupLayout myBidsPanelLayout = new javax.swing.GroupLayout(myBidsPanel);
+        myBidsPanel.setLayout(myBidsPanelLayout);
+        myBidsPanelLayout.setHorizontalGroup(
+            myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
-        kGradientPanel7Layout.setVerticalGroup(
-            kGradientPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+        myBidsPanelLayout.setVerticalGroup(
+            myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
 
-        jPanel6.add(kGradientPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 530, 750));
+        tabs.addTab("myBids", myBidsPanel);
 
-        jTabbedPane1.addTab("My bid", jPanel6);
+        abousUsPanel.setkStartColor(new java.awt.Color(204, 255, 204));
+        abousUsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        tabs.addTab("aboutUs", abousUsPanel);
 
-        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        kGradientPanel1.setkEndColor(new java.awt.Color(204, 204, 255));
-        kGradientPanel1.setkStartColor(new java.awt.Color(255, 204, 204));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Hehe");
-
-        javax.swing.GroupLayout kGradientPanel1Layout = new javax.swing.GroupLayout(kGradientPanel1);
-        kGradientPanel1.setLayout(kGradientPanel1Layout);
-        kGradientPanel1Layout.setHorizontalGroup(
-            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                .addGap(203, 203, 203)
-                .addComponent(jLabel7)
-                .addContainerGap(286, Short.MAX_VALUE))
-        );
-        kGradientPanel1Layout.setVerticalGroup(
-            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel7)
-                .addContainerGap(679, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 530, 740));
-
-        jTabbedPane1.addTab("About us", jPanel7);
-
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        kGradientPanel6.setkEndColor(new java.awt.Color(204, 204, 255));
-        kGradientPanel6.setkStartColor(new java.awt.Color(255, 204, 204));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Logout");
-
-        javax.swing.GroupLayout kGradientPanel6Layout = new javax.swing.GroupLayout(kGradientPanel6);
-        kGradientPanel6.setLayout(kGradientPanel6Layout);
-        kGradientPanel6Layout.setHorizontalGroup(
-            kGradientPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel6Layout.createSequentialGroup()
-                .addGap(206, 206, 206)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(254, Short.MAX_VALUE))
-        );
-        kGradientPanel6Layout.setVerticalGroup(
-            kGradientPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(kGradientPanel6Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(623, Short.MAX_VALUE))
-        );
-
-        jPanel2.add(kGradientPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 530, 750));
-
-        jTabbedPane1.addTab("Logout", jPanel2);
-
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 710, 780));
-        jTabbedPane1.getAccessibleContext().setAccessibleName("Home");
+        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 1000, 540));
+        tabs.getAccessibleContext().setAccessibleName("Home");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(4);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(1);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(0);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(5);
-        
-        
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(3);
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(2);
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
@@ -435,6 +249,81 @@ public class Layout extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+       this.hide();
+       new Login().setVisible(true);
+    }//GEN-LAST:event_logOutButtonActionPerformed
+
+    private void auctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auctionsButtonActionPerformed
+        tabs.setSelectedIndex(0);
+//        auctionsButton.setkStartColor(new Color(153,0,153));
+//        auctionsButton.setkEndColor(new Color(0,255,204));
+//        createAuctionButton.setkStartColor(new Color(0,153,153));
+//        createAuctionButton.setkEndColor(new Color(0,204,204));
+//        myAuctionsButton.setkStartColor(new Color(0,153,153));
+//        myAuctionsButton.setkEndColor(new Color(0,204,204));
+//        myBidsButton.setkStartColor(new Color(0,153,153));
+//        myBidsButton.setkEndColor(new Color(0,204,204));
+//        aboutUSButton.setkStartColor(new Color(0,153,153));
+//        aboutUSButton.setkEndColor(new Color(0,204,204));
+    }//GEN-LAST:event_auctionsButtonActionPerformed
+
+    private void createAuctionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAuctionButtonActionPerformed
+        tabs.setSelectedIndex(1);
+//        createAuctionButton.setkStartColor(new Color(153,0,153));
+//        createAuctionButton.setkEndColor(new Color(0,255,204));
+//        auctionsButton.setkStartColor(new Color(0,153,153));
+//        auctionsButton.setkEndColor(new Color(0,204,204));
+//        myAuctionsButton.setkStartColor(new Color(0,153,153));
+//        myAuctionsButton.setkEndColor(new Color(0,204,204));
+//        myBidsButton.setkStartColor(new Color(0,153,153));
+//        myBidsButton.setkEndColor(new Color(0,204,204));
+//        aboutUSButton.setkStartColor(new Color(0,153,153));
+//        aboutUSButton.setkEndColor(new Color(0,204,204));
+    }//GEN-LAST:event_createAuctionButtonActionPerformed
+
+    private void myAuctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAuctionsButtonActionPerformed
+        tabs.setSelectedIndex(2);
+//        myAuctionsButton.setkStartColor(new Color(153,0,153));
+//        myAuctionsButton.setkEndColor(new Color(0,255,204));
+//        auctionsButton.setkStartColor(new Color(0,153,153));
+//        auctionsButton.setkEndColor(new Color(0,204,204));
+//        createAuctionButton.setkStartColor(new Color(0,153,153));
+//        createAuctionButton.setkEndColor(new Color(0,204,204));
+//        myBidsButton.setkStartColor(new Color(0,153,153));
+//        myBidsButton.setkEndColor(new Color(0,204,204));
+//        aboutUSButton.setkStartColor(new Color(0,153,153));
+//        aboutUSButton.setkEndColor(new Color(0,204,204));
+    }//GEN-LAST:event_myAuctionsButtonActionPerformed
+
+    private void myBidsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myBidsButtonActionPerformed
+        tabs.setSelectedIndex(3);
+//        myBidsButton.setkStartColor(new Color(153,0,153));
+//        myBidsButton.setkEndColor(new Color(0,255,204));
+//        auctionsButton.setkStartColor(new Color(0,153,153));
+//        auctionsButton.setkEndColor(new Color(0,204,204));
+//        createAuctionButton.setkStartColor(new Color(0,153,153));
+//        createAuctionButton.setkEndColor(new Color(0,204,204));
+//        myAuctionsButton.setkStartColor(new Color(0,153,153));
+//        myAuctionsButton.setkEndColor(new Color(0,204,204));
+//        aboutUSButton.setkStartColor(new Color(0,153,153));
+//        aboutUSButton.setkEndColor(new Color(0,204,204));
+    }//GEN-LAST:event_myBidsButtonActionPerformed
+
+    private void aboutUSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutUSButtonActionPerformed
+        tabs.setSelectedIndex(4);
+//        aboutUSButton.setkStartColor(new Color(153,0,153));
+//        aboutUSButton.setkEndColor(new Color(0,255,204));
+//        auctionsButton.setkStartColor(new Color(0,153,153));
+//        auctionsButton.setkEndColor(new Color(0,204,204));
+//        createAuctionButton.setkStartColor(new Color(0,153,153));
+//        createAuctionButton.setkEndColor(new Color(0,204,204));
+//        myAuctionsButton.setkStartColor(new Color(0,153,153));
+//        myAuctionsButton.setkEndColor(new Color(0,204,204));
+//        myBidsButton.setkStartColor(new Color(0,153,153));
+//        myBidsButton.setkEndColor(new Color(0,204,204));
+    }//GEN-LAST:event_aboutUSButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -467,44 +356,26 @@ public class Layout extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel AppTitle;
+    private keeptoo.KGradientPanel abousUsPanel;
+    private com.k33ptoo.components.KButton aboutUSButton;
+    private com.k33ptoo.components.KButton auctionsButton;
+    private keeptoo.KGradientPanel auctionsPanel;
+    private com.k33ptoo.components.KButton createAuctionButton;
+    private com.k33ptoo.components.KGradientPanel createAuctionPanel;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel1;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel2;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel3;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel4;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel5;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel6;
-    private com.k33ptoo.components.KGradientPanel kGradientPanel7;
+    private com.k33ptoo.components.KButton logOutButton;
+    private keeptoo.KGradientPanel myAuctionPanel;
+    private com.k33ptoo.components.KButton myAuctionsButton;
+    private com.k33ptoo.components.KButton myBidsButton;
+    private keeptoo.KGradientPanel myBidsPanel;
+    private com.k33ptoo.components.KGradientPanel navbar;
+    private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 }
