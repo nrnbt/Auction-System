@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JDialog;
@@ -18,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author nrnbt_
  */
-public class updatePanel extends javax.swing.JPanel {
+public class updateAcceptedPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form updatePanel
@@ -29,13 +30,21 @@ public class updatePanel extends javax.swing.JPanel {
     public String userPhone;
     public String userRegisterNumber;
 
-    public updatePanel(String name, String email, String phone, String registerNumber, int id) {
+    public updateAcceptedPanel(String name, String email, String phone, String registerNumber, int id, String startDate, String endDate) throws ParseException {
+        String[] start = startDate.split("\\s+");
+        String[] end = endDate.split("\\s+");
+        Date startDay =new SimpleDateFormat("yyyy-MM-dd").parse(start[0]);  
+        Date endDay =new SimpleDateFormat("yyyy-MM-dd").parse(end[0]);
         auctionId = id;
         userName = name;
         userEmail = email;
         userPhone = phone;
         userRegisterNumber = registerNumber;
         initComponents();
+        jDateChooser1.setDate(startDay);
+        jDateChooser2.setDate(endDay); 
+        startTime.setText(start[1]);
+        endTime.setText(end[1]);
     }
     /**
      * This method is called from within the constructor to initialize the form.

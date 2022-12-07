@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,10 +30,10 @@ public class Home extends javax.swing.JFrame {
     }
     
     public static FetchAuctionResponse AuctionList;
-        
-    public void showData(String stausFilter) throws ClassNotFoundException {
+    
+     public void showData(String stausFilter) throws ClassNotFoundException {
         ArrayList<FetchAuctionResponse> auctionList = new ArrayList<>();
-        try (Socket socket = new Socket("192.168.25.121", 1234)) {
+        try (Socket socket = new Socket("192.168.1.42", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -58,7 +59,6 @@ public class Home extends javax.swing.JFrame {
                         row[2] = adminList.auctionList.get(i).user;
                         row[3] = adminList.auctionList.get(i).startPrice;
                         row[4] = adminList.auctionList.get(i).status;
-                        row[5] = adminList.auctionList.get(i).userId;
                         model.addRow(row);
                     }
                 }
@@ -70,10 +70,6 @@ public class Home extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
-    public void filterData(String status){
-        
     }
 
     /**
@@ -93,7 +89,8 @@ public class Home extends javax.swing.JFrame {
         singleAuction = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
         showPendingButton = new javax.swing.JButton();
-        showFinishedButton = new javax.swing.JButton();
+        showAcceptedButton = new javax.swing.JButton();
+        showFinishedButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -115,74 +112,80 @@ public class Home extends javax.swing.JFrame {
         Background.add(tableScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 1040, 400));
 
         showAllButton.setText("Show All");
-        showAllButton.addActionListener(new FetchUserInfoRequest.awt.event.ActionListener() {
-            public void actionPerformed(FetchUserInfoRequest.awt.event.ActionEvent evt) {
-                showAllButtonActionPerformed(evt);
+        showAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showAllButtonMouseClicked(evt);
             }
         });
         Background.add(showAllButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 98, -1));
 
-        CloseButton.setFont(new FetchUserInfoRequest.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        CloseButton.setForeground(new FetchUserInfoRequest.awt.Color(255, 255, 255));
+        CloseButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        CloseButton.setForeground(new java.awt.Color(255, 255, 255));
         CloseButton.setText("X");
-        CloseButton.addMouseListener(new FetchUserInfoRequest.awt.event.MouseAdapter() {
-            public void mouseClicked(FetchUserInfoRequest.awt.event.MouseEvent evt) {
+        CloseButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 CloseButtonMouseClicked(evt);
             }
         });
         Background.add(CloseButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 10, 20, 20));
 
-        singleAuction.setText("See Auction");
-        singleAuction.addActionListener(new FetchUserInfoRequest.awt.event.ActionListener() {
-            public void actionPerformed(FetchUserInfoRequest.awt.event.ActionEvent evt) {
+        singleAuction.setText("See Info");
+        singleAuction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 singleAuctionActionPerformed(evt);
             }
         });
-        Background.add(singleAuction, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, -1, -1));
+        Background.add(singleAuction, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
 
         updateButton.setText("Update");
-        updateButton.addActionListener(new FetchUserInfoRequest.awt.event.ActionListener() {
-            public void actionPerformed(FetchUserInfoRequest.awt.event.ActionEvent evt) {
-                updateButtonActionPerformed(evt);
+        updateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateButtonMouseClicked(evt);
             }
         });
-        Background.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 90, -1));
+        Background.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 90, -1));
 
-        showPendingButton.setText("Show Pending Only");
-        showPendingButton.addMouseListener(new FetchUserInfoRequest.awt.event.MouseAdapter() {
-            public void mouseClicked(FetchUserInfoRequest.awt.event.MouseEvent evt) {
+        showPendingButton.setText("Show Pending");
+        showPendingButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 showPendingButtonMouseClicked(evt);
             }
         });
         Background.add(showPendingButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 40, -1, -1));
 
-        showFinishedButton.setText("Show Finished Only");
-        showFinishedButton.addMouseListener(new FetchUserInfoRequest.awt.event.MouseAdapter() {
-            public void mouseClicked(FetchUserInfoRequest.awt.event.MouseEvent evt) {
+        showAcceptedButton.setText("Show Accepted");
+        showAcceptedButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showAcceptedButtonMouseClicked(evt);
+            }
+        });
+        Background.add(showAcceptedButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, -1, -1));
+
+        showFinishedButton1.setText("Show Finished");
+        showFinishedButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 showFinishedButtonMouseClicked(evt);
             }
         });
-        Background.add(showFinishedButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 40, -1, -1));
+        Background.add(showFinishedButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 40, -1, -1));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-9, 0, 1070, 490));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void showAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllButtonActionPerformed
+    private void showButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showButtonActionPerformed
         try {
             DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
             int rowCount = dm.getRowCount();
-            if(rowCount > 0){
-               for (int i = rowCount - 1; i >= 0; i--) {
+            for (int i = rowCount - 1; i >= 0; i--) {
                 dm.removeRow(i);
-                } 
             }
             showData("");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_showAllButtonActionPerformed
+    }//GEN-LAST:event_showButtonActionPerformed
 
     private void CloseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonMouseClicked
          System.exit(0);
@@ -190,7 +193,7 @@ public class Home extends javax.swing.JFrame {
 
     private void singleAuctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleAuctionActionPerformed
         if(auctionsTable.getSelectedRowCount() > 0){
-            try (Socket socket = new Socket("192.168.25.121", 1234)) {
+            try (Socket socket = new Socket("192.168.1.42", 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -238,34 +241,86 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_singleAuctionActionPerformed
 
-    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+    private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
         if(auctionsTable.getSelectedRowCount() > 0){
-            if(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status == "pending"){
-                try (Socket socket = new Socket("192.168.25.121", 1234)) {
+            if(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("pending")){
+                try (Socket socket = new Socket("192.168.1.42", 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-
-                    GetImageRequest imgRequest = new GetImageRequest(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).img);
-                    oos.writeObject(imgRequest);
+                    
+                    FetchUserInfoRequest request = new FetchUserInfoRequest(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).userId);
+                    oos.writeObject(request);
 
                     Object obj = ois.readObject();
-                    Image img;
+                    FetchUserInfoResponse res;
 
-                    if (obj.getClass().getName().equals("admin.Image")
-                        && (img = (Image) obj) != null) {
-                     //fix
-                     
+                    if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
+                        && (res = (FetchUserInfoResponse) obj) != null) {
+                        JOptionPane.showOptionDialog(
+                            Background, 
+                            new updatePanel(res.userName, res.email, res.phone, res.registerNumber, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id),
+                            "Update auction",
+                            JOptionPane.NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            new Object[]{},
+                            null
+                        );
+                            
                     }
-
                     oos.close();
                     ois.close();
-
                     socket.close();
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+            } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("accepted")){
+                try (Socket socket = new Socket("192.168.1.42", 1234)) {
+
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                    
+                    FetchUserInfoRequest request = new FetchUserInfoRequest(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).userId);
+                    oos.writeObject(request);
+
+                    Object obj = ois.readObject();
+                    FetchUserInfoResponse res;
+
+                    if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
+                        && (res = (FetchUserInfoResponse) obj) != null) {
+                        JOptionPane.showOptionDialog(
+                            Background, 
+                            new updateAcceptedPanel(
+                                    res.userName, 
+                                    res.email, 
+                                    res.phone, 
+                                    res.registerNumber, 
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).startTime,
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).endTime
+                            ),
+                            "Update auction",
+                            JOptionPane.NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            new Object[]{},
+                            null
+                        );
+                            
+                    }
+                    oos.close();
+                    ois.close();
+                    socket.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } 
             }
@@ -276,9 +331,24 @@ public class Home extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(Background, "Select one or more rows");
             }  
         }
-    }//GEN-LAST:event_updateButtonActionPerformed
+    }//GEN-LAST:event_updateButtonMouseClicked
 
-    private void showFinishedButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showFinishedButtonMouseClicked
+    private void showAllButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showAllButtonMouseClicked
+        try {
+            DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
+            int rowCount = dm.getRowCount();
+            if(rowCount > 0){
+               for (int i = rowCount - 1; i >= 0; i--) {
+                dm.removeRow(i);
+                } 
+            }
+            showData("");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_showAllButtonMouseClicked
+
+    private void showAcceptedButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showAcceptedButtonMouseClicked
         DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
         int rowCount = dm.getRowCount();
         if(rowCount > 0){
@@ -287,11 +357,11 @@ public class Home extends javax.swing.JFrame {
             } 
         }
         try {
-            showData("finished");
+            showData("accepted");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_showFinishedButtonMouseClicked
+    }//GEN-LAST:event_showAcceptedButtonMouseClicked
 
     private void showPendingButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showPendingButtonMouseClicked
         DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
@@ -307,6 +377,21 @@ public class Home extends javax.swing.JFrame {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_showPendingButtonMouseClicked
+
+    private void showFinishedButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showFinishedButtonMouseClicked
+        try {
+            DefaultTableModel dm = (DefaultTableModel) auctionsTable.getModel();
+            int rowCount = dm.getRowCount();
+            if(rowCount > 0){
+               for (int i = rowCount - 1; i >= 0; i--) {
+                dm.removeRow(i);
+                } 
+            }
+            showData("finished");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_showFinishedButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -325,25 +410,31 @@ public class Home extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            FetchUserInfoRequest.util.logging.Logger.getLogger(Home.class.getName()).log(FetchUserInfoRequest.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            FetchUserInfoRequest.util.logging.Logger.getLogger(Home.class.getName()).log(FetchUserInfoRequest.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            FetchUserInfoRequest.util.logging.Logger.getLogger(Home.class.getName()).log(FetchUserInfoRequest.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            FetchUserInfoRequest.util.logging.Logger.getLogger(Home.class.getName()).log(FetchUserInfoRequest.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Home().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel Background;
     private javax.swing.JLabel CloseButton;
     private javax.swing.JTable auctionsTable;
+    private javax.swing.JButton showAcceptedButton;
     private javax.swing.JButton showAllButton;
-    private javax.swing.JButton showFinishedButton;
+    private javax.swing.JButton showFinishedButton1;
     private javax.swing.JButton showPendingButton;
     private javax.swing.JButton singleAuction;
     private javax.swing.JScrollPane tableScroll;
