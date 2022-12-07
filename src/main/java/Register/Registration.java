@@ -282,7 +282,6 @@ public class Registration extends javax.swing.JFrame {
         kGradientPanel1.add(msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 440, 290, 30));
 
         date_chooser.setBackground(new java.awt.Color(255, 204, 204));
-        date_chooser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         date_chooser.setToolTipText("");
         date_chooser.setOpaque(false);
         date_chooser.addFocusListener(new java.awt.event.FocusAdapter() {
