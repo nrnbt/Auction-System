@@ -14,6 +14,7 @@ import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
 import admin.UpdateAuctionDateRequest;
+import admin.UpdateAuctionWinnerRequest;
 import admin.Auction;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
@@ -273,6 +274,24 @@ class Server {
 							&& (updateAuctionDateRequest = (UpdateAuctionDateRequest) obj) != null) {
 						try {
 							String query = "UPDATE auction SET status = 'accepted', startDateTime = CAST('" + updateAuctionDateRequest.startDay + " " + updateAuctionDateRequest.startTime + "' AS DATETIME), endDateTime = CAST('" + updateAuctionDateRequest.endDay + " " + updateAuctionDateRequest.endTime + "' AS DATETIME) where id = " + updateAuctionDateRequest.auctionId;
+							PreparedStatement stat = connection.prepareStatement(query);
+							int rs = stat.executeUpdate();
+							if(rs == 1){
+								out.print("Updated");
+							} else {
+								out.print("Update action failed");
+							}
+							out.close();
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+
+					UpdateAuctionWinnerRequest updateAuctionWinnerRequest;
+					if (obj.getClass().getName().equals("admin.UpdateAuctionWinnerRequest")
+							&& (updateAuctionWinnerRequest = (UpdateAuctionWinnerRequest) obj) != null) {
+						try {
+							String query = "UPDATE auction SET winner = '"+ updateAuctionWinnerRequest.winner + "' WHERE id =" + updateAuctionWinnerRequest.id;
 							PreparedStatement stat = connection.prepareStatement(query);
 							int rs = stat.executeUpdate();
 							if(rs == 1){
