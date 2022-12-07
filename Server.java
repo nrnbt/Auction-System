@@ -276,10 +276,11 @@ class Server {
 							PreparedStatement stat = connection.prepareStatement(query);
 							int rs = stat.executeUpdate();
 							if(rs == 1){
-								out.println("updated");
+								out.print("Updated");
 							} else {
-								out.println("Update action failed");
+								out.print("Update action failed");
 							}
+							out.close();
 						} catch (Exception e) {
 							throw e;
 						}
