@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author nrnbt_
  */
-public class updatePanel extends javax.swing.JPanel {
+public class updateWinnerPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form updatePanel
@@ -29,13 +29,14 @@ public class updatePanel extends javax.swing.JPanel {
     public String userPhone;
     public String userRegisterNumber;
 
-    public updatePanel(String name, String email, String phone, String registerNumber, int id) {
+    public updateWinnerPanel(String name, String email, String phone, String registerNumber, int id, String winner) {
         auctionId = id;
         userName = name;
         userEmail = email;
         userPhone = phone;
         userRegisterNumber = registerNumber;
         initComponents();
+        winnerTextField.setText(winner);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,28 +47,16 @@ public class updatePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         userRegisterNumberLabel = new javax.swing.JLabel();
         userNameLabel = new javax.swing.JLabel();
         userEmalLabel = new javax.swing.JLabel();
         userPhoneLabel = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
-        startTime = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        endTime = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        winnerTextField = new javax.swing.JTextField();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setText("End Day");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
-
-        jLabel2.setText("Start Day");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
 
         userRegisterNumberLabel.setText("user register number: " + userRegisterNumber);
         add(userRegisterNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, 20));
@@ -80,28 +69,6 @@ public class updatePanel extends javax.swing.JPanel {
 
         userPhoneLabel.setText("user phone number: " + userPhone);
         add(userPhoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
-        add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 250, 30));
-        add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 250, 30));
-
-        jLabel6.setText("Start Time(24 hour format)");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
-
-        startTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startTimeActionPerformed(evt);
-            }
-        });
-        add(startTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 250, 30));
-
-        jLabel8.setText("End Time(24 hour format)");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, -1, -1));
-
-        endTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endTimeActionPerformed(evt);
-            }
-        });
-        add(endTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 250, 30));
 
         okButton.setText("Ok");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -109,7 +76,7 @@ public class updatePanel extends javax.swing.JPanel {
                 okButtonMouseClicked(evt);
             }
         });
-        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, -1, -1));
+        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, -1, -1));
 
         cancelButton.setText("Cancel");
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -117,34 +84,20 @@ public class updatePanel extends javax.swing.JPanel {
                 cancelButtonMouseClicked(evt);
             }
         });
-        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, -1, -1));
+        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, -1, -1));
+
+        jLabel3.setText("Winner");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+        add(winnerTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 250, -1));
     }// </editor-fold>//GEN-END:initComponents
-
-    private void startTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_startTimeActionPerformed
-
-    private void endTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_endTimeActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         try (Socket socket = new Socket("192.168.1.42", 1234)) {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date startDay = jDateChooser1.getDate();
-            String startDayFormatted = DateFor.format(startDay);
             
-            Date endDay = jDateChooser2.getDate();
-            String endDayFormatted = DateFor.format(endDay);
-            
-            UpdateAuctionDateRequest request = new UpdateAuctionDateRequest(
+            UpdateAuctionWinnerRequest request = new UpdateAuctionWinnerRequest(
                     auctionId, 
-                    startTime.getText(),
-                    endTime.getText(),
-                    startDayFormatted,
-                    endDayFormatted
+                    winnerTextField.getText()
                 );
             oos.writeObject(request);
             oos.flush();
@@ -175,7 +128,7 @@ public class updatePanel extends javax.swing.JPanel {
                         }  
                 }
             } else {
-                JOptionPane.showMessageDialog(endTime, response, "update auction error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, response, "update auction error", JOptionPane.ERROR_MESSAGE);
             }
            
             oos.close();
@@ -204,18 +157,12 @@ public class updatePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField endTime;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton okButton;
-    private javax.swing.JTextField startTime;
     private javax.swing.JLabel userEmalLabel;
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JLabel userPhoneLabel;
     private javax.swing.JLabel userRegisterNumberLabel;
+    private javax.swing.JTextField winnerTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -323,6 +323,48 @@ public class Home extends javax.swing.JFrame {
                 } catch (ParseException ex) {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } 
+            } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("finished")){
+                try (Socket socket = new Socket("192.168.1.42", 1234)) {
+
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                    
+                    FetchUserInfoRequest request = new FetchUserInfoRequest(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).userId);
+                    oos.writeObject(request);
+
+                    Object obj = ois.readObject();
+                    FetchUserInfoResponse res;
+
+                    if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
+                        && (res = (FetchUserInfoResponse) obj) != null) {
+                        JOptionPane.showOptionDialog(
+                            Background, 
+                            new updateWinnerPanel(
+                                    res.userName, 
+                                    res.email, 
+                                    res.phone, 
+                                    res.registerNumber, 
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).winner
+                            ),
+                            "Update auction",
+                            JOptionPane.NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            new Object[]{},
+                            null
+                        );
+                            
+                    }
+                    oos.close();
+                    ois.close();
+                    socket.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else {
              if(auctionsTable.getRowCount() == 0){
