@@ -6,6 +6,7 @@ public class Auction implements Serializable {
     public int id;
     public String title;
     public String user;
+    public String userId;
     public String startPrice;
     public String endPrice;
     public String startTime;
@@ -18,6 +19,7 @@ public class Auction implements Serializable {
     public Auction(int id,
             String title,
             String user,
+            String userId,
             String startPrice,
             String endPrice,
             String startTime,
@@ -29,6 +31,7 @@ public class Auction implements Serializable {
         this.id = id;
         this.title = title;
         this.user = user;
+        this.userId = userId;
         this.startPrice = startPrice;
         this.endPrice = endPrice;
         this.startTime = startTime;

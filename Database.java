@@ -30,7 +30,7 @@ public class Database {
             Integer createBid = 0;
             Integer createAuction = 0;
             while (tables.next()) {
-                if (tables.getString(3).equals("users")) {
+                if (tables.getString(3).equals("user")) {
                     createUsers = 1;
                 }
                 if (tables.getString(3).equals("admin")) {
@@ -44,22 +44,22 @@ public class Database {
                 }
             }
             if (createUsers == 0) {
-                String createTb = "Create table user(userId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userName nvarchar(40), firstName nvarchar(40), lastName nvarchar(40), passWord nvarchar(40), email nvarchar(40) NULL, phone char(8) NULL, birthDay Date NULL, registeredAt Date, registerNumber nvarchar(10))";
+                String createTb = "Create table user(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userName nvarchar(40), firstName nvarchar(40), lastName nvarchar(40), passWord nvarchar(40), email nvarchar(40) NULL, phone char(8) NULL, birthDay Date NULL, registeredAt Date, registerNumber nvarchar(10))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
             if (createAdmin == 0) {
-                String createTb = "Create table admin(adminId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username nvarchar(20), password nvarchar(32))";
+                String createTb = "Create table admin(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, username nvarchar(20), password nvarchar(32))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
             if (createBid == 0) {
-                String createTb = "Create table bid(bidId INT NOT NULL AUTO_INCREMENT PRIMARY KEY, auctionId INT NOT NULL, bidTime DATE, price nvarchar(10), userId INT NULL)";
+                String createTb = "Create table bid(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, auctionId INT NOT NULL, bidTime DATE, price nvarchar(10), userId INT NULL)";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
             if (createAuction == 0) {
-                String createTb = "Create table auction(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title nvarchar(40), user nvarchar(40), startPrice nvarchar(100), endPrice nvarchar(256), description nvarchar(1000), startTime DATETIME, endTime DATETIME, status varchar(10), img varchar(256), winner nvarchar(40))";
+                String createTb = "Create table auction(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title nvarchar(40), user nvarchar(40), userId INT, startPrice nvarchar(100), endPrice nvarchar(256), description nvarchar(1000), startDateTime DATETIME, endDateTime DATETIME, status varchar(10), img varchar(256), winner nvarchar(40))";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
