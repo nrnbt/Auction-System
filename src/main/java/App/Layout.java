@@ -20,9 +20,6 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -40,7 +37,7 @@ public class Layout extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(!AuctionList.auctionList.isEmpty()){
+        if(AuctionList != null && !AuctionList.auctionList.isEmpty()){
             emptyLabel.setVisible(false);
             int left = 15;
             int top = 10;
@@ -467,15 +464,11 @@ public class Layout extends javax.swing.JFrame {
          */
         try {
            UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Registration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Registration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Registration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Registration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
