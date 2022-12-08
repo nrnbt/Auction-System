@@ -38,6 +38,8 @@ public class Layout extends javax.swing.JFrame {
      * Creates new form Layout
      */
     
+    public int auctionId;
+    
     public Layout() throws ParseException {
         initComponents();
         try {
@@ -105,11 +107,12 @@ public class Layout extends javax.swing.JFrame {
 
                 auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 190, 60));
                 auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 140));
-                final int id = AuctionList.auctionList.get(i).id;
+                int id = AuctionList.auctionList.get(i).id;
                 auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        auctionPanelMouseClicked(evt, id);
+                        auctionId = id;
+                        auctionPanelMouseClicked(evt);
                     }
                 });
 
@@ -421,7 +424,7 @@ public class Layout extends javax.swing.JFrame {
         );
         myAuctionPanelLayout.setVerticalGroup(
             myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         tabs.addTab("myAuction", myAuctionPanel);
@@ -436,7 +439,7 @@ public class Layout extends javax.swing.JFrame {
         );
         myBidsPanelLayout.setVerticalGroup(
             myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         tabs.addTab("myBids", myBidsPanel);
@@ -548,9 +551,9 @@ public class Layout extends javax.swing.JFrame {
         evt.getComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }  
     
-    private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt, int id) {                                               
+    private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt) {                                               
         this.hide();
-        new AuctionById(id).setVisible(true);
+        new AuctionById(auctionId).setVisible(true);
     }
     /**
      * @param args the command line arguments
