@@ -19,6 +19,7 @@ import admin.UpdateAuctionWinnerRequest;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
 import types.Auction;
+import types.AuctionWithImg;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.FetchUserInfoRequest;
@@ -80,6 +81,48 @@ class Server {
 						rs.getString("endDateTime"),
 						rs.getString("status"),
 						rs.getString("img"),
+						rs.getString("winner"),
+						rs.getString("description"));
+				auctionList.add(data);
+			}
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return auctionList;
+	}
+
+	public static ArrayList<AuctionWithImg> auctionDataWithImg(String filterStatus) throws IOException {
+		ArrayList<AuctionWithImg> auctionList = new ArrayList<>();
+		try {
+			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
+			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
+			Statement stat = connection.createStatement();
+			String query;
+			if (filterStatus.length() == 0) {
+				query = "select * from auction";
+			} else {
+				query = "select * from auction where status = '" + filterStatus + "'";
+			}
+			ResultSet rs = stat.executeQuery(query);
+			AuctionWithImg data;
+			while (rs.next()) {
+				BufferedImage bImage = ImageIO.read(new File("./images/" + rs.getString("img")));
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write(bImage, "png", bos);
+				byte[] imgData = bos.toByteArray();
+				data = new AuctionWithImg(
+						rs.getInt("id"),
+						rs.getString("title"),
+						rs.getString("user"),
+						rs.getString("userId"),
+						rs.getString("startPrice"),
+						rs.getString("endPrice"),
+						rs.getString("startDateTime"),
+						rs.getString("endDateTime"),
+						rs.getString("status"),
+						imgData,
 						rs.getString("winner"),
 						rs.getString("description"));
 				auctionList.add(data);
@@ -319,7 +362,7 @@ class Server {
 						try {
 							if (getAllAuctionRequest.str.equals("auctions")) {
 								GetAllAuctionResponse response = new GetAllAuctionResponse(
-										auctionData(getAllAuctionRequest.filterStatus));
+										auctionDataWithImg(getAllAuctionRequest.filterStatus));
 								try {
 									objOut.writeObject(response);
 									objOut.flush();

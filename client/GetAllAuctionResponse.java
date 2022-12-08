@@ -4,21 +4,21 @@ package client;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import types.Auction;
+import types.AuctionWithImg;
 
 public class GetAllAuctionResponse implements Serializable {
 
-    public ArrayList<Auction> auctionList;
+    public ArrayList<AuctionWithImg> auctionList;
 
-    public GetAllAuctionResponse(ArrayList<Auction> auctionList) {
+    public GetAllAuctionResponse(ArrayList<AuctionWithImg> auctionList) {
         this.auctionList = auctionList;
     }
 
-    public ArrayList<Auction> getAuction() {
+    public ArrayList<AuctionWithImg> getAuction() {
         return auctionList;
     }
 
-    public void setAuction(ArrayList<Auction> auctionList) {
+    public void setAuction(ArrayList<AuctionWithImg> auctionList) {
         this.auctionList = auctionList;
     }
 }
