@@ -8,19 +8,24 @@ package App;
 
 import Login.Login;
 import Register.Registration;
-import client.GetAllAuctionRequest;
-import client.GetAllAuctionResponse;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
-
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Image;
+import java.text.ParseException;
+import javax.swing.ImageIcon;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  *
  * @author asus
@@ -30,7 +35,11 @@ public class Layout extends javax.swing.JFrame {
     /**
      * Creates new form Layout
      */
-    public Layout() {
+    
+//    private Timer timer;
+//    private Instant clock;
+    
+    public Layout() throws ParseException {
         initComponents();
         try {
             showData("accepted");
@@ -42,59 +51,138 @@ public class Layout extends javax.swing.JFrame {
             int left = 15;
             int top = 10;
             int panelCount = 0;
+            
+     
             for(int i=0; i < AuctionList.auctionList.size(); i++){
-//                AuctionComponent auction = new AuctionComponent();
-//                auction.setVisible(true);
-//                auction.setSize(150, 190);
-//                auction.setPreferredSize(new Dimension(150,190));
-//                javax.swing.GroupLayout auctionComponentLayout = new javax.swing.GroupLayout(auction);
-//                auction.setLayout(auctionComponentLayout);
-//                auctionComponentLayout.setHorizontalGroup(
-//                    auctionComponentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                    .addGap(0, 130, Short.MAX_VALUE)
-//                );
-//                auctionComponentLayout.setVerticalGroup(
-//                    auctionComponentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                    .addGap(0, 150, Short.MAX_VALUE)
-//                );
-//                
-//                auctionsPanel.add(auction, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 130, 150));
        
-                javax.swing.JPanel auctionCardPanel = new javax.swing.JPanel();
-                javax.swing.JPanel pricePanel = new javax.swing.JPanel();
-                javax.swing.JPanel titlePanel = new javax.swing.JPanel();
-                javax.swing.JLabel startPriceLabel = new javax.swing.JLabel();
-                javax.swing.JLabel createdByLabel = new javax.swing.JLabel();   
-                javax.swing.JLabel titleLabel = new javax.swing.JLabel(); 
-                javax.swing.JLabel auctionImg = new javax.swing.JLabel();
+            javax.swing.JPanel auctionPanel = new javax.swing.JPanel();
+            javax.swing.JPanel timerPanel = new javax.swing.JPanel();
+            javax.swing.JLabel timerLabel = new javax.swing.JLabel();
+            javax.swing.JPanel pricePanel = new javax.swing.JPanel();
+            javax.swing.JLabel priceLabel = new javax.swing.JLabel();
+            javax.swing.JPanel titlePanel = new javax.swing.JPanel();
+            javax.swing.JLabel createdByLabel = new javax.swing.JLabel();
+            javax.swing.JLabel titleLabel = new javax.swing.JLabel();
+            javax.swing.JLabel imgLabel = new javax.swing.JLabel();
                 
-                auctionCardPanel.setBackground(new java.awt.Color(204, 204, 204));
-                auctionCardPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            auctionPanel.setMinimumSize(new java.awt.Dimension(200, 260));
+            auctionPanel.setPreferredSize(new java.awt.Dimension(200, 260));
+            auctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                pricePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            timerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            
+            timerLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+            timerPanel.add(timerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+            timerPanel.setBackground(new Color(255,255,255));
+            timerPanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 2, 2, new java.awt.Color(0, 0, 0)));
+            auctionPanel.add(timerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 30));
 
-                startPriceLabel.setText("Starting Price:");
-                pricePanel.add(startPriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 30));
+            pricePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                auctionCardPanel.add(pricePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 160, 30));
+            priceLabel.setText("Start Price: " + AuctionList.auctionList.get(i).startPrice);
+            priceLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+            pricePanel.add(priceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
 
-                titlePanel.setBackground(new java.awt.Color(255, 255, 255));
-                titlePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            pricePanel.setBackground(new Color(255,255,255));
+            pricePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
+            auctionPanel.add(pricePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 190, 30));
 
-                createdByLabel.setText("Created by:");
-                titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 140, 20));
+            titlePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                titleLabel.setText("Title:");
-                titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 20));
+            createdByLabel.setText("Created by: " + AuctionList.auctionList.get(i).user);
+            createdByLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+            titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 180, 30));
 
-                auctionCardPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 160, 50));
-                auctionCardPanel.add(auctionImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 140));
+            titleLabel.setText("Title: " + AuctionList.auctionList.get(i).title);
+            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+            titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+            titlePanel.setBackground(new Color(255,255,255));
+            titlePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
+            
+            ImageIcon imageIcon = new ImageIcon(AuctionList.auctionList.get(i).img); 
+            Image image = imageIcon.getImage(); 
+            Image newimg = image.getScaledInstance(180, 180,  java.awt.Image.SCALE_SMOOTH);
+            imgLabel.setIcon(new ImageIcon(newimg));
+            imgLabel.setBorder(new javax.swing.border.MatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
 
-                scrollablePanel.add(auctionCardPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 150, 220));
+            auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 190, 60));
+            auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 140));
+            final int id = AuctionList.auctionList.get(i).id;
+            auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    auctionPanelMouseClicked(evt, id);
+                }
+            });
+
+            auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    auctionPanelMouseEntered(evt);
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    auctionPanelMouseExited(evt);
+                }
+            });
+            
+
+            scrollablePanel.add(auctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+//                System.out.println("Seconds to go: " + (togo % 60));
+//                togo = togo / 60;new Login().setVisible(true);
+//                // togo in minutes
+//                System.out.println("Minutes to go: " + (togo % 60));
+//                togo = togo / 60;
+//                // togo in hours
+//                System.out.println("Hours to go:   " + (togo % 24));
+//                togo = togo / 24;
+//                // togo in days
+//                System.out.println("Days to go:    " + (togo % 7)); 
+//                togo = togo / 7;
+//                // togo in weeks
+//                System.out.println("Weeks to go:   " + (togo)); 
+//                DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//                final Date startDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).startTime);
+//
+//                timer = new Timer(5, new ActionListener() {
+//
+//                    private Instant anchorTime;
+//
+//                    @Override
+//                    public void actionPerformed(ActionEvent arg0) {
+//                        if (anchorTime == null) {
+//                            anchorTime = Instant.now();
+//                        }
+//                        long togo = (startDate.getTime() - new Date().getTime()) / 1000;                        
+//                        long seconds = (togo) % 60;
+//                        long minutes = (togo/60000) % 60;
+//                        long hours = (togo/3600000) % 24;
+//                        long days = (togo/86400000) % 7;
+//                        long weeks = (togo/604800000);
+//                        
+//                        System.out.println(Duration.between(anchorTime, Instant.now()).getSeconds());
+//
+//                        if (Duration.between(anchorTime, Instant.now()).getSeconds() >= 10) {
+//                            anchorTime = Instant.now();
+//
+//                            String seconds_string = String.format("%02d", seconds);
+//                            String minutes_string = String.format("%02d", minutes);
+//                            String hours_string = String.format("%02d", hours);
+//                            timerLabel.setText("Start Time: " +weeks+":"+ days+":"+ hours_string+":"+minutes_string+":"+seconds_string);
+//                           
+//                        }
+//
+//                        repaint();
+//                    }
+//                });
+//                timer.setInitialDelay(0);
+//                clock = Instant.now();
+
+                
+                scrollablePanel.add(auctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 190, 260));
                 left = left + 200;
                 panelCount = panelCount + 1;
                 if((panelCount % 5) == 0){
-                    top = top + 240;
+                    top = top + 280;
                     left = 15;
                 }
             }
@@ -105,8 +193,7 @@ public class Layout extends javax.swing.JFrame {
     public static GetAllAuctionResponse AuctionList;
     
     public void showData(String stausFilter) throws ClassNotFoundException {
-        ArrayList<GetAllAuctionResponse> auctionList = new ArrayList<>();
-        try (Socket socket = new Socket("192.168.10.3", 1234)) {
+        try (Socket socket = new Socket("192.168.1.42", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -268,7 +355,7 @@ public class Layout extends javax.swing.JFrame {
         headerLabel.setText("Auctions");
         header.add(headerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 120, -1));
 
-        auctionsPanel.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 70));
+        auctionsPanel.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1040, 70));
 
         scrollablePanel.setkEndColor(new java.awt.Color(255, 255, 255));
         scrollablePanel.setkStartColor(new java.awt.Color(255, 255, 255));
@@ -281,7 +368,7 @@ public class Layout extends javax.swing.JFrame {
 
         auctionsScroll.setViewportView(scrollablePanel);
 
-        auctionsPanel.add(auctionsScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1000, 440));
+        auctionsPanel.add(auctionsScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1040, 440));
 
         tabs.addTab("Auctions", auctionsPanel);
 
@@ -330,7 +417,7 @@ public class Layout extends javax.swing.JFrame {
         myAuctionPanel.setLayout(myAuctionPanelLayout);
         myAuctionPanelLayout.setHorizontalGroup(
             myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGap(0, 1040, Short.MAX_VALUE)
         );
         myAuctionPanelLayout.setVerticalGroup(
             myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,7 +432,7 @@ public class Layout extends javax.swing.JFrame {
         myBidsPanel.setLayout(myBidsPanelLayout);
         myBidsPanelLayout.setHorizontalGroup(
             myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGap(0, 1040, Short.MAX_VALUE)
         );
         myBidsPanelLayout.setVerticalGroup(
             myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,20 +445,11 @@ public class Layout extends javax.swing.JFrame {
         abousUsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         tabs.addTab("aboutUs", abousUsPanel);
 
-        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 1000, 540));
+        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 1040, 540));
         tabs.getAccessibleContext().setAccessibleName("Home");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
        this.hide();
@@ -453,6 +531,27 @@ public class Layout extends javax.swing.JFrame {
 //        myBidsButton.setkEndColor(new Color(0,204,204));
     }//GEN-LAST:event_aboutUSButtonActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void auctionPanelMouseEntered(java.awt.event.MouseEvent evt) {                                    
+        evt.getComponent().setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }  
+    
+    private void auctionPanelMouseExited(java.awt.event.MouseEvent evt) {                                    
+        evt.getComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }  
+    
+    private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt, int id) {                                               
+        this.hide();
+        new AuctionById(id).setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -474,9 +573,37 @@ public class Layout extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Layout().setVisible(true);
+                try {
+                    new Layout().setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
+          final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+            final Runnable runnable = new Runnable() {
+
+                public void run() {
+//                    DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    final Date startDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).startTime);
+//                    
+//                    for(){
+//                        long togo = (startDate.getTime() - new Date().getTime()) / 1000;                        
+//                        long seconds = (togo) % 60;
+//                        long minutes = (togo/60000) % 60;
+//                        long hours = (togo/3600000) % 24;
+//                        long days = (togo/86400000) % 7;
+//                        long weeks = (togo/604800000);
+//                        
+//                            String seconds_string = String.format("%02d", seconds);
+//                            String minutes_string = String.format("%02d", minutes);
+//                            String hours_string = String.format("%02d", hours);
+//                            timerLabel.setText("Start Time: " +weeks+":"+ days+":"+ hours_string+":"+minutes_string+":"+seconds_string);
+//                    }
+                }
+            };
+            scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
