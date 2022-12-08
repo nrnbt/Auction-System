@@ -18,6 +18,8 @@ import admin.UpdateAuctionDateRequest;
 import admin.UpdateAuctionWinnerRequest;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
+import client.GetAuctionRequest;
+import client.GetAuctionResponse;
 import types.Auction;
 import types.AuctionWithImg;
 import admin.FetchAuctionRequest;
@@ -373,6 +375,44 @@ class Server {
 								out.println("invalid request");
 							}
 							objOut.close();
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+
+					GetAuctionRequest getAuctionRequest;
+					if (obj.getClass().getName().equals("client.GetAuctionRequest")
+							&& (getAuctionRequest = (GetAuctionRequest) obj) != null) {
+						try {
+							Statement stat = connection.createStatement();
+							String query = "select * from auction where id = " + getAuctionRequest.id;
+							ResultSet rs = stat.executeQuery(query);
+							if (rs.next()) {
+								BufferedImage bImage = ImageIO.read(new File("./images/" +
+								rs.getString("img")));
+								ByteArrayOutputStream bos = new ByteArrayOutputStream();
+								ImageIO.write(bImage, "png", bos);
+								byte[] imgData = bos.toByteArray();
+								AuctionWithImg data = new AuctionWithImg(
+								rs.getInt("id"),
+								rs.getString("title"),
+								rs.getString("user"),
+								rs.getString("userId"),
+								rs.getString("startPrice"),
+								rs.getString("endPrice"),
+								rs.getString("startDateTime"),
+								rs.getString("endDateTime"),
+								rs.getString("status"),
+								imgData,
+								rs.getString("winner"),
+								rs.getString("description"));
+								GetAuctionResponse response = new GetAuctionResponse(data);
+								objOut.writeObject(response);
+								objOut.flush();
+								objOut.close();
+							} else {
+								out.print("Auction not found");
+							}
 						} catch (Exception e) {
 							throw e;
 						}
