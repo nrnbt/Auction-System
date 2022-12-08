@@ -20,6 +20,9 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -32,12 +35,81 @@ public class Layout extends javax.swing.JFrame {
      */
     public Layout() {
         initComponents();
+        try {
+            showData("accepted");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!AuctionList.auctionList.isEmpty()){
+            emptyLabel.setVisible(false);
+            int left = 15;
+            int top = 10;
+            int panelCount = 0;
+            for(int i=0; i < AuctionList.auctionList.size(); i++){
+//                AuctionComponent auction = new AuctionComponent();
+//                auction.setVisible(true);
+//                auction.setSize(150, 190);
+//                auction.setPreferredSize(new Dimension(150,190));
+//                javax.swing.GroupLayout auctionComponentLayout = new javax.swing.GroupLayout(auction);
+//                auction.setLayout(auctionComponentLayout);
+//                auctionComponentLayout.setHorizontalGroup(
+//                    auctionComponentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addGap(0, 130, Short.MAX_VALUE)
+//                );
+//                auctionComponentLayout.setVerticalGroup(
+//                    auctionComponentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addGap(0, 150, Short.MAX_VALUE)
+//                );
+//                
+//                auctionsPanel.add(auction, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 130, 150));
+       
+                javax.swing.JPanel auctionCardPanel = new javax.swing.JPanel();
+                javax.swing.JPanel pricePanel = new javax.swing.JPanel();
+                javax.swing.JPanel titlePanel = new javax.swing.JPanel();
+                javax.swing.JLabel startPriceLabel = new javax.swing.JLabel();
+                javax.swing.JLabel createdByLabel = new javax.swing.JLabel();   
+                javax.swing.JLabel titleLabel = new javax.swing.JLabel(); 
+                javax.swing.JLabel auctionImg = new javax.swing.JLabel();
+                
+                auctionCardPanel.setBackground(new java.awt.Color(204, 204, 204));
+                auctionCardPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                pricePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                startPriceLabel.setText("Starting Price:");
+                pricePanel.add(startPriceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 30));
+
+                auctionCardPanel.add(pricePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 160, 30));
+
+                titlePanel.setBackground(new java.awt.Color(255, 255, 255));
+                titlePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                createdByLabel.setText("Created by:");
+                titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 140, 20));
+
+                titleLabel.setText("Title:");
+                titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, 20));
+
+                auctionCardPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 160, 50));
+                auctionCardPanel.add(auctionImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 140));
+
+                scrollablePanel.add(auctionCardPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 150, 220));
+                left = left + 200;
+                panelCount = panelCount + 1;
+                if((panelCount % 5) == 0){
+                    top = top + 240;
+                    left = 15;
+                }
+            }
+        } else {
+           emptyLabel.setVisible(true); 
+        }
     }
     public static GetAllAuctionResponse AuctionList;
     
     public void showData(String stausFilter) throws ClassNotFoundException {
         ArrayList<GetAllAuctionResponse> auctionList = new ArrayList<>();
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket("192.168.10.3", 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -59,7 +131,7 @@ public class Layout extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,135 +153,138 @@ public class Layout extends javax.swing.JFrame {
         auctionsPanel = new keeptoo.KGradientPanel();
         header = new keeptoo.KGradientPanel();
         headerLabel = new javax.swing.JLabel();
-        try {
-            showData("accepted");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(AuctionList != null || AuctionList.auctionList.isEmpty()){
-            jLabel1 = new javax.swing.JLabel();
-            createAuctionPanel = new com.k33ptoo.components.KGradientPanel();
-            jLabel5 = new javax.swing.JLabel();
-            jTextField1 = new javax.swing.JTextField();
-            jTextField2 = new javax.swing.JTextField();
-            jTextField3 = new javax.swing.JTextField();
-            jButton7 = new javax.swing.JButton();
-            jTextField4 = new javax.swing.JTextField();
-            jLabel3 = new javax.swing.JLabel();
-            myAuctionPanel = new keeptoo.KGradientPanel();
-            myBidsPanel = new keeptoo.KGradientPanel();
-            abousUsPanel = new keeptoo.KGradientPanel();
+        auctionsScroll = new javax.swing.JScrollPane();
+        scrollablePanel = new keeptoo.KGradientPanel();
+        emptyLabel = new javax.swing.JLabel();
+        createAuctionPanel = new com.k33ptoo.components.KGradientPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        myAuctionPanel = new keeptoo.KGradientPanel();
+        myBidsPanel = new keeptoo.KGradientPanel();
+        abousUsPanel = new keeptoo.KGradientPanel();
 
-            setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            setResizable(false);
-            getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-            navbar.setkBorderRadius(0);
-            navbar.setkEndColor(new java.awt.Color(0, 255, 204));
-            navbar.setkStartColor(new java.awt.Color(153, 0, 153));
-            navbar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        navbar.setkBorderRadius(0);
+        navbar.setkEndColor(new java.awt.Color(0, 255, 204));
+        navbar.setkStartColor(new java.awt.Color(153, 0, 153));
+        navbar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-            AppTitle.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-            AppTitle.setForeground(new java.awt.Color(255, 255, 255));
-            AppTitle.setText("ABEY AUCTION");
-            navbar.add(AppTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 61));
+        AppTitle.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        AppTitle.setForeground(new java.awt.Color(255, 255, 255));
+        AppTitle.setText("ABEY AUCTION");
+        navbar.add(AppTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 61));
 
-            logOutButton.setText("Log Out");
-            logOutButton.setkBorderRadius(30);
-            logOutButton.setkEndColor(new java.awt.Color(51, 51, 255));
-            logOutButton.setkHoverEndColor(new java.awt.Color(0, 204, 204));
-            logOutButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            logOutButton.setkHoverStartColor(new java.awt.Color(0, 153, 153));
-            logOutButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    logOutButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(logOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
+        logOutButton.setText("Log Out");
+        logOutButton.setkBorderRadius(30);
+        logOutButton.setkEndColor(new java.awt.Color(51, 51, 255));
+        logOutButton.setkHoverEndColor(new java.awt.Color(0, 204, 204));
+        logOutButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        logOutButton.setkHoverStartColor(new java.awt.Color(0, 153, 153));
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(logOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
 
-            aboutUSButton.setText("About US");
-            aboutUSButton.setkBorderRadius(30);
-            aboutUSButton.setkEndColor(new java.awt.Color(0, 204, 204));
-            aboutUSButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-            aboutUSButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            aboutUSButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    aboutUSButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(aboutUSButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, 30));
+        aboutUSButton.setText("About US");
+        aboutUSButton.setkBorderRadius(30);
+        aboutUSButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        aboutUSButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        aboutUSButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        aboutUSButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutUSButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(aboutUSButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, 30));
 
-            auctionsButton.setText("Auctions");
-            auctionsButton.setkBorderRadius(30);
-            auctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
-            auctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-            auctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            auctionsButton.setkHoverStartColor(new java.awt.Color(153, 0, 153));
-            auctionsButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    auctionsButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(auctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, 30));
+        auctionsButton.setText("Auctions");
+        auctionsButton.setkBorderRadius(30);
+        auctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        auctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        auctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        auctionsButton.setkHoverStartColor(new java.awt.Color(153, 0, 153));
+        auctionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                auctionsButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(auctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, 30));
 
-            createAuctionButton.setText("Create Auction");
-            createAuctionButton.setkBorderRadius(30);
-            createAuctionButton.setkEndColor(new java.awt.Color(0, 204, 204));
-            createAuctionButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-            createAuctionButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            createAuctionButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    createAuctionButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(createAuctionButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, 30));
+        createAuctionButton.setText("Create Auction");
+        createAuctionButton.setkBorderRadius(30);
+        createAuctionButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        createAuctionButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        createAuctionButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        createAuctionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createAuctionButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(createAuctionButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, 30));
 
-            myAuctionsButton.setText("My Auctions");
-            myAuctionsButton.setkBorderRadius(30);
-            myAuctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
-            myAuctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-            myAuctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            myAuctionsButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    myAuctionsButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(myAuctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, 30));
+        myAuctionsButton.setText("My Auctions");
+        myAuctionsButton.setkBorderRadius(30);
+        myAuctionsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        myAuctionsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        myAuctionsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        myAuctionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myAuctionsButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(myAuctionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, 30));
 
-            myBidsButton.setText("My Bids");
-            myBidsButton.setkBorderRadius(30);
-            myBidsButton.setkEndColor(new java.awt.Color(0, 204, 204));
-            myBidsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-            myBidsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-            myBidsButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    myBidsButtonActionPerformed(evt);
-                }
-            });
-            navbar.add(myBidsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, 30));
+        myBidsButton.setText("My Bids");
+        myBidsButton.setkBorderRadius(30);
+        myBidsButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        myBidsButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
+        myBidsButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        myBidsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myBidsButtonActionPerformed(evt);
+            }
+        });
+        navbar.add(myBidsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, 30));
 
-            getContentPane().add(navbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
+        getContentPane().add(navbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 500));
 
-            tabs.setPreferredSize(new java.awt.Dimension(1000, 500));
+        tabs.setPreferredSize(new java.awt.Dimension(1000, 500));
 
-            auctionsPanel.setkEndColor(new java.awt.Color(255, 255, 255));
-            auctionsPanel.setkStartColor(new java.awt.Color(255, 255, 255));
-            auctionsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        auctionsPanel.setkEndColor(new java.awt.Color(255, 255, 255));
+        auctionsPanel.setkStartColor(new java.awt.Color(255, 255, 255));
+        auctionsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-            header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-            headerLabel.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-            headerLabel.setForeground(new java.awt.Color(255, 255, 255));
-            headerLabel.setText("Auctions");
-            header.add(headerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 120, -1));
+        headerLabel.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        headerLabel.setForeground(new java.awt.Color(255, 255, 255));
+        headerLabel.setText("Auctions");
+        header.add(headerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 120, -1));
 
-            auctionsPanel.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 70));
+        auctionsPanel.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 70));
 
-            jLabel1.setFont(new java.awt.Font("SansSerif", 2, 24)); // NOI18N
-            jLabel1.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/Test/master/src/main/java/images/empty.png")); // NOI18N
-            jLabel1.setText("Sorry, No Active Auctions");
-            auctionsPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, -1, -1));
-        }
+        scrollablePanel.setkEndColor(new java.awt.Color(255, 255, 255));
+        scrollablePanel.setkStartColor(new java.awt.Color(255, 255, 255));
+        scrollablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        emptyLabel.setFont(new java.awt.Font("SansSerif", 2, 24)); // NOI18N
+        emptyLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/empty.png")); // NOI18N
+        emptyLabel.setText("Sorry, No Active Auctions");
+        scrollablePanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 530, 190));
+
+        auctionsScroll.setViewportView(scrollablePanel);
+
+        auctionsPanel.add(auctionsScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1000, 440));
 
         tabs.addTab("Auctions", auctionsPanel);
 
@@ -417,12 +492,13 @@ public class Layout extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton aboutUSButton;
     private com.k33ptoo.components.KButton auctionsButton;
     private keeptoo.KGradientPanel auctionsPanel;
+    private javax.swing.JScrollPane auctionsScroll;
     private com.k33ptoo.components.KButton createAuctionButton;
     private com.k33ptoo.components.KGradientPanel createAuctionPanel;
+    private javax.swing.JLabel emptyLabel;
     private keeptoo.KGradientPanel header;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTextField1;
@@ -435,6 +511,7 @@ public class Layout extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton myBidsButton;
     private keeptoo.KGradientPanel myBidsPanel;
     private com.k33ptoo.components.KGradientPanel navbar;
+    private keeptoo.KGradientPanel scrollablePanel;
     private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 }
