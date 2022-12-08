@@ -21,11 +21,13 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import javax.swing.Timer;
 /**
  *
  * @author asus
@@ -35,9 +37,6 @@ public class Layout extends javax.swing.JFrame {
     /**
      * Creates new form Layout
      */
-    
-//    private Timer timer;
-//    private Instant clock;
     
     public Layout() throws ParseException {
         initComponents();
@@ -51,132 +50,133 @@ public class Layout extends javax.swing.JFrame {
             int left = 15;
             int top = 10;
             int panelCount = 0;
-            
      
             for(int i=0; i < AuctionList.auctionList.size(); i++){
        
-            javax.swing.JPanel auctionPanel = new javax.swing.JPanel();
-            javax.swing.JPanel timerPanel = new javax.swing.JPanel();
-            javax.swing.JLabel timerLabel = new javax.swing.JLabel();
-            javax.swing.JPanel pricePanel = new javax.swing.JPanel();
-            javax.swing.JLabel priceLabel = new javax.swing.JLabel();
-            javax.swing.JPanel titlePanel = new javax.swing.JPanel();
-            javax.swing.JLabel createdByLabel = new javax.swing.JLabel();
-            javax.swing.JLabel titleLabel = new javax.swing.JLabel();
-            javax.swing.JLabel imgLabel = new javax.swing.JLabel();
-                
-            auctionPanel.setMinimumSize(new java.awt.Dimension(200, 260));
-            auctionPanel.setPreferredSize(new java.awt.Dimension(200, 260));
-            auctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+                javax.swing.JPanel auctionPanel = new javax.swing.JPanel();
+                javax.swing.JPanel timerPanel = new javax.swing.JPanel();
+                javax.swing.JLabel timerLabel = new javax.swing.JLabel();
+                javax.swing.JPanel pricePanel = new javax.swing.JPanel();
+                javax.swing.JLabel priceLabel = new javax.swing.JLabel();
+                javax.swing.JPanel titlePanel = new javax.swing.JPanel();
+                javax.swing.JLabel createdByLabel = new javax.swing.JLabel();
+                javax.swing.JLabel titleLabel = new javax.swing.JLabel();
+                javax.swing.JLabel imgLabel = new javax.swing.JLabel();
 
-            timerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+                auctionPanel.setMinimumSize(new java.awt.Dimension(200, 260));
+                auctionPanel.setPreferredSize(new java.awt.Dimension(200, 260));
+                auctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                timerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                timerLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+                timerPanel.add(timerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+                timerPanel.setBackground(new Color(255,255,255));
+                timerPanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 2, 2, new java.awt.Color(0, 0, 0)));
+                auctionPanel.add(timerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 30));
+
+                pricePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                priceLabel.setText("Start Price: " + AuctionList.auctionList.get(i).startPrice);
+                priceLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+                pricePanel.add(priceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+
+                pricePanel.setBackground(new Color(255,255,255));
+                pricePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
+                auctionPanel.add(pricePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 190, 30));
+
+                titlePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                createdByLabel.setText("Created by: " + AuctionList.auctionList.get(i).user);
+                createdByLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+                titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 180, 30));
+
+                titleLabel.setText("Title: " + AuctionList.auctionList.get(i).title);
+                titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+                titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+                titlePanel.setBackground(new Color(255,255,255));
+                titlePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
+
+                ImageIcon imageIcon = new ImageIcon(AuctionList.auctionList.get(i).img); 
+                Image image = imageIcon.getImage(); 
+                Image newimg = image.getScaledInstance(180, 180,  java.awt.Image.SCALE_SMOOTH);
+                imgLabel.setIcon(new ImageIcon(newimg));
+                imgLabel.setBorder(new javax.swing.border.MatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
+
+                auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 190, 60));
+                auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 140));
+                final int id = AuctionList.auctionList.get(i).id;
+                auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        auctionPanelMouseClicked(evt, id);
+                    }
+                });
+
+                auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        auctionPanelMouseEntered(evt);
+                    }
+                    @Override
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        auctionPanelMouseExited(evt);
+                    }
+                });
             
-            timerLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-            timerPanel.add(timerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
-            timerPanel.setBackground(new Color(255,255,255));
-            timerPanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 2, 2, new java.awt.Color(0, 0, 0)));
-            auctionPanel.add(timerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 30));
 
-            pricePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+                scrollablePanel.add(auctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+                Timer startCountTimer;
+                Timer endCountTimer;
+                if(AuctionList != null && AuctionList.auctionList != null && AuctionList.auctionList.get(i).startTime != null && AuctionList.auctionList.get(i).endTime != null){
+                    DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date startDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).startTime);
+                    Date endDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).endTime);
+                    
+                    endCountTimer = new Timer(1000, null);
+                      endCountTimer.addActionListener((ActionEvent evt) -> {
+                          long start = (endDate.getTime()  - new Date().getTime()) / 1000;
+                          long second = start % 60;
+                          start = start / 60;
+                          long minut = start % 60;
+                          start = start / 60;
+                          long hour = start % 24;
+                          start = start / 24;
+                          long day = start % 7;
+                          start = start / 7;
+                          long week = start;
+                          if((endDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                            timerLabel.setText("End Time: " +week+":"+ day+":"+ hour+":"+minut+":"+second);
+                          } else {
+                            auctionPanel.hide();
+                          }
+                    });
 
-            priceLabel.setText("Start Price: " + AuctionList.auctionList.get(i).startPrice);
-            priceLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-            pricePanel.add(priceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
-
-            pricePanel.setBackground(new Color(255,255,255));
-            pricePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
-            auctionPanel.add(pricePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 190, 30));
-
-            titlePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-            createdByLabel.setText("Created by: " + AuctionList.auctionList.get(i).user);
-            createdByLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-            titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 180, 30));
-
-            titleLabel.setText("Title: " + AuctionList.auctionList.get(i).title);
-            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-            titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
-            titlePanel.setBackground(new Color(255,255,255));
-            titlePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
-            
-            ImageIcon imageIcon = new ImageIcon(AuctionList.auctionList.get(i).img); 
-            Image image = imageIcon.getImage(); 
-            Image newimg = image.getScaledInstance(180, 180,  java.awt.Image.SCALE_SMOOTH);
-            imgLabel.setIcon(new ImageIcon(newimg));
-            imgLabel.setBorder(new javax.swing.border.MatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
-
-            auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 190, 60));
-            auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 140));
-            final int id = AuctionList.auctionList.get(i).id;
-            auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    auctionPanelMouseClicked(evt, id);
+                    startCountTimer = new Timer(1000, null);
+                      startCountTimer.addActionListener((ActionEvent evt) -> {
+                          long start = (startDate.getTime() - new Date().getTime()) / 1000;
+                          long second = start % 60;
+                          start = start / 60;
+                          long minut = start % 60;
+                          start = start / 60;
+                          long hour = start % 24;
+                          start = start / 24;
+                          long day = start % 7;
+                          start = start / 7;
+                          long week = start;
+                          if((startDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                            timerLabel.setText("Start Time: " +week+":"+ day+":"+ hour+":"+minut+":"+second);
+                          } else {
+                              endCountTimer.start();
+                          }
+                    });
+                      
+                    if((startDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                        startCountTimer.start();
+                    } else if ((endDate.getTime()  - new Date().getTime()) / 1000 % 60 >= 0){
+                        endCountTimer.start();
+                    }
                 }
-            });
-
-            auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    auctionPanelMouseEntered(evt);
-                }
-                public void mouseExited(java.awt.event.MouseEvent evt) {
-                    auctionPanelMouseExited(evt);
-                }
-            });
-            
-
-            scrollablePanel.add(auctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
-//                System.out.println("Seconds to go: " + (togo % 60));
-//                togo = togo / 60;new Login().setVisible(true);
-//                // togo in minutes
-//                System.out.println("Minutes to go: " + (togo % 60));
-//                togo = togo / 60;
-//                // togo in hours
-//                System.out.println("Hours to go:   " + (togo % 24));
-//                togo = togo / 24;
-//                // togo in days
-//                System.out.println("Days to go:    " + (togo % 7)); 
-//                togo = togo / 7;
-//                // togo in weeks
-//                System.out.println("Weeks to go:   " + (togo)); 
-//                DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//                final Date startDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).startTime);
-//
-//                timer = new Timer(5, new ActionListener() {
-//
-//                    private Instant anchorTime;
-//
-//                    @Override
-//                    public void actionPerformed(ActionEvent arg0) {
-//                        if (anchorTime == null) {
-//                            anchorTime = Instant.now();
-//                        }
-//                        long togo = (startDate.getTime() - new Date().getTime()) / 1000;                        
-//                        long seconds = (togo) % 60;
-//                        long minutes = (togo/60000) % 60;
-//                        long hours = (togo/3600000) % 24;
-//                        long days = (togo/86400000) % 7;
-//                        long weeks = (togo/604800000);
-//                        
-//                        System.out.println(Duration.between(anchorTime, Instant.now()).getSeconds());
-//
-//                        if (Duration.between(anchorTime, Instant.now()).getSeconds() >= 10) {
-//                            anchorTime = Instant.now();
-//
-//                            String seconds_string = String.format("%02d", seconds);
-//                            String minutes_string = String.format("%02d", minutes);
-//                            String hours_string = String.format("%02d", hours);
-//                            timerLabel.setText("Start Time: " +weeks+":"+ days+":"+ hours_string+":"+minutes_string+":"+seconds_string);
-//                           
-//                        }
-//
-//                        repaint();
-//                    }
-//                });
-//                timer.setInitialDelay(0);
-//                clock = Instant.now();
-
                 
                 scrollablePanel.add(auctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(left, top, 190, 260));
                 left = left + 200;
@@ -580,30 +580,6 @@ public class Layout extends javax.swing.JFrame {
                 }
             }
         });
-          final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-            final Runnable runnable = new Runnable() {
-
-                public void run() {
-//                    DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    final Date startDate = (Date)formatter1.parse(AuctionList.auctionList.get(i).startTime);
-//                    
-//                    for(){
-//                        long togo = (startDate.getTime() - new Date().getTime()) / 1000;                        
-//                        long seconds = (togo) % 60;
-//                        long minutes = (togo/60000) % 60;
-//                        long hours = (togo/3600000) % 24;
-//                        long days = (togo/86400000) % 7;
-//                        long weeks = (togo/604800000);
-//                        
-//                            String seconds_string = String.format("%02d", seconds);
-//                            String minutes_string = String.format("%02d", minutes);
-//                            String hours_string = String.format("%02d", hours);
-//                            timerLabel.setText("Start Time: " +weeks+":"+ days+":"+ hours_string+":"+minutes_string+":"+seconds_string);
-//                    }
-                }
-            };
-            scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
