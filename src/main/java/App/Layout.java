@@ -22,17 +22,27 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author asus
  */
 public class Layout extends javax.swing.JFrame {
+    File f = null;
+    String path = null;
+    private ImageIcon format = null;
+    String fname=null;
+    int s = 0;
+    byte[] pimage=null;
 
     /**
      * Creates new form Layout
@@ -245,12 +255,12 @@ public class Layout extends javax.swing.JFrame {
         emptyLabel = new javax.swing.JLabel();
         createAuctionPanel = new com.k33ptoo.components.KGradientPanel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        titleTxt = new javax.swing.JTextField();
+        descrip = new javax.swing.JTextField();
+        imagePath = new javax.swing.JTextField();
+        btnBrowse = new javax.swing.JButton();
+        labelImage = new javax.swing.JLabel();
+        btnSubmit = new javax.swing.JButton();
         myAuctionPanel = new keeptoo.KGradientPanel();
         myBidsPanel = new keeptoo.KGradientPanel();
         abousUsPanel = new keeptoo.KGradientPanel();
@@ -365,7 +375,6 @@ public class Layout extends javax.swing.JFrame {
         scrollablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emptyLabel.setFont(new java.awt.Font("SansSerif", 2, 24)); // NOI18N
-        emptyLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/empty.png")); // NOI18N
         emptyLabel.setText("Sorry, No Active Auctions");
         scrollablePanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 530, 190));
 
@@ -384,33 +393,36 @@ public class Layout extends javax.swing.JFrame {
         jLabel5.setText("create Auction");
         createAuctionPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 24, 150, 40));
 
-        jTextField1.setText("Title");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        titleTxt.setText("Title");
+        titleTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                titleTxtActionPerformed(evt);
             }
         });
-        createAuctionPanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 225, -1));
+        createAuctionPanel.add(titleTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 200, -1));
 
-        jTextField2.setText("Desciption");
-        createAuctionPanel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 225, 136));
+        descrip.setText("Desciption");
+        createAuctionPanel.add(descrip, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 200, 40));
+        createAuctionPanel.add(imagePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 200, -1));
 
-        jTextField3.setText("Starting price");
-        createAuctionPanel.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 106, -1));
-
-        jButton7.setText("Add Image");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnBrowse.setText("Browse");
+        btnBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnBrowseActionPerformed(evt);
             }
         });
-        createAuctionPanel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, -1, -1));
+        createAuctionPanel.add(btnBrowse, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, -1, -1));
 
-        jTextField4.setText("IMG");
-        createAuctionPanel.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 86, -1));
+        labelImage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        createAuctionPanel.add(labelImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 200, 189));
 
-        jLabel3.setText("jLabel3");
-        createAuctionPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, 224, 189));
+        btnSubmit.setText("Submit");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
+        createAuctionPanel.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
 
         tabs.addTab("createAcution", createAuctionPanel);
 
@@ -534,14 +546,54 @@ public class Layout extends javax.swing.JFrame {
 //        myBidsButton.setkEndColor(new Color(0,204,204));
     }//GEN-LAST:event_aboutUSButtonActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fnwf = new FileNameExtensionFilter("PNG JPG AND JPEG", "png","jpeg","jpg");
+        fileChooser.addChoosableFileFilter(fnwf);
+        int load = fileChooser.showOpenDialog(null);
+        
+        if(load==fileChooser.APPROVE_OPTION){
+            f = fileChooser.getSelectedFile();
+            
+            path = f.getAbsolutePath();
+            imagePath.setText(path);
+            ImageIcon ii = new ImageIcon(path);
+            Image img = ii.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            labelImage.setIcon(new ImageIcon(img));
+        }
 
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnBrowseActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void titleTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_titleTxtActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // TODO add your handling code here:
+        String title = titleTxt.getText().toString();
+        System.out.println(title);
+        String description = descrip.getText().toString();
+        System.out.println(description);
+        System.out.print("Image Path - "+ path);
+        System.out.print("Image Name - "+ f.getName());
+        File f = new File(path);
+        
+        
+         if (title.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter your Item Name.");
+       }
+            if (description.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter an Image.");
+            }
+            else
+       JOptionPane.showMessageDialog(null, "Your bid added successfully");
+     
+      
+            
+        
+        
+    }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void auctionPanelMouseEntered(java.awt.event.MouseEvent evt) {                                    
         evt.getComponent().setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -592,18 +644,17 @@ public class Layout extends javax.swing.JFrame {
     private com.k33ptoo.components.KButton auctionsButton;
     private keeptoo.KGradientPanel auctionsPanel;
     private javax.swing.JScrollPane auctionsScroll;
+    private javax.swing.JButton btnBrowse;
+    private javax.swing.JButton btnSubmit;
     private com.k33ptoo.components.KButton createAuctionButton;
     private com.k33ptoo.components.KGradientPanel createAuctionPanel;
+    private javax.swing.JTextField descrip;
     private javax.swing.JLabel emptyLabel;
     private keeptoo.KGradientPanel header;
     private javax.swing.JLabel headerLabel;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField imagePath;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel labelImage;
     private com.k33ptoo.components.KButton logOutButton;
     private keeptoo.KGradientPanel myAuctionPanel;
     private com.k33ptoo.components.KButton myAuctionsButton;
@@ -612,5 +663,6 @@ public class Layout extends javax.swing.JFrame {
     private com.k33ptoo.components.KGradientPanel navbar;
     private keeptoo.KGradientPanel scrollablePanel;
     private javax.swing.JTabbedPane tabs;
+    private javax.swing.JTextField titleTxt;
     // End of variables declaration//GEN-END:variables
 }
