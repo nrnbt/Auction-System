@@ -6,16 +6,26 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
+
+import Log.LogFilter;
+import Log.LogFormatter;
+import Log.LogHandler;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
 import admin.UpdateAuctionDateRequest;
 import admin.UpdateAuctionWinnerRequest;
+import client.FinishAuction;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
 import client.GetAuctionRequest;
@@ -31,29 +41,48 @@ import admin.Image;
 
 class Server {
 
+	static Logger logger = Logger.getLogger(Server.class.getName());
+
 	public static void main(String[] args) {
-
-		ServerSocket server = null;
-
 		try {
-			server = new ServerSocket(1234);
-			server.setReuseAddress(true);
-			while (true) {
-				Socket client = server.accept();
-				System.out.println("New client connected: " + client.getInetAddress().getHostAddress());
-				ClientHandler clientSock = new ClientHandler(client);
-				new Thread(clientSock).start();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (server != null) {
-				try {
-					server.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+			LogManager.getLogManager().readConfiguration(new FileInputStream("./serverLog.log"));
+		} catch (SecurityException | IOException e1) {
+			e1.printStackTrace();
+		}
+		logger.setLevel(Level.FINE);
+		logger.addHandler(new ConsoleHandler());
+		// adding custom handler
+		logger.addHandler(new LogHandler());
+		try {
+			Handler fileHandler = new FileHandler("./serverLog.log");
+			fileHandler.setFormatter(new LogFormatter());
+			// setting custom filter for FileHandler
+			fileHandler.setFilter(new LogFilter());
+			logger.addHandler(fileHandler);
+			ServerSocket server = null;
+
+			try {
+				server = new ServerSocket(1234);
+				server.setReuseAddress(true);
+				while (true) {
+					Socket client = server.accept();
+					logger.log(Level.INFO, "New client connected: " + client.getInetAddress().getHostAddress());
+					ClientHandler clientSock = new ClientHandler(client);
+					new Thread(clientSock).start();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (server != null) {
+					try {
+						server.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -389,23 +418,23 @@ class Server {
 							ResultSet rs = stat.executeQuery(query);
 							if (rs.next()) {
 								BufferedImage bImage = ImageIO.read(new File("./images/" +
-								rs.getString("img")));
+										rs.getString("img")));
 								ByteArrayOutputStream bos = new ByteArrayOutputStream();
 								ImageIO.write(bImage, "png", bos);
 								byte[] imgData = bos.toByteArray();
 								AuctionWithImg data = new AuctionWithImg(
-								rs.getInt("id"),
-								rs.getString("title"),
-								rs.getString("user"),
-								rs.getString("userId"),
-								rs.getString("startPrice"),
-								rs.getString("endPrice"),
-								rs.getString("startDateTime"),
-								rs.getString("endDateTime"),
-								rs.getString("status"),
-								imgData,
-								rs.getString("winner"),
-								rs.getString("description"));
+										rs.getInt("id"),
+										rs.getString("title"),
+										rs.getString("user"),
+										rs.getString("userId"),
+										rs.getString("startPrice"),
+										rs.getString("endPrice"),
+										rs.getString("startDateTime"),
+										rs.getString("endDateTime"),
+										rs.getString("status"),
+										imgData,
+										rs.getString("winner"),
+										rs.getString("description"));
 								GetAuctionResponse response = new GetAuctionResponse(data);
 								objOut.writeObject(response);
 								objOut.flush();
@@ -418,6 +447,25 @@ class Server {
 						}
 					}
 
+					FinishAuction finishAuction;
+					if (obj.getClass().getName().equals("client.FinishAuction")
+							&& (finishAuction = (FinishAuction) obj) != null) {
+						try {
+							String query = "UPDATE auction SET status = 'finished' WHERE id =" + finishAuction.id;
+							PreparedStatement stat = connection.prepareStatement(query);
+							int rs = stat.executeUpdate();
+							if (rs == 1) {
+								logger.log(Level.INFO, "Auction finished with id: " + finishAuction.id);
+							} else {
+								logger.log(Level.WARNING, "Failed finish auction with id: " + finishAuction.id);
+							}
+							out.close();
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+
+					obj = null;
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
