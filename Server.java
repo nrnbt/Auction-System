@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import LoginUser.LoginUser;
 import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
 import admin.UpdateAuctionDateRequest;
@@ -30,8 +29,14 @@ import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
 import client.GetAuctionRequest;
 import client.GetAuctionResponse;
+import client.GetBidsRequest;
+import client.GetBidsResponse;
+import client.LoginRequest;
+import client.LoginResponse;
+import client.PlaceBidRequest;
 import types.Auction;
 import types.AuctionWithImg;
+import types.Bid;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.FetchUserInfoRequest;
@@ -51,12 +56,10 @@ class Server {
 		}
 		logger.setLevel(Level.FINE);
 		logger.addHandler(new ConsoleHandler());
-		// adding custom handler
 		logger.addHandler(new LogHandler());
 		try {
 			Handler fileHandler = new FileHandler("./serverLog.log");
 			fileHandler.setFormatter(new LogFormatter());
-			// setting custom filter for FileHandler
 			fileHandler.setFilter(new LogFilter());
 			logger.addHandler(fileHandler);
 			ServerSocket server = null;
@@ -161,9 +164,36 @@ class Server {
 			rs.close();
 			connection.close();
 		} catch (SQLException e) {
-			System.out.println(e);
+			logger.log(Level.WARNING, "SQLException: " + e);
 		}
 		return auctionList;
+	}
+
+	public static ArrayList<Bid> bidsData(int auctionId) {
+		ArrayList<Bid> bidsList = new ArrayList<>();
+		try {
+			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
+			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
+			Statement stat = connection.createStatement();
+			String query = "select * from bid where auctionId =" + auctionId;
+			ResultSet rs = stat.executeQuery(query);
+			Bid bid;
+			while (rs.next()) {
+				bid = new Bid(
+						rs.getInt("id"),
+						rs.getString("auctionId"),
+						rs.getString("userId"),
+						rs.getString("userName"),
+						rs.getString("price"),
+						rs.getString("createdAt"));
+				bidsList.add(bid);
+			}
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			logger.log(Level.WARNING, "SQLException: " + e);
+		}
+		return bidsList;
 	}
 
 	private static class ClientHandler implements Runnable {
@@ -194,6 +224,7 @@ class Server {
 				connection = DriverManager.getConnection(dbUrl, "root", "");
 
 				RegisterUser regUser;
+
 				while (obj != null) {
 					if (obj.getClass().getName().equals("RegisterUser.RegisterUser")
 							&& (regUser = (RegisterUser) obj) != null) {
@@ -238,28 +269,6 @@ class Server {
 								}
 							}
 							connection.close();
-							obj = null;
-						} catch (Exception e) {
-							out.println(e);
-						}
-					}
-
-					LoginUser logUser;
-
-					if (obj.getClass().getName().equals("LoginUser.LoginUser")
-							&& (logUser = (LoginUser) obj) != null) {
-						try {
-							String getUserQuery = "select * from users where email = '" +
-									logUser.email + "' and passWord = md5('" + logUser.passWord + "');";
-							CallableStatement cstmt = connection.prepareCall(getUserQuery);
-							ResultSet rs = cstmt.executeQuery(getUserQuery);
-							if (rs.next()) {
-								out.println("access successful");
-							} else {
-								out.println("username or password didn't match");
-							}
-							connection.close();
-							obj = null;
 						} catch (Exception e) {
 							out.println(e);
 						}
@@ -280,7 +289,6 @@ class Server {
 								out.println("username or password didn't match");
 							}
 							connection.close();
-							obj = null;
 						} catch (Exception e) {
 							out.println(e);
 						}
@@ -465,14 +473,97 @@ class Server {
 						}
 					}
 
+					PlaceBidRequest placeBidRequest;
+					if (obj.getClass().getName().equals("client.PlaceBidRequest")
+							&& (placeBidRequest = (PlaceBidRequest) obj) != null) {
+						try {
+							String selectQuery = "SELECT username from user where id =" + placeBidRequest.userId;
+							CallableStatement cstmt = connection.prepareCall(selectQuery);
+							ResultSet result = cstmt.executeQuery(selectQuery);
+							if (result.next()) {
+								LocalDateTime now = LocalDateTime.now();
+								DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+								String insertQuery = "INSERT INTO bid (auctionId, price, userId, userName, createdAt) values('"
+										+ placeBidRequest.auctionId
+										+ "','" + placeBidRequest.bidAmount + "','" + placeBidRequest.userId + "','"
+										+ result.getString("username")
+										+ "', CAST('" + now.format(dateFormat) + "' AS DATETIME))";
+								PreparedStatement stat = connection.prepareStatement(insertQuery);
+								int rs = stat.executeUpdate();
+								if (rs == 1) {
+									String query = "UPDATE auction SET endPrice = '" + placeBidRequest.bidAmount
+											+ "' WHERE id =" + placeBidRequest.auctionId;
+									PreparedStatement preStat = connection.prepareStatement(query);
+									int updateRs = preStat.executeUpdate();
+									if (updateRs == 1) {
+										try {
+											GetBidsResponse response = new GetBidsResponse(
+												bidsData(placeBidRequest.auctionId));
+											logger.log(Level.INFO, "Updated auction : " + placeBidRequest.auctionId
+											+ ", with end price =" + placeBidRequest.bidAmount);
+											objOut.writeObject(response);
+											objOut.flush();
+										} catch (Exception e) {
+											logger.log(Level.WARNING, "Exception: " + e);
+										}
+									} else {
+										logger.log(Level.WARNING, "Updated auction end price failed");
+									}
+								}
+							}
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Exception: " + e);
+						}
+					}
+
+					LoginRequest loginRequest;
+					if (obj.getClass().getName().equals("client.LoginRequest")
+							&& (loginRequest = (LoginRequest) obj) != null) {
+						try {
+							String getUserQuery = "select * from user where username = '" +
+									loginRequest.userName + "' and passWord = md5('" + loginRequest.passWord + "');";
+							CallableStatement cstmt = connection.prepareCall(getUserQuery);
+							ResultSet rs = cstmt.executeQuery(getUserQuery);
+							LoginResponse response;
+							if (rs.next()) {
+								response = new LoginResponse(rs.getInt("id"));
+							} else {
+								response = new LoginResponse(-1);
+							}
+							objOut.writeObject(response);
+							objOut.flush();
+							connection.close();
+						} catch (Exception e) {
+							out.println(e);
+						}
+					}
+
+					GetBidsRequest getBidsRequest;
+					if (obj.getClass().getName().equals("client.GetBidsRequest")
+						&& (getBidsRequest = (GetBidsRequest) obj) != null){
+						try {
+							GetBidsResponse response = new GetBidsResponse(
+									bidsData(getBidsRequest.auctionId));
+							try {
+								objOut.writeObject(response);
+								objOut.flush();
+							} catch (Exception e) {
+								objOut.close();
+								logger.log(Level.WARNING, "Exception: " + e);
+							}
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Exception: " + e);
+						}
+					}
+
 					obj = null;
 				}
 			} catch (SQLException e1) {
-				e1.printStackTrace();
+				logger.log(Level.WARNING, "SQLException: " + e1);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.log(Level.WARNING, "IOException: " + e);
 			} catch (ClassNotFoundException ex) {
-				Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+				logger.log(Level.WARNING, "ClassNotFoundException: " + ex);
 			} finally {
 				try {
 					if (out != null) {
@@ -481,10 +572,11 @@ class Server {
 
 					if (ois != null) {
 						ois.close();
+						logger.log(Level.INFO, "Client disconnected");
 						clientSocket.close();
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.log(Level.INFO, "IOException: " + e);
 				}
 			}
 		}

@@ -54,7 +54,7 @@ public class Database {
                 cstmt.execute();
             }
             if (createBid == 0) {
-                String createTb = "Create table bid(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, auctionId INT NOT NULL, bidTime DATE, price nvarchar(10), userId INT NULL)";
+                String createTb = "Create table bid(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userName varchar(40), auctionId INT NOT NULL, createdAt DATE, price nvarchar(10), userId INT NULL)";
                 CallableStatement cstmt = connection.prepareCall(createTb);
                 cstmt.execute();
             }
