@@ -39,9 +39,13 @@ public class Layout extends javax.swing.JFrame {
      */
     
     public int auctionId;
+    public int userId;
+    public String ipAddress;
     
-    public Layout() throws ParseException {
+    public Layout(int userId_, String ipAddress) throws ParseException {
         initComponents();
+        userId = userId_;
+        this.ipAddress = ipAddress;
         try {
             showData("accepted");
         } catch (ClassNotFoundException ex) {
@@ -91,22 +95,22 @@ public class Layout extends javax.swing.JFrame {
 
                 createdByLabel.setText("Created by: " + AuctionList.auctionList.get(i).user);
                 createdByLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-                titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 180, 30));
+                titlePanel.add(createdByLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 25, 180, 25));
 
                 titleLabel.setText("Title: " + AuctionList.auctionList.get(i).title);
                 titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-                titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 30));
+                titlePanel.add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 180, 25));
                 titlePanel.setBackground(new Color(255,255,255));
                 titlePanel.setBorder(new javax.swing.border.MatteBorder(0, 2, 0, 2, new java.awt.Color(0, 0, 0)));
 
                 ImageIcon imageIcon = new ImageIcon(AuctionList.auctionList.get(i).img); 
                 Image image = imageIcon.getImage(); 
-                Image newimg = image.getScaledInstance(180, 180,  java.awt.Image.SCALE_SMOOTH);
+                Image newimg = image.getScaledInstance(190, 190,  java.awt.Image.SCALE_SMOOTH);
                 imgLabel.setIcon(new ImageIcon(newimg));
                 imgLabel.setBorder(new javax.swing.border.MatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
 
-                auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 190, 60));
-                auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 140));
+                auctionPanel.add(titlePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 190, 50));
+                auctionPanel.add(imgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 150));
                 int id = AuctionList.auctionList.get(i).id;
                 auctionPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -196,7 +200,7 @@ public class Layout extends javax.swing.JFrame {
     public static GetAllAuctionResponse AuctionList;
     
     public void showData(String stausFilter) throws ClassNotFoundException {
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -456,7 +460,7 @@ public class Layout extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
        this.hide();
-       new Login().setVisible(true);
+       new Login(ipAddress).setVisible(true);
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void auctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auctionsButtonActionPerformed
@@ -553,37 +557,9 @@ public class Layout extends javax.swing.JFrame {
     
     private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt) {                                               
         this.hide();
-        new AuctionById(auctionId).setVisible(true);
+        new AuctionById(auctionId, userId, ipAddress).setVisible(true);
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-           UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Registration.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Layout().setVisible(true);
-                } catch (ParseException ex) {
-                    Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AppTitle;

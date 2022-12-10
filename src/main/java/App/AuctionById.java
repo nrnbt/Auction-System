@@ -4,15 +4,29 @@
  */
 package App;
 
+import client.FinishAuction;
 import client.GetAuctionRequest;
 import client.GetAuctionResponse;
+import client.GetBidsRequest;
+import client.GetBidsResponse;
+import client.PlaceBidRequest;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import types.AuctionWithImg;
 
 /**
  *
@@ -23,24 +37,25 @@ public class AuctionById extends java.awt.Frame {
     /**
      * Creates new form NewFrame
      */
-    
+    public String ipAddress;
+    public int userId;
     public int auctionId;
+    public AuctionWithImg auctionData;
     
-    public AuctionById(int id) {
+    public AuctionById(int id, int userId_, String ipAddress) {
       this.auctionId = id;
+      this.userId = userId_;
+      this.ipAddress = ipAddress;
         initComponents();
          try {
             getAuction();
+            getBids();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
         } catch(NullPointerException e){
             throw e;
         }
 
-    }
-
-    private AuctionById() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
         
     public int getId() {
@@ -59,11 +74,119 @@ public class AuctionById extends java.awt.Frame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new keeptoo.KGradientPanel();
+        goBackButton = new javax.swing.JLabel();
+        closeButton = new javax.swing.JLabel();
+        auctionImg = new javax.swing.JLabel();
+        auctionTimer = new javax.swing.JLabel();
+        auctionTitle = new javax.swing.JLabel();
+        auctionBidsHistoryLabel = new javax.swing.JLabel();
+        auctionDescription = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        bidsHistoryLabel = new javax.swing.JLabel();
+        startPrcie = new javax.swing.JLabel();
+        placeBidButton = new com.k33ptoo.components.KButton();
+        biddingInput = new javax.swing.JTextField();
+        auctionCreatedBy = new javax.swing.JLabel();
+        biddingInputErrorLabel = new javax.swing.JLabel();
+
+        setMinimumSize(new java.awt.Dimension(1240, 502));
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1240, 502));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
             }
         });
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        goBackButton.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        goBackButton.setForeground(new java.awt.Color(255, 255, 255));
+        goBackButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 (1).png")); // NOI18N
+        goBackButton.setText("Go back");
+        goBackButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                goBackButtonMouseClicked(evt);
+            }
+        });
+        background.add(goBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 50));
+
+        closeButton.setFont(new java.awt.Font("sansserif", 1, 28)); // NOI18N
+        closeButton.setForeground(new java.awt.Color(255, 255, 255));
+        closeButton.setText("X");
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeButtonMouseClicked(evt);
+            }
+        });
+        background.add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 10, 30, 30));
+
+        auctionImg.setBackground(new java.awt.Color(255, 255, 255));
+        auctionImg.setForeground(new java.awt.Color(255, 255, 255));
+        background.add(auctionImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 200, 200));
+
+        auctionTimer.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        auctionTimer.setForeground(new java.awt.Color(255, 255, 255));
+        background.add(auctionTimer, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 200, 60));
+
+        auctionTitle.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        auctionTitle.setForeground(new java.awt.Color(255, 255, 255));
+        auctionTitle.setText("Title: ");
+        background.add(auctionTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 390, 20));
+
+        auctionBidsHistoryLabel.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        auctionBidsHistoryLabel.setForeground(new java.awt.Color(255, 255, 255));
+        auctionBidsHistoryLabel.setText("Bids History");
+        background.add(auctionBidsHistoryLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 40, 400, 20));
+
+        auctionDescription.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        auctionDescription.setForeground(new java.awt.Color(255, 255, 255));
+        auctionDescription.setText("Description: ");
+        background.add(auctionDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 390, 170));
+
+        bidsHistoryLabel.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jScrollPane1.setViewportView(bidsHistoryLabel);
+
+        background.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 70, 400, 360));
+
+        startPrcie.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        startPrcie.setForeground(new java.awt.Color(255, 255, 255));
+        startPrcie.setText("Start Price: ");
+        background.add(startPrcie, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 390, 20));
+
+        placeBidButton.setText("Place Bid");
+        placeBidButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        placeBidButton.setkBackGroundColor(new java.awt.Color(0, 0, 255));
+        placeBidButton.setkBorderRadius(40);
+        placeBidButton.setkEndColor(new java.awt.Color(0, 0, 255));
+        placeBidButton.setkHoverEndColor(new java.awt.Color(0, 0, 204));
+        placeBidButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        placeBidButton.setkHoverStartColor(new java.awt.Color(0, 153, 153));
+        placeBidButton.setkPressedColor(new java.awt.Color(0, 0, 102));
+        placeBidButton.setkSelectedColor(new java.awt.Color(0, 0, 153));
+        placeBidButton.setkStartColor(new java.awt.Color(0, 204, 204));
+        placeBidButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                placeBidButtonMouseClicked(evt);
+            }
+        });
+        background.add(placeBidButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 380, 140, 40));
+
+        biddingInput.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        background.add(biddingInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 380, 230, 40));
+
+        auctionCreatedBy.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        auctionCreatedBy.setForeground(new java.awt.Color(255, 255, 255));
+        auctionCreatedBy.setText("Created By: ");
+        background.add(auctionCreatedBy, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 390, 20));
+
+        biddingInputErrorLabel.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        biddingInputErrorLabel.setForeground(new java.awt.Color(255, 51, 51));
+        background.add(biddingInputErrorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, 380, 30));
+
+        add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -75,19 +198,66 @@ public class AuctionById extends java.awt.Frame {
         System.exit(0);
     }//GEN-LAST:event_exitForm
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AuctionById().setVisible(true);
+    private void goBackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goBackButtonMouseClicked
+        this.hide();
+        try {
+            new Layout(userId, ipAddress).setVisible(true);
+        } catch (ParseException ex) {
+            Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_goBackButtonMouseClicked
+
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_closeButtonMouseClicked
+
+    private void placeBidButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_placeBidButtonMouseClicked
+        Pattern numericPattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        biddingInputErrorLabel.setText("");
+        if (auctionData == null) {
+            biddingInputErrorLabel.setText("Something went wrong");
+        } else {
+            if(auctionData.endPrice == null){
+                auctionData.endPrice = auctionData.startPrice;
             }
-        });
+            if (biddingInput.getText().equals("")){
+                biddingInputErrorLabel.setText("Fill the input");
+            } else if (!numericPattern.matcher(biddingInput.getText()).matches()){
+                biddingInputErrorLabel.setText("Enter numbers");
+            } else if(Integer.parseInt(biddingInput.getText()) <= Integer.parseInt(auctionData.startPrice)) {
+                biddingInputErrorLabel.setText("Enter price that higher than start price");
+            } else if(Integer.parseInt(biddingInput.getText()) <= Integer.parseInt(auctionData.endPrice)) {
+                biddingInputErrorLabel.setText("Enter price that higher than last price");
+            } else {
+                try {
+                    placeBid();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_placeBidButtonMouseClicked
+
+    public void finishAuction(int id) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            
+            FinishAuction request = new FinishAuction(id);
+            oos.writeObject(request);
+            oos.flush();
+            oos.close();
+            socket.close();
+            
+        }  catch (NullPointerException e) {
+            throw e;
+        } catch(IOException er) {
+            er.printStackTrace();
+        }
     }
     
     public void getAuction() throws ClassNotFoundException{
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -98,8 +268,14 @@ public class AuctionById extends java.awt.Frame {
             
             Object obj = ois.readObject();
             GetAuctionResponse auction;
+            
+            oos.close();
+            ois.close();
+            socket.close();
+            
             if (obj.getClass().getName().equals("client.GetAuctionResponse")
 		&& (auction = (GetAuctionResponse) obj) != null) {
+            
                 if(auction == null){
                     JOptionPane.showMessageDialog(
                             null,
@@ -108,22 +284,184 @@ public class AuctionById extends java.awt.Frame {
                             JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    System.out.println(auction.auctionData.status);
+                    auctionData = auction.auctionData;
+                    ImageIcon imageIcon = new ImageIcon(auction.auctionData.img); 
+                    Image image = imageIcon.getImage(); 
+                    Image newimg = image.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH);
+                    auctionImg.setIcon(new ImageIcon(newimg));
+                    
+                    auctionTitle.setText(auctionTitle.getText() + auction.auctionData.title);
+                    auctionCreatedBy.setText(auctionCreatedBy.getText() + auction.auctionData.user);
+                    startPrcie.setText(startPrcie.getText() + auction.auctionData.startPrice);
+                    auctionDescription.setText("<html>" + auctionDescription.getText() + auction.auctionData.description + "</html>");
+                    auctionDescription.setVerticalAlignment(auctionDescription.TOP);
+
+                    Timer startCountTimer;
+                    Timer endCountTimer;
+                    if(auction.auctionData != null && auction.auctionData.startTime != null && auction.auctionData.endTime != null){
+                        DateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date startDate = (Date)formatter1.parse(auction.auctionData.startTime);
+                        Date endDate = (Date)formatter1.parse(auction.auctionData.endTime);
+                        
+                        if((startDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                            biddingInput.setVisible(false);
+                            placeBidButton.setVisible(false);
+                        }
+                        
+                        endCountTimer = new Timer(1000, null);
+                          endCountTimer.addActionListener((ActionEvent evt) -> {
+                              long start = (endDate.getTime()  - new Date().getTime()) / 1000;
+                              long second = start % 60;
+                              start = start / 60;
+                              long minut = start % 60;
+                              start = start / 60;
+                              long hour = start % 24;
+                              start = start / 24;
+                              long day = start % 7;
+                              start = start / 7;
+                              long week = start;
+                              if((endDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                                auctionTimer.setText("<html>"+ "End Time: " +week+":"+ day+":"+ hour+":"+minut+":"+second + "</html>");
+                                auctionTimer.setVerticalAlignment(auctionTimer.TOP);
+                              } else {
+                                auctionTimer.setText("Auction Ended");
+                                auctionTimer.setVerticalAlignment(auctionTimer.TOP);
+                                biddingInput.setEditable(false);
+                                placeBidButton.setEnabled(false);
+                                endCountTimer.stop();
+                                finishAuction(auction.auctionData.id);
+                              }
+                        });
+
+                        startCountTimer = new Timer(1000, null);
+                          startCountTimer.addActionListener((ActionEvent evt) -> {
+                              long start = (startDate.getTime() - new Date().getTime()) / 1000;
+                              long second = start % 60;
+                              start = start / 60;
+                              long minut = start % 60;
+                              start = start / 60;
+                              long hour = start % 24;
+                              start = start / 24;
+                              long day = start % 7;
+                              start = start / 7;
+                              long week = start;
+                              if((startDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                                auctionTimer.setText("<html>" +"Start Time: " +week+":"+ day+":"+ hour+":"+minut+":"+second + "</html>");
+                                auctionTimer.setVerticalAlignment(auctionTimer.TOP);
+                              } else {
+                                  startCountTimer.stop();
+                                  endCountTimer.start();
+                              }
+                        });
+
+                        if((startDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                            startCountTimer.start();
+                        } else if ((endDate.getTime() - new Date().getTime()) / 1000 % 60 >= 0){
+                            endCountTimer.start();
+                        } else if(auction.auctionData.status.equals("accepted")) {
+                            auctionTimer.setText("Auction Ended");
+                            auctionTimer.setVerticalAlignment(auctionTimer.TOP);
+                            biddingInput.setEditable(false);
+                            placeBidButton.setEnabled(false);
+                            finishAuction(auction.auctionData.id);
+                        }
+                    } else {
+                        biddingInput.setVisible(false);
+                        placeBidButton.setVisible(false);
+                    }
                 }
-                GetAuctionResponse AuctionList = auction;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            throw e;
+        } catch (ParseException ex) {
+            Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void getBids() throws ClassNotFoundException{
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            
+            GetBidsRequest request = new GetBidsRequest(auctionId);
+            oos.writeObject(request);
+            oos.flush();
+            
+            Object obj = ois.readObject();
+            GetBidsResponse bids;
             
             oos.close();
             ois.close();
             socket.close();
+            
+            if (obj.getClass().getName().equals("client.GetBidsResponse")
+                && (bids = (GetBidsResponse) obj) != null) {
+
+                if(bids == null){
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Get bids history failed",
+                            "Bids not found",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                } else {
+                    if(!bids.bidsData.isEmpty()){
+                        String bidsLabelString = "<html><body>";
+                        for(int i=bids.bidsData.size(); 0 < i; i--){
+                            bidsLabelString = bidsLabelString + bids.bidsData.get(i).userName + "placed a bid of " + bids.bidsData.get(i).prcie + "<br>";
+                        }
+                        bidsLabelString = bidsLabelString + "</body></html>";
+                        bidsHistoryLabel.setText(bidsLabelString);
+                        bidsHistoryLabel.setVerticalAlignment(bidsHistoryLabel.TOP);
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             throw e;
         }
     }
+    
+   public void placeBid() throws ClassNotFoundException{
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            
+            PlaceBidRequest request = new PlaceBidRequest(auctionId, Integer.parseInt(biddingInput.getText()), userId);
+            oos.writeObject(request);
+            oos.flush();
+            
+            socket.close();
+            
+            biddingInput.setText("");
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            throw e;
+        }
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel auctionBidsHistoryLabel;
+    private javax.swing.JLabel auctionCreatedBy;
+    private javax.swing.JLabel auctionDescription;
+    private javax.swing.JLabel auctionImg;
+    private javax.swing.JLabel auctionTimer;
+    private javax.swing.JLabel auctionTitle;
+    private keeptoo.KGradientPanel background;
+    private javax.swing.JTextField biddingInput;
+    private javax.swing.JLabel biddingInputErrorLabel;
+    private javax.swing.JLabel bidsHistoryLabel;
+    private javax.swing.JLabel closeButton;
+    private javax.swing.JLabel goBackButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private com.k33ptoo.components.KButton placeBidButton;
+    private javax.swing.JLabel startPrcie;
     // End of variables declaration//GEN-END:variables
 }
