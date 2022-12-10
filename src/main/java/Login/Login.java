@@ -4,6 +4,10 @@
  */
 package Login;
 
+import App.HomePage;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author asus
@@ -26,21 +30,189 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        kGradientPanel1 = new com.k33ptoo.components.KGradientPanel();
+        loginLabel = new javax.swing.JLabel();
+        mail = new javax.swing.JTextField();
+        pword = new javax.swing.JPasswordField();
+        kButton1 = new com.k33ptoo.components.KButton();
+        kButton2 = new com.k33ptoo.components.KButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        kGradientPanel1.setkStartColor(new java.awt.Color(51, 153, 255));
+
+        loginLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        loginLabel.setForeground(new java.awt.Color(255, 255, 255));
+        loginLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\Temuuder\\OneDrive\\Desktop\\download.png")); // NOI18N
+
+        mail.setForeground(new java.awt.Color(255, 255, 255));
+        mail.setText("e-mail");
+        mail.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        mail.setOpaque(false);
+        mail.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                mailFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                mailFocusLost(evt);
+            }
+        });
+        mail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mailActionPerformed(evt);
+            }
+        });
+        mail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                mailKeyReleased(evt);
+            }
+        });
+
+        pword.setForeground(new java.awt.Color(255, 255, 255));
+        pword.setText("Password");
+        pword.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        pword.setEchoChar('\u0000');
+        pword.setOpaque(false);
+        pword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pwordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                pwordFocusLost(evt);
+            }
+        });
+        pword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pwordActionPerformed(evt);
+            }
+        });
+
+        kButton1.setText("Login");
+        kButton1.setkBackGroundColor(new java.awt.Color(0, 0, 255));
+        kButton1.setkEndColor(new java.awt.Color(0, 255, 204));
+        kButton1.setkStartColor(new java.awt.Color(153, 255, 153));
+        kButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton1ActionPerformed(evt);
+            }
+        });
+
+        kButton2.setText("Back");
+        kButton2.setkBackGroundColor(new java.awt.Color(0, 0, 255));
+        kButton2.setkEndColor(new java.awt.Color(0, 255, 204));
+        kButton2.setkHoverEndColor(new java.awt.Color(255, 153, 153));
+        kButton2.setkStartColor(new java.awt.Color(153, 255, 153));
+        kButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout kGradientPanel1Layout = new javax.swing.GroupLayout(kGradientPanel1);
+        kGradientPanel1.setLayout(kGradientPanel1Layout);
+        kGradientPanel1Layout.setHorizontalGroup(
+            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, kGradientPanel1Layout.createSequentialGroup()
+                .addGap(0, 158, Short.MAX_VALUE)
+                .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(187, 187, 187))
+            .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pword, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                            .addGap(217, 217, 217)
+                            .addComponent(mail, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                            .addGap(268, 268, 268)
+                            .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(kButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(kButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        kGradientPanel1Layout.setVerticalGroup(
+            kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(kGradientPanel1Layout.createSequentialGroup()
+                .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(mail, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pword, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(kButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(kButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
+
+        getContentPane().add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 690, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusGained
+        // TODO add your handling code here:
+        if (mail.getText().equals("e-mail")){
+            mail.setText("");
+
+        }
+    }//GEN-LAST:event_mailFocusGained
+
+    private void mailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFocusLost
+        // TODO add your handling code here:
+        if (mail.getText().equals("")){
+            mail.setText("e-mail");
+
+        }
+    }//GEN-LAST:event_mailFocusLost
+
+    private void mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mailActionPerformed
+
+    private void mailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mailKeyReleased
+        // TODO add your handling code here:
+        String PATTERN = "^[a-zA-Z0-9]{0,30}[@][a-zA-Z0-9]{0,10}[.][a-zA-Z]{0,5}$";
+        Pattern patt = Pattern.compile(PATTERN);
+        Matcher match=patt.matcher(mail.getText());
+    }//GEN-LAST:event_mailKeyReleased
+
+    private void pwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusGained
+        // TODO add your handling code here:
+        if (pword.getText().equals("Password")){
+            pword.setText("");
+
+            pword.setEchoChar('*');
+        }
+    }//GEN-LAST:event_pwordFocusGained
+
+    private void pwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwordFocusLost
+        // TODO add your handling code here:
+        if (pword.getText().equals("")){
+            pword.setText("Password");
+
+        }
+    }//GEN-LAST:event_pwordFocusLost
+
+    private void pwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pwordActionPerformed
+
+    private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
+        // TODO add your handling code here
+        String email = mail.getText().toString();
+        System.out.println(email);
+        String password = pword.getText().toString();
+        System.out.println(password);
+    }//GEN-LAST:event_kButton1ActionPerformed
+
+    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
+        // TODO add your handling code here:
+        this.hide();
+        HomePage frm = new HomePage();
+        frm.setVisible(true);
+    }//GEN-LAST:event_kButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +250,11 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.k33ptoo.components.KButton kButton1;
+    private com.k33ptoo.components.KButton kButton2;
+    private com.k33ptoo.components.KGradientPanel kGradientPanel1;
+    private javax.swing.JLabel loginLabel;
+    private javax.swing.JTextField mail;
+    private javax.swing.JPasswordField pword;
     // End of variables declaration//GEN-END:variables
 }

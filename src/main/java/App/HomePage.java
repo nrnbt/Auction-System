@@ -87,7 +87,7 @@ public class HomePage extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("We are more than an auction technology platform.");
-        kGradientPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 240, 590, 80));
+        kGradientPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 280, 590, 80));
 
         kButton2.setText("About Us");
         kButton2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -141,9 +141,9 @@ public class HomePage extends javax.swing.JFrame {
         });
         kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 10, 100, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Temuuder\\OneDrive\\Desktop\\ss.PNG")); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Temuuder\\OneDrive\\Desktop\\13150.PNG")); // NOI18N
         jLabel6.setText("jLabel6");
-        kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 570));
+        kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 570));
 
         jPanel2.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 570));
 

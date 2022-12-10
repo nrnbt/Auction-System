@@ -125,7 +125,7 @@ public class Registration extends javax.swing.JFrame {
         });
         JDesktopPane.add(mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(349, 181, 362, 31));
 
-        terms.setBackground(new java.awt.Color(255, 204, 204));
+        terms.setBackground(new java.awt.Color(51, 153, 255));
         terms.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         terms.setForeground(new java.awt.Color(255, 255, 255));
         terms.setText("Accept terms and conditions");
@@ -250,32 +250,32 @@ public class Registration extends javax.swing.JFrame {
         esmg8.setForeground(new java.awt.Color(255, 255, 255));
         JDesktopPane.add(esmg8, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 339, 104, 20));
 
-        kGradientPanel1.setkEndColor(new java.awt.Color(255, 204, 204));
-        kGradientPanel1.setkStartColor(new java.awt.Color(255, 153, 255));
+        kGradientPanel1.setkEndColor(new java.awt.Color(51, 153, 255));
+        kGradientPanel1.setkStartColor(new java.awt.Color(0, 153, 255));
         kGradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         kButton1.setText("Submit");
         kButton1.setkBackGroundColor(new java.awt.Color(0, 0, 255));
-        kButton1.setkEndColor(new java.awt.Color(51, 51, 255));
-        kButton1.setkStartColor(new java.awt.Color(204, 204, 255));
+        kButton1.setkEndColor(new java.awt.Color(0, 255, 204));
+        kButton1.setkStartColor(new java.awt.Color(153, 255, 153));
         kButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton1ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 390, 130, -1));
+        kGradientPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 400, 130, -1));
 
         kButton2.setText("Back");
         kButton2.setkBackGroundColor(new java.awt.Color(0, 0, 255));
-        kButton2.setkEndColor(new java.awt.Color(102, 102, 255));
+        kButton2.setkEndColor(new java.awt.Color(0, 255, 204));
         kButton2.setkHoverEndColor(new java.awt.Color(255, 153, 153));
-        kButton2.setkStartColor(new java.awt.Color(153, 153, 255));
+        kButton2.setkStartColor(new java.awt.Color(153, 255, 153));
         kButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 kButton2ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 130, -1));
+        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 400, 130, -1));
 
         msg.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         msg.setForeground(new java.awt.Color(255, 255, 255));
