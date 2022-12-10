@@ -1,17 +1,18 @@
-package RegisterUser;
+package client;
 
 import java.io.Serializable;
 
-public class RegisterUser implements Serializable{
+public class Register implements Serializable{
     public String userName;
     public String firstName;
     public String lastName;
+    public String registerNumber;
     public String passWord;
     public String email;
     public String phone;
     public String birthDay;
 
-    public RegisterUser(String userName) {
+    public Register(String userName) {
         this.userName = userName;
     }
 
@@ -69,6 +70,14 @@ public class RegisterUser implements Serializable{
 
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
+    }
+
+    public String getRegNumber() {
+        return registerNumber;
+    }
+
+    public void setRegNumber(String registerNumber) {
+        this.registerNumber = registerNumber;
     }
 
 }

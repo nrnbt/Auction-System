@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import java.util.Date;
 
 import Log.LogFilter;
 import Log.LogFormatter;
@@ -20,10 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import RegisterUser.RegisterUser;
 import admin.LoginAdmin;
 import admin.UpdateAuctionDateRequest;
 import admin.UpdateAuctionWinnerRequest;
+import client.CreateAuctionRequest;
 import client.FinishAuction;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
@@ -34,6 +35,7 @@ import client.GetBidsResponse;
 import client.LoginRequest;
 import client.LoginResponse;
 import client.PlaceBidRequest;
+import client.Register;
 import types.Auction;
 import types.AuctionWithImg;
 import types.Bid;
@@ -223,27 +225,27 @@ class Server {
 				Connection connection;
 				connection = DriverManager.getConnection(dbUrl, "root", "");
 
-				RegisterUser regUser;
-
 				while (obj != null) {
-					if (obj.getClass().getName().equals("RegisterUser.RegisterUser")
-							&& (regUser = (RegisterUser) obj) != null) {
+
+					Register regUser;
+					if (obj.getClass().getName().equals("client.Register")
+							&& (regUser = (Register) obj) != null) {
 						try {
-							String checkUserNameQuery = "select passWord from users where userName = '" +
+							String checkUserNameQuery = "select passWord from user where userName = '" +
 									regUser.userName + "';";
 							CallableStatement checkUserNameCstmt = connection.prepareCall(checkUserNameQuery);
 							ResultSet checkUserNameRs = checkUserNameCstmt.executeQuery(checkUserNameQuery);
 							if (checkUserNameRs.next()) {
 								out.println("user already registered");
 							} else {
-								String checkEmailQuery = "select passWord from users where email = '" +
+								String checkEmailQuery = "select passWord from user where email = '" +
 										regUser.email + "';";
 								CallableStatement checkEmailCstmt = connection.prepareCall(checkEmailQuery);
 								ResultSet checkEmailRs = checkEmailCstmt.executeQuery(checkEmailQuery);
 								if (checkEmailRs.next()) {
 									out.println("email already registered");
 								} else {
-									String checkPhoneQuery = "select passWord from users where phone = '" +
+									String checkPhoneQuery = "select passWord from user where phone = '" +
 											regUser.phone + "';";
 									CallableStatement checkPhoneCstmt = connection.prepareCall(checkPhoneQuery);
 									ResultSet checkPhoneRs = checkPhoneCstmt.executeQuery(checkPhoneQuery);
@@ -252,13 +254,14 @@ class Server {
 									} else {
 										DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 										LocalDateTime now = LocalDateTime.now();
-										String insertQuery = "insert into users(userName, passWord, email, firstName, lastName, phone, birthDay, registeredAt, role) values ('"
-												+ regUser.userName + "',sha1('" + regUser.passWord + "'),'"
+										String insertQuery = "insert into user(userName, passWord, email, firstName, lastName, phone, birthDay, registeredAt, registerNumber) values ('"
+												+ regUser.userName + "',md5('" + regUser.passWord + "'),'"
 												+ regUser.email
 												+ "','" + regUser.firstName
 												+ "','" + regUser.lastName
 												+ "','" + regUser.phone
-												+ "','" + regUser.birthDay + "','" + dtf.format(now) + "', 0)";
+												+ "','" + regUser.birthDay + "','" + dtf.format(now) + "', '"
+												+ regUser.registerNumber + "')";
 										CallableStatement cstmt = connection.prepareCall(insertQuery);
 										if (cstmt.executeUpdate() > 0) {
 											out.println("User registered");
@@ -270,7 +273,7 @@ class Server {
 							}
 							connection.close();
 						} catch (Exception e) {
-							out.println(e);
+							out.println("Register user failed");
 						}
 					}
 
@@ -498,9 +501,9 @@ class Server {
 									if (updateRs == 1) {
 										try {
 											GetBidsResponse response = new GetBidsResponse(
-												bidsData(placeBidRequest.auctionId));
+													bidsData(placeBidRequest.auctionId));
 											logger.log(Level.INFO, "Updated auction : " + placeBidRequest.auctionId
-											+ ", with end price =" + placeBidRequest.bidAmount);
+													+ ", with end price =" + placeBidRequest.bidAmount);
 											objOut.writeObject(response);
 											objOut.flush();
 										} catch (Exception e) {
@@ -540,7 +543,7 @@ class Server {
 
 					GetBidsRequest getBidsRequest;
 					if (obj.getClass().getName().equals("client.GetBidsRequest")
-						&& (getBidsRequest = (GetBidsRequest) obj) != null){
+							&& (getBidsRequest = (GetBidsRequest) obj) != null) {
 						try {
 							GetBidsResponse response = new GetBidsResponse(
 									bidsData(getBidsRequest.auctionId));
@@ -553,6 +556,43 @@ class Server {
 							}
 						} catch (Exception e) {
 							logger.log(Level.WARNING, "Exception: " + e);
+						}
+					}
+
+					CreateAuctionRequest createAuctionRequest;
+					if (obj.getClass().getName().equals("client.CreateAuctionRequest")
+							&& (createAuctionRequest = (CreateAuctionRequest) obj) != null) {
+						try {
+							String userName = "select userName from user where id = '" + createAuctionRequest.userId
+									+ "';";
+							CallableStatement userNameCstmt = connection.prepareCall(userName);
+							ResultSet usernameRs = userNameCstmt.executeQuery(userName);
+							if (usernameRs.next()) {
+								int dateInt = (int) (new Date().getTime() / 1000);
+								String imgName = Integer.toString(dateInt) + ".png";
+								ByteArrayInputStream bis = new ByteArrayInputStream(createAuctionRequest.img);
+								BufferedImage bimage = ImageIO.read(bis);
+								ImageIO.write(bimage, "png", new File("./images/"+imgName));
+								String insertQuery = "insert into auction(title, startPrice, description, img, userId, user, status) values ('"
+										+ createAuctionRequest.title
+										+ "','" +createAuctionRequest.startPrice
+										+ "','" + createAuctionRequest.description
+										+ "','" + imgName
+										+ "','" + createAuctionRequest.userId
+										+ "','" + usernameRs.getString("userName")
+										+ "','requested')";
+								CallableStatement cstmt = connection.prepareCall(insertQuery);
+								if (cstmt.executeUpdate() > 0) {
+									out.println("Auction Created Successfully");
+								} else {
+									out.println("Error");
+								}
+								connection.close();
+							} else {
+								out.println("Error");
+							}
+						} catch (Exception e) {
+							out.println(e);
 						}
 					}
 
