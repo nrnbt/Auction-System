@@ -32,7 +32,7 @@ import types.AuctionWithImg;
  *
  * @author nrnbt
  */
-public class AuctionById extends java.awt.Frame {
+public final class AuctionById extends java.awt.Frame {
 
     /**
      * Creates new form NewFrame
@@ -42,7 +42,7 @@ public class AuctionById extends java.awt.Frame {
     public int auctionId;
     public AuctionWithImg auctionData;
     
-    public AuctionById(int id, int userId_, String ipAddress) {
+    public AuctionById(int id, int userId_, String ipAddress) throws IOException, InterruptedException {
       this.auctionId = id;
       this.userId = userId_;
       this.ipAddress = ipAddress;
@@ -55,7 +55,7 @@ public class AuctionById extends java.awt.Frame {
         } catch(NullPointerException e){
             throw e;
         }
-
+       // listenBidsHistory();
     }
         
     public int getId() {
@@ -65,7 +65,44 @@ public class AuctionById extends java.awt.Frame {
     public void setId(int auctionId) {
         this.auctionId = auctionId;
     }
-
+    
+    public void listenBidsHistory() throws InterruptedException{
+        new Thread(new Runnable(){
+           public void run (){
+               try {
+                   Socket socket = new Socket(ipAddress, 1234);
+                   ObjectInputStream ois = null;
+                   while(true){
+                       System.out.println(socket.isConnected());
+                       try{
+                           ois = new ObjectInputStream(socket.getInputStream());
+                           Object obj = ois.readObject();
+                           GetBidsResponse bids;
+                           if (obj.getClass().getName().equals("client.GetBidsResponse")
+                                   && (bids = (GetBidsResponse) obj) != null) {
+                               System.out.println(bids.bidsData.get(0).prcie);
+                           }
+                       } catch(IOException e){
+                           try {
+                               ois.close();
+                           } catch (IOException ex) {
+                               Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+                           }
+                           try {
+                               socket.close();
+                           } catch (IOException ex) {
+                               Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+                           }
+                       } catch (ClassNotFoundException ex) {
+                           Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                   }
+               } catch (IOException ex) {
+                   Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+        }).start();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,8 +175,14 @@ public class AuctionById extends java.awt.Frame {
 
         auctionBidsHistoryLabel.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         auctionBidsHistoryLabel.setForeground(new java.awt.Color(255, 255, 255));
+        auctionBidsHistoryLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-refresh-30.png")); // NOI18N
         auctionBidsHistoryLabel.setText("Bids History");
-        background.add(auctionBidsHistoryLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 40, 400, 20));
+        auctionBidsHistoryLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                auctionBidsHistoryLabelMouseClicked(evt);
+            }
+        });
+        background.add(auctionBidsHistoryLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 30, 320, 40));
 
         auctionDescription.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         auctionDescription.setForeground(new java.awt.Color(255, 255, 255));
@@ -237,6 +280,14 @@ public class AuctionById extends java.awt.Frame {
             }
         }
     }//GEN-LAST:event_placeBidButtonMouseClicked
+
+    private void auctionBidsHistoryLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_auctionBidsHistoryLabelMouseClicked
+        try {
+            getBids();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_auctionBidsHistoryLabelMouseClicked
 
     public void finishAuction(int id) {
         try (Socket socket = new Socket(ipAddress, 1234)) {
@@ -395,11 +446,9 @@ public class AuctionById extends java.awt.Frame {
             
             oos.close();
             ois.close();
-            socket.close();
             
             if (obj.getClass().getName().equals("client.GetBidsResponse")
                 && (bids = (GetBidsResponse) obj) != null) {
-
                 if(bids == null){
                     JOptionPane.showMessageDialog(
                             null,
@@ -410,8 +459,8 @@ public class AuctionById extends java.awt.Frame {
                 } else {
                     if(!bids.bidsData.isEmpty()){
                         String bidsLabelString = "<html><body>";
-                        for(int i=bids.bidsData.size(); 0 < i; i--){
-                            bidsLabelString = bidsLabelString + bids.bidsData.get(i).userName + "placed a bid of " + bids.bidsData.get(i).prcie + "<br>";
+                        for(int i=bids.bidsData.size() - 1; i>=0; i--){
+                            bidsLabelString = bidsLabelString + bids.bidsData.get(i).userName + " placed a bid of " + bids.bidsData.get(i).prcie + "<br>";
                         }
                         bidsLabelString = bidsLabelString + "</body></html>";
                         bidsHistoryLabel.setText(bidsLabelString);
@@ -435,16 +484,16 @@ public class AuctionById extends java.awt.Frame {
             oos.writeObject(request);
             oos.flush();
             
-            socket.close();
-            
             biddingInput.setText("");
+            
+            socket.close();
             
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             throw e;
         }
-}
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

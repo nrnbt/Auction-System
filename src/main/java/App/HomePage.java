@@ -97,7 +97,7 @@ public class HomePage extends javax.swing.JFrame {
                 kButton2ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(752, 10, 94, -1));
+        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, 130, -1));
 
         kButton3.setText("FAQ");
         kButton3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -107,7 +107,7 @@ public class HomePage extends javax.swing.JFrame {
         kButton3.setkHoverEndColor(new java.awt.Color(0, 102, 255));
         kButton3.setkHoverForeGround(new java.awt.Color(51, 51, 255));
         kButton3.setkHoverStartColor(new java.awt.Color(0, 102, 255));
-        kGradientPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(858, 10, 100, -1));
+        kGradientPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 100, -1));
 
         kButton4.setText("Sign Up");
         kButton4.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -121,7 +121,7 @@ public class HomePage extends javax.swing.JFrame {
                 kButton4ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 100, -1));
+        kGradientPanel1.add(kButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 120, -1));
 
         kButton5.setText("Login");
         kButton5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -136,9 +136,8 @@ public class HomePage extends javax.swing.JFrame {
                 kButton5ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 10, 100, -1));
+        kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 120, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Temuuder\\OneDrive\\Desktop\\ss.PNG")); // NOI18N
         jLabel6.setText("jLabel6");
         kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 570));
 

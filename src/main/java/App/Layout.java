@@ -7,14 +7,12 @@ package App;
 
 
 import Login.Login;
-import Register.Registration;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
 import java.awt.Color;
@@ -126,7 +124,13 @@ public class Layout extends javax.swing.JFrame {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         auctionId = id;
-                        auctionPanelMouseClicked(evt);
+                        try {
+                            auctionPanelMouseClicked(evt);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
 
@@ -379,6 +383,7 @@ public class Layout extends javax.swing.JFrame {
         scrollablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emptyLabel.setFont(new java.awt.Font("SansSerif", 2, 24)); // NOI18N
+        emptyLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/empty.png")); // NOI18N
         emptyLabel.setText("Sorry, No Active Auctions");
         scrollablePanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 530, 190));
 
@@ -607,7 +612,7 @@ public class Layout extends javax.swing.JFrame {
         evt.getComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }  
     
-    private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt) {                                               
+    private void auctionPanelMouseClicked(java.awt.event.MouseEvent evt) throws IOException, InterruptedException {                                               
         this.hide();
         new AuctionById(auctionId, userId, ipAddress).setVisible(true);
     }

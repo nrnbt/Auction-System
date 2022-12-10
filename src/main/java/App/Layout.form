@@ -303,6 +303,9 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="SansSerif" size="24" style="2"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="2" name="/home/nrnbt/NetBeansProjects/master/src/main/java/images/empty.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Sorry, No Active Auctions"/>
                       </Properties>
                       <Constraints>

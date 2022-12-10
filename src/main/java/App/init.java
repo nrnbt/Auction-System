@@ -5,8 +5,6 @@
 package App;
 
 import Login.Login;
-import java.awt.Color;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
