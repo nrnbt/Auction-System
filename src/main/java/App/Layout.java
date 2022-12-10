@@ -6,7 +6,6 @@ package App;
  */
 
 
-import Login.Login;
 import Register.Registration;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -468,7 +467,7 @@ public class Layout extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
        this.hide();
-       new Login().setVisible(true);
+//       new Login().setVisible(true);
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void auctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auctionsButtonActionPerformed

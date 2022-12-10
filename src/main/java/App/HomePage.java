@@ -100,7 +100,7 @@ public class HomePage extends javax.swing.JFrame {
                 kButton2ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(752, 10, 94, -1));
+        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 94, -1));
 
         kButton3.setText("FAQ");
         kButton3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -110,7 +110,7 @@ public class HomePage extends javax.swing.JFrame {
         kButton3.setkHoverEndColor(new java.awt.Color(0, 102, 255));
         kButton3.setkHoverForeGround(new java.awt.Color(51, 51, 255));
         kButton3.setkHoverStartColor(new java.awt.Color(0, 102, 255));
-        kGradientPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(858, 10, 100, -1));
+        kGradientPanel1.add(kButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 20, 100, -1));
 
         kButton4.setText("Sign Up");
         kButton4.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -124,7 +124,7 @@ public class HomePage extends javax.swing.JFrame {
                 kButton4ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 100, -1));
+        kGradientPanel1.add(kButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, 100, -1));
 
         kButton5.setText("Login");
         kButton5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -139,23 +139,25 @@ public class HomePage extends javax.swing.JFrame {
                 kButton5ActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 10, 100, -1));
+        kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 100, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Temuuder\\OneDrive\\Desktop\\13150.PNG")); // NOI18N
-        jLabel6.setText("jLabel6");
-        kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 570));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/App/13150.PNG"))); // NOI18N
+        kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 560));
 
-        jPanel2.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 570));
+        jPanel2.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 570));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1008, 566));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 566));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void kButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton5ActionPerformed
         // TODO add your handling code here:
+         this.hide();
+//        Login frm = new Login();
+//        frm.setVisible(true);
     }//GEN-LAST:event_kButton5ActionPerformed
 
     private void kButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton4ActionPerformed
