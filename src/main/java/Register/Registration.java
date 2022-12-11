@@ -614,11 +614,13 @@ public class Registration extends javax.swing.JFrame {
 
                 oos.writeObject(regUser);
                 oos.flush();
-                if(in.readLine().contains("User registered")){
+                
+                String res = in.readLine();
+                if(res.contains("User registered")){
                     this.hide();
                     new Login(ipAddress).setVisible(true);
                 } else {
-                    msg.setText(in.readLine());
+                    msg.setText(res);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

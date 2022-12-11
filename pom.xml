@@ -28,14 +28,14 @@
             <version>1.6.13</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>KControls-2.0</artifactId>
-            <version>SNAPSHOT</version>
+            <groupId>com.k33ptoo</groupId>
+            <artifactId>KControls</artifactId>
+            <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
+            <groupId>com.k33ptoo</groupId>
             <artifactId>KGradientPanel</artifactId>
-            <version>SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <properties>
@@ -45,7 +45,7 @@
         <exec.mainClass>App.init</exec.mainClass>
     </properties>
     <name>Auction_System</name>
-        <build>
+    <build>
         <plugins>
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -54,11 +54,25 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>admin.init</mainClass>
+                        <mainClass>App.init</mainClass>
+                        <addClasspath>true</addClasspath>
                     </manifest>
                 </archive>
             </configuration>
         </plugin>
+           <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.4.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     </build>
 </project>
