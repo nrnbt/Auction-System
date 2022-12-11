@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>Auction_System</groupId>
-    <artifactId>Auction_System</artifactId>
+    <artifactId>Abey</artifactId>
     <version>1.0</version>
     <repositories>
         <repository>
@@ -44,7 +44,7 @@
         <maven.compiler.target>18</maven.compiler.target>
         <exec.mainClass>App.init</exec.mainClass>
     </properties>
-    <name>Auction_System</name>
+    <name>Abey</name>
     <build>
         <plugins>
             <plugin>
