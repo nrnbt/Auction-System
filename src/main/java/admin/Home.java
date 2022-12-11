@@ -25,15 +25,18 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home() {
+    public String ipAddress;
+    
+    public Home(String ipAddress) {
+        this.ipAddress = ipAddress;
         initComponents();
     }
     
     public static FetchAuctionResponse AuctionList;
     
-     public void showData(String stausFilter) throws ClassNotFoundException {
+    public void showData(String stausFilter) throws ClassNotFoundException {
         ArrayList<FetchAuctionResponse> auctionList = new ArrayList<>();
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -108,6 +111,10 @@ public class Home extends javax.swing.JFrame {
             }
         ));
         tableScroll.setViewportView(auctionsTable);
+        if (auctionsTable.getColumnModel().getColumnCount() > 0) {
+            auctionsTable.getColumnModel().getColumn(0).setMinWidth(30);
+            auctionsTable.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
 
         Background.add(tableScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 1040, 400));
 
@@ -193,7 +200,7 @@ public class Home extends javax.swing.JFrame {
 
     private void singleAuctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleAuctionActionPerformed
         if(auctionsTable.getSelectedRowCount() > 0){
-            try (Socket socket = new Socket("192.168.1.42", 1234)) {
+            try (Socket socket = new Socket(ipAddress, 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -244,7 +251,7 @@ public class Home extends javax.swing.JFrame {
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
         if(auctionsTable.getSelectedRowCount() > 0){
             if(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("pending")){
-                try (Socket socket = new Socket("192.168.1.42", 1234)) {
+                try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -259,7 +266,7 @@ public class Home extends javax.swing.JFrame {
                         && (res = (FetchUserInfoResponse) obj) != null) {
                         JOptionPane.showOptionDialog(
                             Background, 
-                            new updatePanel(res.userName, res.email, res.phone, res.registerNumber, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id),
+                            new updatePanel(res.userName, res.email, res.phone, res.registerNumber, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id, ipAddress),
                             "Update auction",
                             JOptionPane.NO_OPTION,
                             JOptionPane.INFORMATION_MESSAGE,
@@ -279,7 +286,7 @@ public class Home extends javax.swing.JFrame {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } 
             } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("accepted")){
-                try (Socket socket = new Socket("192.168.1.42", 1234)) {
+                try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -301,7 +308,8 @@ public class Home extends javax.swing.JFrame {
                                     res.registerNumber, 
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).startTime,
-                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).endTime
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).endTime,
+                                    ipAddress
                             ),
                             "Update auction",
                             JOptionPane.NO_OPTION,
@@ -324,7 +332,7 @@ public class Home extends javax.swing.JFrame {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } 
             } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("finished")){
-                try (Socket socket = new Socket("192.168.1.42", 1234)) {
+                try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -345,7 +353,8 @@ public class Home extends javax.swing.JFrame {
                                     res.phone, 
                                     res.registerNumber, 
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
-                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).winner
+                                    AuctionList.auctionList.get(auctionsTable.getSelectedRow()).winner,
+                                    ipAddress
                             ),
                             "Update auction",
                             JOptionPane.NO_OPTION,
@@ -438,37 +447,6 @@ public class Home extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Home().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel Background;

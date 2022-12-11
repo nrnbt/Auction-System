@@ -21,7 +21,10 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public Login() {
+    public String ipAddress;
+    
+    public Login(String ipAdress) {
+        this.ipAddress = ipAdress;
         initComponents();
     }
 
@@ -123,18 +126,14 @@ public class Login extends javax.swing.JFrame {
 
         usernameLabel1.setFont(new java.awt.Font("URW Bookman", 1, 24)); // NOI18N
         usernameLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        usernameLabel1.setText("ABEY");
-        Background.add(usernameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 70, 40));
+        usernameLabel1.setText("ABEY Admin");
+        Background.add(usernameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 180, 40));
 
         abeyText.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         abeyText.setForeground(new java.awt.Color(255, 255, 255));
         abeyText.setText("Username");
         Background.add(abeyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 90, 20));
-
-        adminIcon.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/Auction-System-Admin/src/main/java/images/icons8-admin-settings-male-100.png")); // NOI18N
         Background.add(adminIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
-
-        hammerIcon.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/Auction-System-Admin/src/main/java/images/icons8-auction-50.png")); // NOI18N
         Background.add(hammerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 480));
@@ -171,7 +170,7 @@ public class Login extends javax.swing.JFrame {
         }else if(pass.equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your password.");
         }else{
-            try (Socket socket = new Socket("192.168.25.121", 1234)) {
+            try (Socket socket = new Socket(ipAddress, 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -183,10 +182,9 @@ public class Login extends javax.swing.JFrame {
                 
                 String result = in.readLine();
                 
-                if(result.equals("access successful")){
-                            this.hide();
-                    Home homeFrame = new Home();
-                        homeFrame.setVisible(true);
+                if(result.contains("access successful")){
+                    this.hide();
+                    new Home(ipAddress).setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(Background, result);
                 }
@@ -197,40 +195,6 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel Background;

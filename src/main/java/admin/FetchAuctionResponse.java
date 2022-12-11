@@ -1,5 +1,6 @@
 package admin;
 
+import types.Auction;
 import java.io.Serializable;
 import java.util.ArrayList;
 

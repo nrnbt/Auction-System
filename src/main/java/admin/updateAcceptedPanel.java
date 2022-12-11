@@ -29,8 +29,10 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     public String userEmail;
     public String userPhone;
     public String userRegisterNumber;
+    public String ipAddress;
 
-    public updateAcceptedPanel(String name, String email, String phone, String registerNumber, int id, String startDate, String endDate) throws ParseException {
+    public updateAcceptedPanel(String name, String email, String phone, String registerNumber, int id, String startDate, String endDate, String ipAddress) throws ParseException {
+        this.ipAddress = ipAddress;
         String[] start = startDate.split("\\s+");
         String[] end = endDate.split("\\s+");
         Date startDay =new SimpleDateFormat("yyyy-MM-dd").parse(start[0]);  
@@ -138,7 +140,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_endTimeActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd");
 

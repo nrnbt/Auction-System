@@ -8,10 +8,11 @@ import java.awt.Window;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 /**
@@ -28,15 +29,23 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     public String userEmail;
     public String userPhone;
     public String userRegisterNumber;
+    public String ipAddress;
+    public String winner;
 
-    public updateWinnerPanel(String name, String email, String phone, String registerNumber, int id, String winner) {
+    public updateWinnerPanel(String name, String email, String phone, String registerNumber, int id, String winner, String ipAddress) {
+        this.ipAddress = ipAddress;
+        this.winner = winner;
         auctionId = id;
         userName = name;
         userEmail = email;
         userPhone = phone;
         userRegisterNumber = registerNumber;
         initComponents();
-        winnerTextField.setText(winner);
+        try {
+            getBids();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(updateWinnerPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,7 +63,7 @@ public class updateWinnerPanel extends javax.swing.JPanel {
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        winnerTextField = new javax.swing.JTextField();
+        winnerSelect = new javax.swing.JComboBox<>();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -88,16 +97,18 @@ public class updateWinnerPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Winner");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
-        add(winnerTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 250, -1));
+
+        add(winnerSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 250, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        try (Socket socket = new Socket("192.168.1.42", 1234)) {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            
+            Object item = winnerSelect.getSelectedItem();
+            String value = ((ComboItem)item).getValue();
             UpdateAuctionWinnerRequest request = new UpdateAuctionWinnerRequest(
                     auctionId, 
-                    winnerTextField.getText()
+                    value
                 );
             oos.writeObject(request);
             oos.flush();
@@ -153,7 +164,47 @@ public class updateWinnerPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_cancelButtonMouseClicked
+    
+    public void getBids() throws ClassNotFoundException{
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
+            GetBidsByAuctionIdRequest req = new GetBidsByAuctionIdRequest(auctionId);
+            oos.writeObject(req);
+            oos.flush();
+
+            Object obj = ois.readObject();
+            GetBidsByAuctionIdResponse response;
+
+            if (obj.getClass().getName().equals("admin.GetBidsByAuctionIdResponse")
+                && (response = (GetBidsByAuctionIdResponse) obj) != null) {
+                if(response.bidsList.isEmpty()){
+                    this.hide();
+                    JOptionPane.showMessageDialog(null, "No bids on this auction");
+                } else {
+                    for(int i = 0; i < response.bidsList.size(); i ++){
+                        
+                        winnerSelect.addItem(
+                                new ComboItem(
+                                        response.bidsList.get(i).userName + " " + response.bidsList.get(i).price,
+                                        Integer.toString(response.bidsList.get(i).id)
+                                )
+                        );
+                        if(Integer.toString(response.bidsList.get(i).id).equals(winner)){
+                            winnerSelect.setSelectedIndex(i);
+                        }
+                    }
+                }
+            }
+            
+            oos.close();
+            ois.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
@@ -163,6 +214,6 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JLabel userPhoneLabel;
     private javax.swing.JLabel userRegisterNumberLabel;
-    private javax.swing.JTextField winnerTextField;
+    private javax.swing.JComboBox<ComboItem> winnerSelect;
     // End of variables declaration//GEN-END:variables
 }
