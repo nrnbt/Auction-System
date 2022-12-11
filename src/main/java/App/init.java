@@ -4,7 +4,6 @@
  */
 package App;
 
-import Login.Login;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,6 +44,7 @@ public class init extends java.awt.Frame {
         ipAddressInput.setBackground(new java.awt.Color(0,0,0,0));
         ipAddressInput.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         ipAddressInput.setForeground(new java.awt.Color(255, 255, 255));
+        ipAddressInput.setText("192.168.1.42");
         ipAddressInput.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         ipAddressInput.setCaretColor(new java.awt.Color(255, 51, 255));
         ipAddressInput.setOpaque(false);
@@ -89,7 +89,7 @@ public class init extends java.awt.Frame {
             JOptionPane.showMessageDialog(background, "Fill the input");
         } else {
             this.hide();
-            new Login(ipAddressInput.getText()).setVisible(true);
+            new Home(ipAddressInput.getText()).setVisible(true);
         }
     }//GEN-LAST:event_connectButtonMouseClicked
 

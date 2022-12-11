@@ -80,7 +80,7 @@ public final class AuctionById extends java.awt.Frame {
                            GetBidsResponse bids;
                            if (obj.getClass().getName().equals("client.GetBidsResponse")
                                    && (bids = (GetBidsResponse) obj) != null) {
-                               System.out.println(bids.bidsData.get(0).prcie);
+                               System.out.println(bids.bidsData.get(0).price);
                            }
                        } catch(IOException e){
                            try {
@@ -141,14 +141,14 @@ public final class AuctionById extends java.awt.Frame {
 
         goBackButton.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         goBackButton.setForeground(new java.awt.Color(255, 255, 255));
-        goBackButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 (1).png")); // NOI18N
+        goBackButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 .png")); // NOI18N
         goBackButton.setText("Go back");
         goBackButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 goBackButtonMouseClicked(evt);
             }
         });
-        background.add(goBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 50));
+        background.add(goBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, 50));
 
         closeButton.setFont(new java.awt.Font("sansserif", 1, 28)); // NOI18N
         closeButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -244,7 +244,7 @@ public final class AuctionById extends java.awt.Frame {
     private void goBackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goBackButtonMouseClicked
         this.hide();
         try {
-            new Layout(userId, ipAddress).setVisible(true);
+            new TabbedPanels(userId, ipAddress).setVisible(true);
         } catch (ParseException ex) {
             Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -283,6 +283,7 @@ public final class AuctionById extends java.awt.Frame {
 
     private void auctionBidsHistoryLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_auctionBidsHistoryLabelMouseClicked
         try {
+//            getAuction();
             getBids();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AuctionById.class.getName()).log(Level.SEVERE, null, ex);
@@ -458,9 +459,10 @@ public final class AuctionById extends java.awt.Frame {
                     );
                 } else {
                     if(!bids.bidsData.isEmpty()){
+                        bidsHistoryLabel.setText("");
                         String bidsLabelString = "<html><body>";
                         for(int i=bids.bidsData.size() - 1; i>=0; i--){
-                            bidsLabelString = bidsLabelString + bids.bidsData.get(i).userName + " placed a bid of " + bids.bidsData.get(i).prcie + "<br>";
+                            bidsLabelString = bidsLabelString + bids.bidsData.get(i).userName + " placed a bid of " + bids.bidsData.get(i).price + "<br>";
                         }
                         bidsLabelString = bidsLabelString + "</body></html>";
                         bidsHistoryLabel.setText(bidsLabelString);

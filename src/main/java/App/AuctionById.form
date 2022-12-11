@@ -54,7 +54,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 (1).png"/>
+              <Image iconType="2" name="/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 .png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Go back"/>
           </Properties>
@@ -63,7 +63,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="10" width="130" height="50"/>
+              <AbsoluteConstraints x="20" y="10" width="130" height="50"/>
             </Constraint>
           </Constraints>
         </Component>

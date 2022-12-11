@@ -4,7 +4,9 @@
  */
 package Login;
 
-import App.Layout;
+import App.Home;
+import App.TabbedPanels;
+import Register.Registration;
 import client.LoginRequest;
 import client.LoginResponse;
 import java.awt.Color;
@@ -47,11 +49,13 @@ public class Login extends javax.swing.JFrame {
         passwordTextField = new javax.swing.JPasswordField();
         btnExit = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
-        loginButton = new com.k33ptoo.components.KButton();
-        usernameLabel1 = new javax.swing.JLabel();
+        signUpButton = new com.k33ptoo.components.KButton();
         abeyText = new javax.swing.JLabel();
         adminIcon = new javax.swing.JLabel();
         hammerIcon = new javax.swing.JLabel();
+        loginButton1 = new com.k33ptoo.components.KButton();
+        logoLabel = new javax.swing.JLabel();
+        backButton = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -113,26 +117,21 @@ public class Login extends javax.swing.JFrame {
         passwordLabel.setText("Password");
         Background.add(passwordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 260, 90, 20));
 
-        loginButton.setText("Login");
-        loginButton.setkBorderRadius(30);
-        loginButton.setkEndColor(new java.awt.Color(0, 204, 204));
-        loginButton.setkFillButton(false);
-        loginButton.setkHoverEndColor(new java.awt.Color(204, 0, 204));
-        loginButton.setkHoverForeGround(new java.awt.Color(255, 204, 255));
-        loginButton.setkHoverStartColor(new java.awt.Color(0, 204, 204));
-        loginButton.setkStartColor(new java.awt.Color(255, 255, 255));
-        loginButton.setPreferredSize(new java.awt.Dimension(63, 23));
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
+        signUpButton.setText("Sign Up");
+        signUpButton.setkBorderRadius(30);
+        signUpButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        signUpButton.setkFillButton(false);
+        signUpButton.setkHoverEndColor(new java.awt.Color(204, 0, 204));
+        signUpButton.setkHoverForeGround(new java.awt.Color(255, 204, 255));
+        signUpButton.setkHoverStartColor(new java.awt.Color(0, 204, 204));
+        signUpButton.setkStartColor(new java.awt.Color(255, 255, 255));
+        signUpButton.setPreferredSize(new java.awt.Dimension(63, 23));
+        signUpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginButtonActionPerformed(evt);
+                signUpButtonActionPerformed(evt);
             }
         });
-        Background.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 370, 180, 40));
-
-        usernameLabel1.setFont(new java.awt.Font("URW Bookman", 1, 24)); // NOI18N
-        usernameLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        usernameLabel1.setText("ABEY Auction");
-        Background.add(usernameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 200, 40));
+        Background.add(signUpButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, 140, 40));
 
         abeyText.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         abeyText.setForeground(new java.awt.Color(255, 255, 255));
@@ -140,6 +139,39 @@ public class Login extends javax.swing.JFrame {
         Background.add(abeyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 90, 20));
         Background.add(adminIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
         Background.add(hammerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+
+        loginButton1.setText("Login");
+        loginButton1.setkBorderRadius(30);
+        loginButton1.setkEndColor(new java.awt.Color(0, 204, 204));
+        loginButton1.setkFillButton(false);
+        loginButton1.setkHoverEndColor(new java.awt.Color(204, 0, 204));
+        loginButton1.setkHoverForeGround(new java.awt.Color(255, 204, 255));
+        loginButton1.setkHoverStartColor(new java.awt.Color(0, 204, 204));
+        loginButton1.setkStartColor(new java.awt.Color(255, 255, 255));
+        loginButton1.setPreferredSize(new java.awt.Dimension(63, 23));
+        loginButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginButton1MouseClicked(evt);
+            }
+        });
+        Background.add(loginButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 370, 140, 40));
+
+        logoLabel.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        logoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        logoLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-auction-50.png")); // NOI18N
+        logoLabel.setText("Abey Auction");
+        Background.add(logoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 250, 50));
+
+        backButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        backButton.setForeground(new java.awt.Color(255, 255, 255));
+        backButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 .png")); // NOI18N
+        backButton.setText("Go back");
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backButtonMouseClicked(evt);
+            }
+        });
+        Background.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 50));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 480));
 
@@ -166,8 +198,18 @@ public class Login extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitMouseClicked
 
-    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        String username=usernameTextField.getText();
+    private void signUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpButtonActionPerformed
+        this.hide();
+        new Registration(ipAddress).setVisible(true);
+    }//GEN-LAST:event_signUpButtonActionPerformed
+
+    private void backButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseClicked
+        this.hide();
+        new Home(ipAddress).setVisible(true);
+    }//GEN-LAST:event_backButtonMouseClicked
+
+    private void loginButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButton1MouseClicked
+       String username=usernameTextField.getText();
         String pass=passwordTextField.getText();
         
         if(username.equals("")){
@@ -194,7 +236,7 @@ public class Login extends javax.swing.JFrame {
                     } else {
                         this.hide();
                         try {
-                            new Layout(response.userId, ipAddress).setVisible(true);
+                            new TabbedPanels(response.userId, ipAddress).setVisible(true);
                         } catch (ParseException ex) {
                             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -207,7 +249,7 @@ public class Login extends javax.swing.JFrame {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_loginButtonActionPerformed
+    }//GEN-LAST:event_loginButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -217,12 +259,14 @@ public class Login extends javax.swing.JFrame {
     private keeptoo.KGradientPanel Background;
     private javax.swing.JLabel abeyText;
     private javax.swing.JLabel adminIcon;
+    private javax.swing.JLabel backButton;
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel hammerIcon;
-    private com.k33ptoo.components.KButton loginButton;
+    private com.k33ptoo.components.KButton loginButton1;
+    private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordTextField;
-    private javax.swing.JLabel usernameLabel1;
+    private com.k33ptoo.components.KButton signUpButton;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 }

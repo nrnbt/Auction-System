@@ -5,8 +5,8 @@ package App;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-
 import Login.Login;
+import client.CreateAuctionRequest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,26 +15,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import client.GetAllAuctionRequest;
 import client.GetAllAuctionResponse;
+import client.GetMyAuctionsRequest;
+import client.GetMyAuctionsResponse;
+import client.GetMyBidsRequest;
+import client.GetMyBidsResponse;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author asus
  */
-public class Layout extends javax.swing.JFrame {
+public class TabbedPanels extends javax.swing.JFrame {
     File f = null;
     String path = null;
     private ImageIcon format = null;
@@ -45,19 +55,18 @@ public class Layout extends javax.swing.JFrame {
     /**
      * Creates new form Layout
      */
-    
     public int auctionId;
     public int userId;
     public String ipAddress;
     
-    public Layout(int userId_, String ipAddress) throws ParseException {
+    public TabbedPanels(int userId_, String ipAddress) throws ParseException {
         initComponents();
         userId = userId_;
         this.ipAddress = ipAddress;
         try {
             showData("accepted");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(AuctionList != null && !AuctionList.auctionList.isEmpty()){
             emptyLabel.setVisible(false);
@@ -127,9 +136,9 @@ public class Layout extends javax.swing.JFrame {
                         try {
                             auctionPanelMouseClicked(evt);
                         } catch (IOException ex) {
-                            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 });
@@ -249,7 +258,6 @@ public class Layout extends javax.swing.JFrame {
         navbar = new com.k33ptoo.components.KGradientPanel();
         AppTitle = new javax.swing.JLabel();
         logOutButton = new com.k33ptoo.components.KButton();
-        aboutUSButton = new com.k33ptoo.components.KButton();
         auctionsButton = new com.k33ptoo.components.KButton();
         createAuctionButton = new com.k33ptoo.components.KButton();
         myAuctionsButton = new com.k33ptoo.components.KButton();
@@ -263,15 +271,23 @@ public class Layout extends javax.swing.JFrame {
         emptyLabel = new javax.swing.JLabel();
         createAuctionPanel = new com.k33ptoo.components.KGradientPanel();
         jLabel5 = new javax.swing.JLabel();
-        titleTxt = new javax.swing.JTextField();
-        descrip = new javax.swing.JTextField();
-        imagePath = new javax.swing.JTextField();
-        btnBrowse = new javax.swing.JButton();
         labelImage = new javax.swing.JLabel();
-        btnSubmit = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        titleTxt = new javax.swing.JTextField();
+        startPriceInput = new javax.swing.JTextField();
+        startPriceInput2 = new javax.swing.JTextField();
+        insertImgBtn = new com.k33ptoo.components.KButton();
+        submitBtn = new com.k33ptoo.components.KButton();
+        descriptionScroll = new javax.swing.JScrollPane();
+        descriptionTxt = new javax.swing.JTextArea();
         myAuctionPanel = new keeptoo.KGradientPanel();
+        myAuctionsTableScroll = new javax.swing.JScrollPane();
+        myAuctionsTable = new javax.swing.JTable();
         myBidsPanel = new keeptoo.KGradientPanel();
-        abousUsPanel = new keeptoo.KGradientPanel();
+        myBidsScroll = new javax.swing.JScrollPane();
+        myBidsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -299,18 +315,6 @@ public class Layout extends javax.swing.JFrame {
             }
         });
         navbar.add(logOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 130, 30));
-
-        aboutUSButton.setText("About US");
-        aboutUSButton.setkBorderRadius(30);
-        aboutUSButton.setkEndColor(new java.awt.Color(0, 204, 204));
-        aboutUSButton.setkHoverEndColor(new java.awt.Color(0, 255, 204));
-        aboutUSButton.setkHoverForeGround(new java.awt.Color(255, 255, 255));
-        aboutUSButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutUSButtonActionPerformed(evt);
-            }
-        });
-        navbar.add(aboutUSButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, 30));
 
         auctionsButton.setText("Auctions");
         auctionsButton.setkBorderRadius(30);
@@ -393,81 +397,160 @@ public class Layout extends javax.swing.JFrame {
 
         tabs.addTab("Auctions", auctionsPanel);
 
-        createAuctionPanel.setkEndColor(new java.awt.Color(153, 204, 255));
-        createAuctionPanel.setkStartColor(new java.awt.Color(255, 204, 204));
         createAuctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("create Auction");
-        createAuctionPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 24, 150, 40));
-
-        titleTxt.setText("Title");
-        titleTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                titleTxtActionPerformed(evt);
-            }
-        });
-        createAuctionPanel.add(titleTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 200, -1));
-
-        descrip.setText("Desciption");
-        createAuctionPanel.add(descrip, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 200, 40));
-        createAuctionPanel.add(imagePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 200, -1));
-
-        btnBrowse.setText("Browse");
-        btnBrowse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBrowseActionPerformed(evt);
-            }
-        });
-        createAuctionPanel.add(btnBrowse, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, -1, -1));
+        jLabel5.setText("Create Auction");
+        createAuctionPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 310, 40));
 
         labelImage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        createAuctionPanel.add(labelImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 200, 189));
+        createAuctionPanel.add(labelImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 210, 200));
 
-        btnSubmit.setText("Submit");
-        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Description:");
+        createAuctionPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 190, 40));
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Title:");
+        createAuctionPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 140, 30));
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Start Price:");
+        createAuctionPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 200, 180, 30));
+
+        titleTxt.setBackground(new Color(0,0,0,0));
+        titleTxt.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        titleTxt.setCaretColor(new java.awt.Color(255, 255, 255));
+        titleTxt.setOpaque(false);
+        createAuctionPanel.add(titleTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 250, 30));
+
+        startPriceInput.setBackground(new Color(0,0,0,0));
+        startPriceInput.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        startPriceInput.setCaretColor(new java.awt.Color(255, 255, 255));
+        startPriceInput.setOpaque(false);
+        createAuctionPanel.add(startPriceInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 30));
+
+        startPriceInput2.setBackground(new Color(0,0,0,0));
+        startPriceInput2.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        startPriceInput2.setOpaque(false);
+        createAuctionPanel.add(startPriceInput2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 30));
+
+        insertImgBtn.setText("Insert Image");
+        insertImgBtn.setkBorderRadius(30);
+        insertImgBtn.setkEndColor(new java.awt.Color(51, 51, 255));
+        insertImgBtn.setkHoverEndColor(new java.awt.Color(0, 204, 204));
+        insertImgBtn.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        insertImgBtn.setkHoverStartColor(new java.awt.Color(0, 153, 153));
+        insertImgBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubmitActionPerformed(evt);
+                insertImgBtnActionPerformed(evt);
             }
         });
-        createAuctionPanel.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
+        createAuctionPanel.add(insertImgBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 110, 30));
+
+        submitBtn.setText("Submit");
+        submitBtn.setkBorderRadius(30);
+        submitBtn.setkEndColor(new java.awt.Color(51, 51, 255));
+        submitBtn.setkHoverEndColor(new java.awt.Color(0, 204, 204));
+        submitBtn.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        submitBtn.setkHoverStartColor(new java.awt.Color(0, 153, 153));
+        submitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitBtnActionPerformed(evt);
+            }
+        });
+        createAuctionPanel.add(submitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 300, 110, 30));
+
+        descriptionTxt.setColumns(20);
+        descriptionTxt.setRows(5);
+        descriptionTxt.setLineWrap(true);
+        descriptionTxt.setWrapStyleWord(true);
+        descriptionScroll.setViewportView(descriptionTxt);
+
+        createAuctionPanel.add(descriptionScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 360, 180));
 
         tabs.addTab("createAcution", createAuctionPanel);
 
-        myAuctionPanel.setkStartColor(new java.awt.Color(204, 255, 204));
+        myAuctionPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout myAuctionPanelLayout = new javax.swing.GroupLayout(myAuctionPanel);
-        myAuctionPanel.setLayout(myAuctionPanelLayout);
-        myAuctionPanelLayout.setHorizontalGroup(
-            myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1040, Short.MAX_VALUE)
-        );
-        myAuctionPanelLayout.setVerticalGroup(
-            myAuctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
-        );
+        myAuctionsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "#", "Title", "Start Price", "Status", "Description", "Image"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, javax.swing.ImageIcon.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        myAuctionsTableScroll.setViewportView(myAuctionsTable);
+        if (myAuctionsTable.getColumnModel().getColumnCount() > 0) {
+            myAuctionsTable.getColumnModel().getColumn(0).setMinWidth(30);
+            myAuctionsTable.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
+
+        myAuctionPanel.add(myAuctionsTableScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 37, 960, 440));
 
         tabs.addTab("myAuction", myAuctionPanel);
 
-        myBidsPanel.setkStartColor(new java.awt.Color(204, 255, 204));
+        myBidsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout myBidsPanelLayout = new javax.swing.GroupLayout(myBidsPanel);
-        myBidsPanel.setLayout(myBidsPanelLayout);
-        myBidsPanelLayout.setHorizontalGroup(
-            myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1040, Short.MAX_VALUE)
-        );
-        myBidsPanelLayout.setVerticalGroup(
-            myBidsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
-        );
+        myBidsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "#", "Bid Amount", "Auction Title", "Auction Image"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, javax.swing.ImageIcon.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        myBidsScroll.setViewportView(myBidsTable);
+        if (myBidsTable.getColumnModel().getColumnCount() > 0) {
+            myBidsTable.getColumnModel().getColumn(0).setMinWidth(30);
+            myBidsTable.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
+
+        myBidsPanel.add(myBidsScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 980, 450));
 
         tabs.addTab("myBids", myBidsPanel);
-
-        abousUsPanel.setkStartColor(new java.awt.Color(204, 255, 204));
-        abousUsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        tabs.addTab("aboutUs", abousUsPanel);
 
         getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, -38, 1040, 540));
         tabs.getAccessibleContext().setAccessibleName("Home");
@@ -485,7 +568,7 @@ public class Layout extends javax.swing.JFrame {
         try {
             showData("accepted");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Layout.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        auctionsButton.setkStartColor(new Color(153,0,153));
 //        auctionsButton.setkEndColor(new Color(0,255,204));
@@ -515,6 +598,18 @@ public class Layout extends javax.swing.JFrame {
 
     private void myAuctionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAuctionsButtonActionPerformed
         tabs.setSelectedIndex(2);
+        DefaultTableModel dm = (DefaultTableModel) myAuctionsTable.getModel();
+        int rowCount = dm.getRowCount();
+        if(rowCount > 0){
+           for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+            } 
+        }
+        try {
+            GetMyAuctions();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        myAuctionsButton.setkStartColor(new Color(153,0,153));
 //        myAuctionsButton.setkEndColor(new Color(0,255,204));
 //        auctionsButton.setkStartColor(new Color(0,153,153));
@@ -529,6 +624,18 @@ public class Layout extends javax.swing.JFrame {
 
     private void myBidsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myBidsButtonActionPerformed
         tabs.setSelectedIndex(3);
+        DefaultTableModel dm = (DefaultTableModel) myBidsTable.getModel();
+        int rowCount = dm.getRowCount();
+        if(rowCount > 0){
+           for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+            } 
+        }
+        try {
+            GetMyBids();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        myBidsButton.setkStartColor(new Color(153,0,153));
 //        myBidsButton.setkEndColor(new Color(0,255,204));
 //        auctionsButton.setkStartColor(new Color(0,153,153));
@@ -541,22 +648,7 @@ public class Layout extends javax.swing.JFrame {
 //        aboutUSButton.setkEndColor(new Color(0,204,204));
     }//GEN-LAST:event_myBidsButtonActionPerformed
 
-    private void aboutUSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutUSButtonActionPerformed
-        tabs.setSelectedIndex(4);
-//        aboutUSButton.setkStartColor(new Color(153,0,153));
-//        aboutUSButton.setkEndColor(new Color(0,255,204));
-//        auctionsButton.setkStartColor(new Color(0,153,153));
-//        auctionsButton.setkEndColor(new Color(0,204,204));
-//        createAuctionButton.setkStartColor(new Color(0,153,153));
-//        createAuctionButton.setkEndColor(new Color(0,204,204));
-//        myAuctionsButton.setkStartColor(new Color(0,153,153));
-//        myAuctionsButton.setkEndColor(new Color(0,204,204));
-//        myBidsButton.setkStartColor(new Color(0,153,153));
-//        myBidsButton.setkEndColor(new Color(0,204,204));
-    }//GEN-LAST:event_aboutUSButtonActionPerformed
-
-    private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
-        // TODO add your handling code here:
+    private void insertImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertImgBtnActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter fnwf = new FileNameExtensionFilter("PNG JPG AND JPEG", "png","jpeg","jpg");
         fileChooser.addChoosableFileFilter(fnwf);
@@ -566,44 +658,137 @@ public class Layout extends javax.swing.JFrame {
             f = fileChooser.getSelectedFile();
             
             path = f.getAbsolutePath();
-            imagePath.setText(path);
             ImageIcon ii = new ImageIcon(path);
             Image img = ii.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
             labelImage.setIcon(new ImageIcon(img));
         }
+    }//GEN-LAST:event_insertImgBtnActionPerformed
 
-    }//GEN-LAST:event_btnBrowseActionPerformed
-
-    private void titleTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_titleTxtActionPerformed
-
-    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        // TODO add your handling code here:
-        String title = titleTxt.getText().toString();
-        System.out.println(title);
-        String description = descrip.getText().toString();
-        System.out.println(description);
-        System.out.print("Image Path - "+ path);
-        System.out.print("Image Name - "+ f.getName());
-        File f = new File(path);
-        
-        
-         if (title.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Item Name.");
-       }
-            if (description.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter an Image.");
-            }
-            else
-       JOptionPane.showMessageDialog(null, "Your bid added successfully");
-     
-      
+    private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+       try {                                          
+            String title = titleTxt.getText().toString();
+            String description = descriptionTxt.getText().toString();
+            String startPrice = startPriceInput.getText().toString();
             
-        
-        
-    }//GEN-LAST:event_btnSubmitActionPerformed
+            if (title.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your Item Name.");
+            } else if (f == null){
+                JOptionPane.showMessageDialog(null, "Please insert an Image.");
+            } else if (description.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your Item Description.");
+            } else if (startPrice.equals("")){
+                JOptionPane.showMessageDialog(null, "Please enter your Item Start Price.");
+            } else {
+                BufferedImage bImage;
+                bImage = ImageIO.read(f);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ImageIO.write(bImage, "png", bos);
+                byte[] imgData = bos.toByteArray();
+                try (Socket socket = new Socket(ipAddress, 1234)) {
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    
+                    CreateAuctionRequest req = new CreateAuctionRequest(
+                        userId,
+                        title,
+                        startPrice,
+                        description,
+                        imgData);
+                    oos.writeObject(req);
+                    oos.flush();
+                    
+                    String res = in.readLine();
+                    JOptionPane.showMessageDialog(null, res);
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_submitBtnActionPerformed
 
+    public void GetMyAuctions() throws ClassNotFoundException {
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+
+            GetMyAuctionsRequest req = new GetMyAuctionsRequest(userId);
+            oos.writeObject(req);
+            oos.flush();
+
+            Object obj = ois.readObject();
+            GetMyAuctionsResponse response;
+
+            if (obj.getClass().getName().equals("client.GetMyAuctionsResponse")
+                && (response = (GetMyAuctionsResponse) obj) != null) {
+
+                if(response.auctionList.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Nothing to show");
+                } else {
+                    DefaultTableModel model = (DefaultTableModel) myAuctionsTable.getModel();
+                    myAuctionsTable.setRowHeight(170);
+                    Object[] row = new Object[6];
+                    for (int i = 0; i < response.auctionList.size(); i++) {
+                        row[0] = i + 1;
+                        row[1] = response.auctionList.get(i).title;
+                        row[2] = response.auctionList.get(i).startPrice;
+                        row[3] = response.auctionList.get(i).status;
+                        row[4] = "<html>" + response.auctionList.get(i).description + "</html>";
+                        row[5] = new ImageIcon(response.auctionList.get(i).img);
+                        model.addRow(row);
+                    }
+                }
+            }
+            
+            oos.close();
+            ois.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void GetMyBids() throws ClassNotFoundException{
+        try (Socket socket = new Socket(ipAddress, 1234)) {
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+
+            GetMyBidsRequest req = new GetMyBidsRequest(userId);
+            oos.writeObject(req);
+            oos.flush();
+
+            Object obj = ois.readObject();
+            GetMyBidsResponse response;
+
+            if (obj.getClass().getName().equals("client.GetMyBidsResponse")
+                && (response = (GetMyBidsResponse) obj) != null) {
+                System.out.println(response.myBidsList.size());
+                if(response.myBidsList.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Nothing to show");
+                } else {
+                    DefaultTableModel model = (DefaultTableModel) myBidsTable.getModel();
+                    myBidsTable.setRowHeight(170);
+                    Object[] row = new Object[4];
+                    for (int i = 0; i < response.myBidsList.size(); i++) {
+                        row[0] = i + 1;
+                        row[1] = response.myBidsList.get(i).bidAmount;
+                        row[2] = response.myBidsList.get(i).AuctionTitle;
+                        row[3] = new ImageIcon(response.myBidsList.get(i).AuctionImg);
+                        model.addRow(row);
+                    }
+                }
+            }
+            
+            oos.close();
+            ois.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void auctionPanelMouseEntered(java.awt.event.MouseEvent evt) {                                    
         evt.getComponent().setCursor(new Cursor(Cursor.HAND_CURSOR));
     }  
@@ -620,29 +805,36 @@ public class Layout extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AppTitle;
-    private keeptoo.KGradientPanel abousUsPanel;
-    private com.k33ptoo.components.KButton aboutUSButton;
     private com.k33ptoo.components.KButton auctionsButton;
     private keeptoo.KGradientPanel auctionsPanel;
     private javax.swing.JScrollPane auctionsScroll;
-    private javax.swing.JButton btnBrowse;
-    private javax.swing.JButton btnSubmit;
     private com.k33ptoo.components.KButton createAuctionButton;
     private com.k33ptoo.components.KGradientPanel createAuctionPanel;
-    private javax.swing.JTextField descrip;
+    private javax.swing.JScrollPane descriptionScroll;
+    private javax.swing.JTextArea descriptionTxt;
     private javax.swing.JLabel emptyLabel;
     private keeptoo.KGradientPanel header;
     private javax.swing.JLabel headerLabel;
-    private javax.swing.JTextField imagePath;
+    private com.k33ptoo.components.KButton insertImgBtn;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel labelImage;
     private com.k33ptoo.components.KButton logOutButton;
     private keeptoo.KGradientPanel myAuctionPanel;
     private com.k33ptoo.components.KButton myAuctionsButton;
+    private javax.swing.JTable myAuctionsTable;
+    private javax.swing.JScrollPane myAuctionsTableScroll;
     private com.k33ptoo.components.KButton myBidsButton;
     private keeptoo.KGradientPanel myBidsPanel;
+    private javax.swing.JScrollPane myBidsScroll;
+    private javax.swing.JTable myBidsTable;
     private com.k33ptoo.components.KGradientPanel navbar;
     private keeptoo.KGradientPanel scrollablePanel;
+    private javax.swing.JTextField startPriceInput;
+    private javax.swing.JTextField startPriceInput2;
+    private com.k33ptoo.components.KButton submitBtn;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JTextField titleTxt;
     // End of variables declaration//GEN-END:variables
