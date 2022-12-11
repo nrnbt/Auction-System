@@ -14,7 +14,7 @@ public class Bid implements Serializable {
             String auctionId,
             String userId,
             String userName,
-            String prcie,
+            String price,
             String createdAt) {
         this.id = id;
         this.auctionId = auctionId;

@@ -764,7 +764,6 @@ public class TabbedPanels extends javax.swing.JFrame {
 
             if (obj.getClass().getName().equals("client.GetMyBidsResponse")
                 && (response = (GetMyBidsResponse) obj) != null) {
-                System.out.println(response.myBidsList.size());
                 if(response.myBidsList.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Nothing to show");
                 } else {
