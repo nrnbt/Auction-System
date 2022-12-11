@@ -32,6 +32,10 @@ import client.GetAuctionRequest;
 import client.GetAuctionResponse;
 import client.GetBidsRequest;
 import client.GetBidsResponse;
+import client.GetMyAuctionsRequest;
+import client.GetMyAuctionsResponse;
+import client.GetMyBidsRequest;
+import client.GetMyBidsResponse;
 import client.LoginRequest;
 import client.LoginResponse;
 import client.PlaceBidRequest;
@@ -39,6 +43,7 @@ import client.Register;
 import types.Auction;
 import types.AuctionWithImg;
 import types.Bid;
+import types.MyBid;
 import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.FetchUserInfoRequest;
@@ -167,6 +172,72 @@ class Server {
 			connection.close();
 		} catch (SQLException e) {
 			logger.log(Level.WARNING, "SQLException: " + e);
+		}
+		return auctionList;
+	}
+
+	public static ArrayList<AuctionWithImg> myAuctionData(int userId) throws IOException {
+		ArrayList<AuctionWithImg> auctionList = new ArrayList<>();
+		try {
+			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
+			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
+			Statement stat = connection.createStatement();
+			String query = "select * from auction where userId = '" + userId + "'";
+			ResultSet rs = stat.executeQuery(query);
+			AuctionWithImg data;
+			while (rs.next()) {
+				BufferedImage bImage = ImageIO.read(new File("./images/" + rs.getString("img")));
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write(bImage, "png", bos);
+				byte[] imgData = bos.toByteArray();
+				data = new AuctionWithImg(
+						rs.getInt("id"),
+						rs.getString("title"),
+						rs.getString("user"),
+						rs.getString("userId"),
+						rs.getString("startPrice"),
+						rs.getString("endPrice"),
+						rs.getString("startDateTime"),
+						rs.getString("endDateTime"),
+						rs.getString("status"),
+						imgData,
+						rs.getString("winner"),
+						rs.getString("description"));
+				auctionList.add(data);
+			}
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return auctionList;
+	}
+
+	public static ArrayList<MyBid> myBidsData(int userId) throws IOException {
+		ArrayList<MyBid> auctionList = new ArrayList<>();
+		try {
+			String dbUrl = "jdbc:mysql://localhost:3306/auction_system";
+			Connection connection = DriverManager.getConnection(dbUrl, "root", "");
+			Statement stat = connection.createStatement();
+			String query = "select bid.id, bid.price, auction.title, auction.img from bid INNER JOIN auction ON bid.auctionId = auction.id WHERE bid.userId =" + userId;
+			ResultSet rs = stat.executeQuery(query);
+			MyBid data;
+			while (rs.next()) {
+				BufferedImage bImage = ImageIO.read(new File("./images/" + rs.getString("img")));
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ImageIO.write(bImage, "png", bos);
+				byte[] imgData = bos.toByteArray();
+				data = new MyBid(
+						rs.getInt("id"),
+						rs.getString("price"),
+						rs.getString("title"),
+						imgData);
+				auctionList.add(data);
+			}
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println(e);
 		}
 		return auctionList;
 	}
@@ -462,15 +533,22 @@ class Server {
 					if (obj.getClass().getName().equals("client.FinishAuction")
 							&& (finishAuction = (FinishAuction) obj) != null) {
 						try {
-							String query = "UPDATE auction SET status = 'finished' WHERE id =" + finishAuction.id;
-							PreparedStatement stat = connection.prepareStatement(query);
-							int rs = stat.executeUpdate();
-							if (rs == 1) {
-								logger.log(Level.INFO, "Auction finished with id: " + finishAuction.id);
+							String selectQuery = "SELECT id, MAX(bid.price) as highest FROM bid where bid.auctionId =" + finishAuction.id;
+							CallableStatement cstmt = connection.prepareCall(selectQuery);
+							ResultSet result = cstmt.executeQuery(selectQuery);
+							if(result.next()){
+								String query = "UPDATE auction SET status = 'finished', winner = '" + result.getInt("id") + "' WHERE id = " + finishAuction.id;
+								PreparedStatement stat = connection.prepareStatement(query);
+								int rs = stat.executeUpdate();
+								if (rs == 1) {
+									logger.log(Level.INFO, "Auction finished with id: " + finishAuction.id);
+								} else {
+									logger.log(Level.WARNING, "Failed finish auction with id: " + finishAuction.id);
+								}
+								out.close();
 							} else {
 								logger.log(Level.WARNING, "Failed finish auction with id: " + finishAuction.id);
 							}
-							out.close();
 						} catch (Exception e) {
 							throw e;
 						}
@@ -480,6 +558,7 @@ class Server {
 					if (obj.getClass().getName().equals("client.PlaceBidRequest")
 							&& (placeBidRequest = (PlaceBidRequest) obj) != null) {
 						try {
+							System.out.println(placeBidRequest.bidAmount);
 							String selectQuery = "SELECT username from user where id =" + placeBidRequest.userId;
 							CallableStatement cstmt = connection.prepareCall(selectQuery);
 							ResultSet result = cstmt.executeQuery(selectQuery);
@@ -593,6 +672,42 @@ class Server {
 							}
 						} catch (Exception e) {
 							out.println(e);
+						}
+					}
+
+					GetMyAuctionsRequest getMyAuctionsRequest;
+					if (obj.getClass().getName().equals("client.GetMyAuctionsRequest")
+							&& (getMyAuctionsRequest = (GetMyAuctionsRequest) obj) != null) {
+						try {
+							GetMyAuctionsResponse response = new GetMyAuctionsResponse(
+									myAuctionData(getMyAuctionsRequest.userId));
+							try {
+								objOut.writeObject(response);
+								objOut.flush();
+							} catch (Exception e) {
+								objOut.close();
+								logger.log(Level.WARNING, "Exception: " + e);
+							}
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Exception: " + e);
+						}
+					}
+
+					GetMyBidsRequest getMyBidsRequest;
+					if (obj.getClass().getName().equals("client.GetMyBidsRequest")
+							&& (getMyBidsRequest = (GetMyBidsRequest) obj) != null) {
+						try {
+							GetMyBidsResponse response = new GetMyBidsResponse(
+									myBidsData(getMyBidsRequest.userId));
+							try {
+								objOut.writeObject(response);
+								objOut.flush();
+							} catch (Exception e) {
+								objOut.close();
+								logger.log(Level.WARNING, "Exception: " + e);
+							}
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Exception: " + e);
 						}
 					}
 

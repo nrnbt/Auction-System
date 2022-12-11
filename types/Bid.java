@@ -7,20 +7,20 @@ public class Bid implements Serializable {
     public String auctionId;
     public String userId;    
     public String userName;
-    public String prcie;
+    public String price;
     public String createdAt;
 
     public Bid(int id,
             String auctionId,
             String userId,
             String userName,
-            String prcie,
+            String price,
             String createdAt) {
         this.id = id;
         this.auctionId = auctionId;
         this.userId = userId;
         this.userName = userName;
-        this.prcie = prcie;
+        this.price = price;
         this.createdAt = createdAt;
     }
 
