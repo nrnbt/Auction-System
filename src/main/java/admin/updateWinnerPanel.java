@@ -31,18 +31,16 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     public String userName;
     public String userEmail;
     public String userPhone;
-    public String userRegisterNumber;
     public String ipAddress;
     public String winner;
 
-    public updateWinnerPanel(String name, String email, String phone, String registerNumber, int id, String winner, String ipAddress) {
+    public updateWinnerPanel(String name, String email, String phone, int id, String winner, String ipAddress) {
         this.ipAddress = ipAddress;
         this.winner = winner;
         auctionId = id;
         userName = name;
         userEmail = email;
         userPhone = phone;
-        userRegisterNumber = registerNumber;
         initComponents();
         try {
             getBids();
@@ -59,7 +57,6 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        userRegisterNumberLabel = new javax.swing.JLabel();
         userNameLabel = new javax.swing.JLabel();
         userEmalLabel = new javax.swing.JLabel();
         userPhoneLabel = new javax.swing.JLabel();
@@ -71,17 +68,14 @@ public class updateWinnerPanel extends javax.swing.JPanel {
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        userRegisterNumberLabel.setText("user register number: " + userRegisterNumber);
-        add(userRegisterNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, 20));
-
         userNameLabel.setText("user name: " + userName);
-        add(userNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 210, -1));
+        add(userNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 250, -1));
 
         userEmalLabel.setText("user email: " + userEmail);
-        add(userEmalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, 20));
+        add(userEmalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 250, 20));
 
         userPhoneLabel.setText("user phone number: " + userPhone);
-        add(userPhoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
+        add(userPhoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 250, 20));
 
         okButton.setText("Ok");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -89,7 +83,7 @@ public class updateWinnerPanel extends javax.swing.JPanel {
                 okButtonMouseClicked(evt);
             }
         });
-        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, -1, -1));
+        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, -1, -1));
 
         cancelButton.setText("Cancel");
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -97,13 +91,13 @@ public class updateWinnerPanel extends javax.swing.JPanel {
                 cancelButtonMouseClicked(evt);
             }
         });
-        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, -1, -1));
+        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, -1, -1));
 
         jLabel3.setText("Winner");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
-        add(winnerSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 250, -1));
-        add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 50, 40));
+        add(winnerSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 250, -1));
+        add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 50, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -245,7 +239,6 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel userEmalLabel;
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JLabel userPhoneLabel;
-    private javax.swing.JLabel userRegisterNumberLabel;
     private javax.swing.JComboBox<ComboItem> winnerSelect;
     // End of variables declaration//GEN-END:variables
 }

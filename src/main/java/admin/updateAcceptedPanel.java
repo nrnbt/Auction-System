@@ -30,10 +30,9 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     public String userName;
     public String userEmail;
     public String userPhone;
-    public String userRegisterNumber;
     public String ipAddress;
 
-    public updateAcceptedPanel(String name, String email, String phone, String registerNumber, int id, String startDate, String endDate, String ipAddress) throws ParseException {
+    public updateAcceptedPanel(String name, String email, String phone, int id, String startDate, String endDate, String ipAddress) throws ParseException {
         this.ipAddress = ipAddress;
         String[] start = startDate.split("\\s+");
         String[] end = endDate.split("\\s+");
@@ -43,7 +42,6 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
         userName = name;
         userEmail = email;
         userPhone = phone;
-        userRegisterNumber = registerNumber;
         initComponents();
         jDateChooser1.setDate(startDay);
         jDateChooser2.setDate(endDay); 
@@ -61,7 +59,6 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        userRegisterNumberLabel = new javax.swing.JLabel();
         userNameLabel = new javax.swing.JLabel();
         userEmalLabel = new javax.swing.JLabel();
         userPhoneLabel = new javax.swing.JLabel();
@@ -78,44 +75,41 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("End Day");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
 
         jLabel2.setText("Start Day");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
-
-        userRegisterNumberLabel.setText("user register number: " + userRegisterNumber);
-        add(userRegisterNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, 20));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
         userNameLabel.setText("user name: " + userName);
-        add(userNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 210, -1));
+        add(userNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 250, 20));
 
         userEmalLabel.setText("user email: " + userEmail);
-        add(userEmalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, 20));
+        add(userEmalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 250, 20));
 
         userPhoneLabel.setText("user phone number: " + userPhone);
-        add(userPhoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
-        add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 250, 30));
-        add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 250, 30));
+        add(userPhoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 260, 20));
+        add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 250, 30));
+        add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 250, 30));
 
         jLabel6.setText("Start Time(24 hour format)");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         startTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startTimeActionPerformed(evt);
             }
         });
-        add(startTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 250, 30));
+        add(startTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 250, 30));
 
         jLabel8.setText("End Time(24 hour format)");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
 
         endTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 endTimeActionPerformed(evt);
             }
         });
-        add(endTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 250, 30));
+        add(endTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 250, 30));
 
         okButton.setText("Ok");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -123,7 +117,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
                 okButtonMouseClicked(evt);
             }
         });
-        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, -1, -1));
+        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, -1, -1));
 
         cancelButton.setText("Cancel");
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -131,7 +125,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
                 cancelButtonMouseClicked(evt);
             }
         });
-        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, -1, -1));
+        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, -1, -1));
         add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 50, 40));
     }// </editor-fold>//GEN-END:initComponents
 
@@ -245,6 +239,5 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     private javax.swing.JLabel userEmalLabel;
     private javax.swing.JLabel userNameLabel;
     private javax.swing.JLabel userPhoneLabel;
-    private javax.swing.JLabel userRegisterNumberLabel;
     // End of variables declaration//GEN-END:variables
 }

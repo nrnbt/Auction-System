@@ -15,13 +15,11 @@ public class FetchUserInfoResponse implements Serializable {
     public String userName;
     public String email;
     public String phone;
-    public String registerNumber;
         
-    public FetchUserInfoResponse(String userName, String email, String phone, String registerNumber) {
+    public FetchUserInfoResponse(String userName, String email, String phone) {
         this.userName = userName;
         this.email = email;
         this.phone = phone;
-        this.registerNumber = registerNumber;
 
     }
 
@@ -47,13 +45,5 @@ public class FetchUserInfoResponse implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-    
-    public String getRegisterNumber(){
-        return registerNumber;
-    }
-
-    public void setRegisterNumber(String registerNumber){
-        this.registerNumber = registerNumber;
     }
 }

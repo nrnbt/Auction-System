@@ -283,7 +283,7 @@ public class Home extends javax.swing.JFrame {
                         loadingIcon.setIcon(null);
                         JOptionPane.showOptionDialog(
                             Background, 
-                            new updatePanel(res.userName, res.email, res.phone, res.registerNumber, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id, ipAddress),
+                            new updatePanel(res.userName, res.email, res.phone, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id, ipAddress),
                             "Update auction",
                             JOptionPane.NO_OPTION,
                             JOptionPane.INFORMATION_MESSAGE,
@@ -325,7 +325,6 @@ public class Home extends javax.swing.JFrame {
                                     res.userName, 
                                     res.email, 
                                     res.phone, 
-                                    res.registerNumber, 
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).startTime,
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).endTime,
@@ -375,7 +374,6 @@ public class Home extends javax.swing.JFrame {
                                     res.userName, 
                                     res.email, 
                                     res.phone, 
-                                    res.registerNumber, 
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id,
                                     AuctionList.auctionList.get(auctionsTable.getSelectedRow()).winner,
                                     ipAddress
