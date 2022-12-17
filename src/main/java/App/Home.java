@@ -106,7 +106,7 @@ public class Home extends javax.swing.JFrame {
         });
         kGradientPanel1.add(kButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 20, 120, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/homeImg.PNG")); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/homeImg.PNG"))); // NOI18N
         kGradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 560));
 
         jPanel2.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 570));

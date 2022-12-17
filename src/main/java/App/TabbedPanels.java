@@ -47,10 +47,6 @@ import javax.swing.table.DefaultTableModel;
 public class TabbedPanels extends javax.swing.JFrame {
     File f = null;
     String path = null;
-    private ImageIcon format = null;
-    String fname=null;
-    int s = 0;
-    byte[] pimage=null;
 
     /**
      * Creates new form Layout
@@ -282,6 +278,7 @@ public class TabbedPanels extends javax.swing.JFrame {
         submitBtn = new com.k33ptoo.components.KButton();
         descriptionScroll = new javax.swing.JScrollPane();
         descriptionTxt = new javax.swing.JTextArea();
+        loadingIcon = new javax.swing.JLabel();
         myAuctionPanel = new keeptoo.KGradientPanel();
         myAuctionsTableScroll = new javax.swing.JScrollPane();
         myAuctionsTable = new javax.swing.JTable();
@@ -387,7 +384,7 @@ public class TabbedPanels extends javax.swing.JFrame {
         scrollablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emptyLabel.setFont(new java.awt.Font("SansSerif", 2, 24)); // NOI18N
-        emptyLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/empty.png")); // NOI18N
+        emptyLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/empty.png"))); // NOI18N
         emptyLabel.setText("Sorry, No Active Auctions");
         scrollablePanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, 530, 190));
 
@@ -424,12 +421,14 @@ public class TabbedPanels extends javax.swing.JFrame {
 
         titleTxt.setBackground(new Color(0,0,0,0));
         titleTxt.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        titleTxt.setForeground(new java.awt.Color(255, 255, 255));
         titleTxt.setCaretColor(new java.awt.Color(255, 255, 255));
         titleTxt.setOpaque(false);
         createAuctionPanel.add(titleTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 250, 30));
 
         startPriceInput.setBackground(new Color(0,0,0,0));
         startPriceInput.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        startPriceInput.setForeground(new java.awt.Color(255, 255, 255));
         startPriceInput.setCaretColor(new java.awt.Color(255, 255, 255));
         startPriceInput.setOpaque(false);
         createAuctionPanel.add(startPriceInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 30));
@@ -472,6 +471,7 @@ public class TabbedPanels extends javax.swing.JFrame {
         descriptionScroll.setViewportView(descriptionTxt);
 
         createAuctionPanel.add(descriptionScroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 360, 180));
+        createAuctionPanel.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 300, 50, 40));
 
         tabs.addTab("createAcution", createAuctionPanel);
 
@@ -656,11 +656,15 @@ public class TabbedPanels extends javax.swing.JFrame {
         
         if(load==fileChooser.APPROVE_OPTION){
             f = fileChooser.getSelectedFile();
-            
-            path = f.getAbsolutePath();
-            ImageIcon ii = new ImageIcon(path);
-            Image img = ii.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-            labelImage.setIcon(new ImageIcon(img));
+            if(f.length() > 1000000){
+                f = null;
+                JOptionPane.showMessageDialog(this, "Please insert lower than 1000 kb size image.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            } else {
+                path = f.getAbsolutePath();
+                ImageIcon ii = new ImageIcon(path);
+                Image img = ii.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                labelImage.setIcon(new ImageIcon(img));
+            }
         }
     }//GEN-LAST:event_insertImgBtnActionPerformed
 
@@ -670,39 +674,68 @@ public class TabbedPanels extends javax.swing.JFrame {
             String description = descriptionTxt.getText().toString();
             String startPrice = startPriceInput.getText().toString();
             
+            System.out.println();
+            int num = 0;
+            try {
+                num = Integer.parseInt(startPrice);
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Plsese enter valid start price.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+            
             if (title.equals("")) {
-                JOptionPane.showMessageDialog(null, "Please enter your Item Name.");
+                JOptionPane.showMessageDialog(this, "Please enter your Item Title.", "Invalid input", JOptionPane.ERROR_MESSAGE);
             } else if (f == null){
-                JOptionPane.showMessageDialog(null, "Please insert an Image.");
+                JOptionPane.showMessageDialog(this, "Please insert an Image.", "Invalid input", JOptionPane.ERROR_MESSAGE);
             } else if (description.equals("")) {
-                JOptionPane.showMessageDialog(null, "Please enter your Item Description.");
+                JOptionPane.showMessageDialog(this, "Please enter your Item Description.", "Invalid input", JOptionPane.ERROR_MESSAGE);
             } else if (startPrice.equals("")){
-                JOptionPane.showMessageDialog(null, "Please enter your Item Start Price.");
-            } else {
+                JOptionPane.showMessageDialog(this, "Please enter your Item Start Price.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            } else if(num == 0){
+                JOptionPane.showMessageDialog(this, "Plsese enter valid start price.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }else {
                 BufferedImage bImage;
                 bImage = ImageIO.read(f);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 ImageIO.write(bImage, "png", bos);
                 byte[] imgData = bos.toByteArray();
-                try (Socket socket = new Socket(ipAddress, 1234)) {
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    
-                    CreateAuctionRequest req = new CreateAuctionRequest(
-                        userId,
-                        title,
-                        startPrice,
-                        description,
-                        imgData);
-                    oos.writeObject(req);
-                    oos.flush();
-                    
-                    String res = in.readLine();
-                    JOptionPane.showMessageDialog(null, res);
-                    
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
+//                try (Socket socket = new Socket(ipAddress, 1234)) {
+//                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+//                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                    
+//                    CreateAuctionRequest req = new CreateAuctionRequest(
+//                        userId,
+//                        title,
+//                        startPrice,
+//                        description,
+//                        imgData);
+//                    oos.writeObject(req);
+//                    oos.flush();
+//                    
+//                    String res = in.readLine();
+//                    loadingIcon.setIcon(null);
+//                    
+//                    int okClicked = JOptionPane.showOptionDialog(
+//                            null, 
+//                            res,
+//                            "Create Auction Result",
+//                            JOptionPane.OK_OPTION,
+//                            JOptionPane.INFORMATION_MESSAGE,
+//                            null,
+//                            new Object[]{"Ok"},
+//                            null
+//                        );
+//                    if(okClicked == 0){
+//                        titleTxt.setText("");
+//                        descriptionTxt.setText("");
+//                        startPriceInput.setText("");
+//                        f = null;
+//                    }
+//                } catch (IOException e) {
+//                    JOptionPane.showMessageDialog(this, "Connection time out", "Error", JOptionPane.ERROR_MESSAGE);
+//                }
+                loadingIcon.setIcon(null);
             }
         } catch (IOException ex) {
             Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
@@ -820,6 +853,7 @@ public class TabbedPanels extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel labelImage;
+    private javax.swing.JLabel loadingIcon;
     private com.k33ptoo.components.KButton logOutButton;
     private keeptoo.KGradientPanel myAuctionPanel;
     private com.k33ptoo.components.KButton myAuctionsButton;

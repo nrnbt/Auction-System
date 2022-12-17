@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,9 +51,8 @@ public class Registration extends javax.swing.JFrame {
         JDesktopPane = new javax.swing.JDesktopPane();
         emsg1 = new javax.swing.JLabel();
         kGradientPanel1 = new com.k33ptoo.components.KGradientPanel();
-        kButton1 = new com.k33ptoo.components.KButton();
-        kButton2 = new com.k33ptoo.components.KButton();
-        msg = new javax.swing.JLabel();
+        submitButton = new com.k33ptoo.components.KButton();
+        backButton = new com.k33ptoo.components.KButton();
         date_chooser = new com.toedter.calendar.JDateChooser();
         terms = new javax.swing.JCheckBox();
         pword2 = new javax.swing.JPasswordField();
@@ -61,15 +62,9 @@ public class Registration extends javax.swing.JFrame {
         lname = new javax.swing.JTextField();
         user = new javax.swing.JTextField();
         mail = new javax.swing.JTextField();
-        registerNumber = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        emsg2 = new javax.swing.JLabel();
-        emsg3 = new javax.swing.JLabel();
-        emsg4 = new javax.swing.JLabel();
-        emsg5 = new javax.swing.JLabel();
-        emsg6 = new javax.swing.JLabel();
-        emsg7 = new javax.swing.JLabel();
-        esmg8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        loadingIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -81,39 +76,35 @@ public class Registration extends javax.swing.JFrame {
 
         kGradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        kButton1.setText("Submit");
-        kButton1.setkBorderRadius(30);
-        kButton1.setkEndColor(new java.awt.Color(0, 204, 204));
-        kButton1.setkFillButton(false);
-        kButton1.setkHoverEndColor(new java.awt.Color(204, 0, 204));
-        kButton1.setkHoverForeGround(new java.awt.Color(255, 204, 255));
-        kButton1.setkHoverStartColor(new java.awt.Color(0, 204, 204));
-        kButton1.setkStartColor(new java.awt.Color(255, 255, 255));
-        kButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.setText("Submit");
+        submitButton.setkBorderRadius(30);
+        submitButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        submitButton.setkFillButton(false);
+        submitButton.setkHoverEndColor(new java.awt.Color(204, 0, 204));
+        submitButton.setkHoverForeGround(new java.awt.Color(255, 204, 255));
+        submitButton.setkHoverStartColor(new java.awt.Color(0, 204, 204));
+        submitButton.setkStartColor(new java.awt.Color(255, 255, 255));
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton1ActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 470, 150, 40));
+        kGradientPanel1.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 470, 150, 40));
 
-        kButton2.setText("Back");
-        kButton2.setkBorderRadius(30);
-        kButton2.setkEndColor(new java.awt.Color(0, 204, 204));
-        kButton2.setkFillButton(false);
-        kButton2.setkHoverEndColor(new java.awt.Color(204, 0, 204));
-        kButton2.setkHoverForeGround(new java.awt.Color(255, 204, 255));
-        kButton2.setkHoverStartColor(new java.awt.Color(0, 204, 204));
-        kButton2.setkStartColor(new java.awt.Color(255, 255, 255));
-        kButton2.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setText("Back");
+        backButton.setkBorderRadius(30);
+        backButton.setkEndColor(new java.awt.Color(0, 204, 204));
+        backButton.setkFillButton(false);
+        backButton.setkHoverEndColor(new java.awt.Color(204, 0, 204));
+        backButton.setkHoverForeGround(new java.awt.Color(255, 204, 255));
+        backButton.setkHoverStartColor(new java.awt.Color(0, 204, 204));
+        backButton.setkStartColor(new java.awt.Color(255, 255, 255));
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton2ActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(kButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 470, 160, 40));
-
-        msg.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        msg.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 520, 410, 50));
+        kGradientPanel1.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 470, 160, 40));
 
         date_chooser.setBackground(new java.awt.Color(255, 204, 204));
         date_chooser.setToolTipText("");
@@ -123,7 +114,7 @@ public class Registration extends javax.swing.JFrame {
                 date_chooserFocusLost(evt);
             }
         });
-        kGradientPanel1.add(date_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, 360, 31));
+        kGradientPanel1.add(date_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, 360, 31));
 
         terms.setBackground(new Color(0,0,0,0));
         terms.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -147,7 +138,7 @@ public class Registration extends javax.swing.JFrame {
                 pword2FocusLost(evt);
             }
         });
-        kGradientPanel1.add(pword2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 362, 30));
+        kGradientPanel1.add(pword2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 380, 362, 30));
 
         pword.setForeground(new java.awt.Color(255, 255, 255));
         pword.setText("Password");
@@ -168,7 +159,7 @@ public class Registration extends javax.swing.JFrame {
                 pwordActionPerformed(evt);
             }
         });
-        kGradientPanel1.add(pword, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 362, 31));
+        kGradientPanel1.add(pword, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 340, 362, 31));
 
         number.setForeground(new java.awt.Color(255, 255, 255));
         number.setText("Phone number");
@@ -281,64 +272,24 @@ public class Registration extends javax.swing.JFrame {
         });
         kGradientPanel1.add(mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 362, 30));
 
-        registerNumber.setForeground(new java.awt.Color(255, 255, 255));
-        registerNumber.setText("Register number");
-        registerNumber.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        registerNumber.setCaretColor(new java.awt.Color(255, 255, 255));
-        registerNumber.setOpaque(false);
-        registerNumber.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                registerNumberFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                registerNumberFocusLost(evt);
-            }
-        });
-        registerNumber.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registerNumberActionPerformed(evt);
-            }
-        });
-        registerNumber.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                registerNumberKeyTyped(evt);
-            }
-        });
-        kGradientPanel1.add(registerNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 362, 30));
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Sign Up");
         kGradientPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 170, 60));
 
-        emsg2.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, 220, 30));
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Birthday");
+        kGradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 90, 30));
+        kGradientPanel1.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 50, 40));
 
-        emsg3.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, 220, 30));
-
-        emsg4.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 180, 220, 30));
-
-        emsg5.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg5, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 220, 30));
-
-        emsg6.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 220, 30));
-
-        emsg7.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(emsg7, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 300, 220, 30));
-
-        esmg8.setForeground(new java.awt.Color(255, 255, 255));
-        kGradientPanel1.add(esmg8, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 350, 220, 30));
-
-        JDesktopPane.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 590));
+        JDesktopPane.add(kGradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 560));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(JDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 952, Short.MAX_VALUE)
+            .addComponent(JDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,12 +429,6 @@ public class Registration extends javax.swing.JFrame {
         String PATTERN = "^[a-zA-Z0-9]{0,30}[@][a-zA-Z0-9]{0,10}[.][a-zA-Z]{0,5}$";
         Pattern patt = Pattern.compile(PATTERN);
         Matcher match=patt.matcher(mail.getText());
-        if(!match.matches()){
-            emsg4.setText("Email is incorrect!");
-        }
-        else{
-            emsg4.setText(null);
-        }
     }//GEN-LAST:event_mailKeyReleased
 
     private void mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailActionPerformed
@@ -534,147 +479,119 @@ public class Registration extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_numberFocusGained
 
-    private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         String email = mail.getText().toString();
         String stname = fname.getText().toString();
         String lastname = lname.getText().toString();
         String pnumber = number.getText().toString();
-        String rnumber = registerNumber.getText().toString();
         String uname = user.getText().toString();
         String password = pword.getText().toString();
         String password2 = pword2.getText().toString();
-        Date date = date_chooser.getDate();
-        SimpleDateFormat DateFor = new SimpleDateFormat("yyyy/MM/dd");
-        String stringDate = DateFor.format(date);
-        if (email.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your E-Mail.");
+        String regex = "^(.+)@(.+)$";  
+        Pattern pattern = Pattern.compile(regex);  
+        Matcher matcher = pattern.matcher(email);
+        int num = 0;
+        try {
+            num = Integer.parseInt(pnumber);
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Plsese enter valid phone number.", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
-        if (rnumber.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Register number.");
-        }
-        if (email.equals("e-mail")) {
-            JOptionPane.showMessageDialog(null, "Please enter your E-Mail.");
-        }
-        if (stname.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your First Name.");
-        }
-        if (stname.equals("First name")) {
-            JOptionPane.showMessageDialog(null, "Please enter your First Name.");
-        }
-        if (lastname.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Last Name.");
-        }
-        if (lastname.equals("Last name")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Last Name.");
-        }
-        if (pnumber.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Phone Number.");
-        }
-        if (pnumber.equals("Phone number")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Phone Number.");
-        }
-        if (uname.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your User Name.");
-        }
-        if (uname.equals("Username")) {
-            JOptionPane.showMessageDialog(null, "Please enter your User Name.");
-        }
-        if (password.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Password.");
-        }
-        if (password.equals("password")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Password.");
-        }
-        if (password2.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter your Confirm Password.");
-        }
-        if (password2.equals("Repeat password")) {
-            JOptionPane.showMessageDialog(null, "Please repeat your Password.");
-        }
-        if (password.equals(password2)== false)
-        {
-            JOptionPane.showMessageDialog(null,"Password Doesn't Match");
-        }
-        if (terms.isSelected()) {
-            try (Socket socket = new Socket(ipAddress, 1234)) {
+        
+        if (email.equals("") ||email.equals("e-mail")) {
+            JOptionPane.showMessageDialog(this, "Please enter your E-Mail.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (stname.equals("") || stname.equals("First name")) {
+            JOptionPane.showMessageDialog(this, "Please enter your First Name.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (lastname.equals("") || lastname.equals("Last name")) {
+            JOptionPane.showMessageDialog(this, "Please enter your Last Name.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (pnumber.equals("") || pnumber.equals("Phone number")) {
+            JOptionPane.showMessageDialog(this, "Please enter your Phone Number.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (uname.equals("") || uname.equals("Username")) {
+            JOptionPane.showMessageDialog(this, "Please enter your User Name.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (password.equals("") || password.equals("password")) {
+            JOptionPane.showMessageDialog(this, "Please enter your Password.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if(date_chooser.getDate() == null){
+            JOptionPane.showMessageDialog(this, "Please enter your Birthday.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (password2.equals("")) {
+            JOptionPane.showMessageDialog(this, "Please enter your Confirm Password.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        }else if (password2.equals("Repeat password")) {
+            JOptionPane.showMessageDialog(this, "Please repeat your Password.", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else if (!password.equals(password2)) {
+            JOptionPane.showMessageDialog(this, "Password Doesn't Match.", "Input error", JOptionPane.ERROR_MESSAGE);
+        } else if (!terms.isSelected()){
+            JOptionPane.showMessageDialog(this, "Please accept terms and conditions to submit.", "CheckBox error", JOptionPane.ERROR_MESSAGE);
+        } else if(!matcher.matches()){
+            JOptionPane.showMessageDialog(this, "Plsese enter valid email.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        } else if (pnumber.length() != 8){
+            JOptionPane.showMessageDialog(this, "Plsese enter valid phone number.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        } else if(num == 0){
+            JOptionPane.showMessageDialog(this, "Plsese enter valid phone number.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        }else {
+            Date date = date_chooser.getDate();
+            SimpleDateFormat DateFor = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat DateFor1 = new SimpleDateFormat("yyyy-MM-dd");
+            String stringDate = DateFor.format(date);
+            String stringDate1 = DateFor1.format(date);
+            LocalDate dob = LocalDate.parse(stringDate1);
+            LocalDate curDate = LocalDate.now();  
+            if(Period.between(dob, curDate).getYears() < 18){
+                JOptionPane.showMessageDialog(this, "You must be 18 or higher.", "Invalid age", JOptionPane.ERROR_MESSAGE);
+            } else {
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
+                try (Socket socket = new Socket(ipAddress, 1234)) {
 
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                String userName = null;
-                userName = uname;
-                Register regUser = new Register(userName);
-                regUser.passWord = password;
-                regUser.firstName = stname;
-                regUser.lastName = lastname;
-                regUser.registerNumber = rnumber;
-                regUser.email = email;
-                regUser.phone = pnumber;
-                regUser.birthDay = stringDate;
+                    String userName = null;
+                    userName = uname;
+                    Register regUser = new Register(userName);
+                    regUser.passWord = password;
+                    regUser.firstName = stname;
+                    regUser.lastName = lastname;
+                    regUser.email = email;
+                    regUser.phone = pnumber;
+                    regUser.birthDay = stringDate;
 
-                oos.writeObject(regUser);
-                oos.flush();
-                
-                String res = in.readLine();
-                if(res.contains("User registered")){
-                    this.hide();
-                    new Login(ipAddress).setVisible(true);
-                } else {
-                    msg.setText(res);
+                    oos.writeObject(regUser);
+                    oos.flush();
+
+                    String res = in.readLine();
+                    if(res.contains("User registered")){
+                        this.hide();
+                        new Login(ipAddress).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, res, "Register Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Connection error", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+                loadingIcon.setIcon(null);   
             }
-        } else {
-            msg.setText("Please accept terms and conditions to submit.");
         }
-    }//GEN-LAST:event_kButton1ActionPerformed
+    }//GEN-LAST:event_submitButtonActionPerformed
 
-    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.hide();
         new Home(ipAddress).setVisible(true);
-    }//GEN-LAST:event_kButton2ActionPerformed
-
-    private void registerNumberFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerNumberFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registerNumberFocusGained
-
-    private void registerNumberFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerNumberFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registerNumberFocusLost
-
-    private void registerNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerNumberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registerNumberActionPerformed
-
-    private void registerNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerNumberKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registerNumberKeyTyped
+    }//GEN-LAST:event_backButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane JDesktopPane;
+    private com.k33ptoo.components.KButton backButton;
     private com.toedter.calendar.JDateChooser date_chooser;
     private javax.swing.JLabel emsg1;
-    private javax.swing.JLabel emsg2;
-    private javax.swing.JLabel emsg3;
-    private javax.swing.JLabel emsg4;
-    private javax.swing.JLabel emsg5;
-    private javax.swing.JLabel emsg6;
-    private javax.swing.JLabel emsg7;
-    private javax.swing.JLabel esmg8;
     private javax.swing.JTextField fname;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private com.k33ptoo.components.KButton kButton1;
-    private com.k33ptoo.components.KButton kButton2;
     private com.k33ptoo.components.KGradientPanel kGradientPanel1;
     private javax.swing.JTextField lname;
+    private javax.swing.JLabel loadingIcon;
     private javax.swing.JTextField mail;
-    private javax.swing.JLabel msg;
     private javax.swing.JTextField number;
     private javax.swing.JPasswordField pword;
     private javax.swing.JPasswordField pword2;
-    private javax.swing.JTextField registerNumber;
+    private com.k33ptoo.components.KButton submitButton;
     private javax.swing.JCheckBox terms;
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables

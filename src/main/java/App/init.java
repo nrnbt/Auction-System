@@ -4,6 +4,8 @@
  */
 package App;
 
+import java.io.IOException;
+import java.net.Socket;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +33,7 @@ public class init extends java.awt.Frame {
         ipAddressInput = new javax.swing.JTextField();
         ipAddressLabel = new javax.swing.JLabel();
         connectButton = new com.k33ptoo.components.KButton();
+        loadingIcon = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -44,7 +47,7 @@ public class init extends java.awt.Frame {
         ipAddressInput.setBackground(new java.awt.Color(0,0,0,0));
         ipAddressInput.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         ipAddressInput.setForeground(new java.awt.Color(255, 255, 255));
-        ipAddressInput.setText("192.168.1.42");
+        ipAddressInput.setText("192.168");
         ipAddressInput.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
         ipAddressInput.setCaretColor(new java.awt.Color(255, 51, 255));
         ipAddressInput.setOpaque(false);
@@ -71,6 +74,7 @@ public class init extends java.awt.Frame {
             }
         });
         background.add(connectButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 130, 30));
+        background.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 50, 40));
 
         add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
@@ -88,8 +92,23 @@ public class init extends java.awt.Frame {
         if(ipAddressInput.getText() == ""){
             JOptionPane.showMessageDialog(background, "Fill the input");
         } else {
-            this.hide();
-            new Home(ipAddressInput.getText()).setVisible(true);
+            if(ipAddressInput.getText().equals("")){
+                JOptionPane.showMessageDialog(background, "Enter Ip Address.", "Empty field", JOptionPane.ERROR_MESSAGE);
+            } else {
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
+                try (Socket socket = new Socket(ipAddressInput.getText(), 1234)) {
+                    if(socket.isConnected()){
+                        connectButton.setIcon(null);
+                        this.hide();
+                        new Home(ipAddressInput.getText()).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(background, "Connection time out", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(background, "Connection time out", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                loadingIcon.setIcon(null);
+            }
         }
     }//GEN-LAST:event_connectButtonMouseClicked
 
@@ -110,5 +129,6 @@ public class init extends java.awt.Frame {
     private com.k33ptoo.components.KButton connectButton;
     private javax.swing.JTextField ipAddressInput;
     private javax.swing.JLabel ipAddressLabel;
+    private javax.swing.JLabel loadingIcon;
     // End of variables declaration//GEN-END:variables
 }

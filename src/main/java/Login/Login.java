@@ -56,6 +56,7 @@ public class Login extends javax.swing.JFrame {
         loginButton1 = new com.k33ptoo.components.KButton();
         logoLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JLabel();
+        loadingIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -135,7 +136,7 @@ public class Login extends javax.swing.JFrame {
 
         abeyText.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         abeyText.setForeground(new java.awt.Color(255, 255, 255));
-        abeyText.setText("Username");
+        abeyText.setText("Email");
         Background.add(abeyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 90, 20));
         Background.add(adminIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
         Background.add(hammerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
@@ -158,13 +159,13 @@ public class Login extends javax.swing.JFrame {
 
         logoLabel.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         logoLabel.setForeground(new java.awt.Color(255, 255, 255));
-        logoLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-auction-50.png")); // NOI18N
+        logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auction-icon.png"))); // NOI18N
         logoLabel.setText("Abey Auction");
-        Background.add(logoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 250, 50));
+        Background.add(logoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 250, 50));
 
         backButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         backButton.setForeground(new java.awt.Color(255, 255, 255));
-        backButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 .png")); // NOI18N
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/go-back-icon.png"))); // NOI18N
         backButton.setText("Go back");
         backButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -172,6 +173,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         Background.add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 50));
+        Background.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 370, 50, 40));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 480));
 
@@ -209,7 +211,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonMouseClicked
 
     private void loginButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButton1MouseClicked
-       String username=usernameTextField.getText();
+        String username=usernameTextField.getText();
         String pass=passwordTextField.getText();
         
         if(username.equals("")){
@@ -217,6 +219,7 @@ public class Login extends javax.swing.JFrame {
         }else if(pass.equals("")){
             JOptionPane.showMessageDialog(null,"Please enter your password.");
         }else{
+            loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
             try (Socket socket = new Socket(ipAddress, 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -228,11 +231,11 @@ public class Login extends javax.swing.JFrame {
                 
                 Object obj = ois.readObject();
                 LoginResponse response;
-                
+                loadingIcon.setIcon(null);
                 if (obj.getClass().getName().equals("client.LoginResponse")
                     && (response = (LoginResponse) obj) != null) {
                     if(response.userId < 0){
-                        JOptionPane.showMessageDialog(Background, "Username or password didn't match");
+                        JOptionPane.showMessageDialog(Background, "Email or password didn't match");
                     } else {
                         this.hide();
                         try {
@@ -244,10 +247,11 @@ public class Login extends javax.swing.JFrame {
                 }
                 
             } catch (IOException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(Background, "Connection error", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(Background, "Connection error", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            loadingIcon.setIcon(null);
         }
     }//GEN-LAST:event_loginButton1MouseClicked
 
@@ -262,6 +266,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel backButton;
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel hammerIcon;
+    private javax.swing.JLabel loadingIcon;
     private com.k33ptoo.components.KButton loginButton1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel passwordLabel;

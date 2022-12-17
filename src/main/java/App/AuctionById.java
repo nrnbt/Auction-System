@@ -129,7 +129,6 @@ public final class AuctionById extends java.awt.Frame {
 
         setMinimumSize(new java.awt.Dimension(1240, 502));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1240, 502));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 exitForm(evt);
@@ -141,7 +140,7 @@ public final class AuctionById extends java.awt.Frame {
 
         goBackButton.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         goBackButton.setForeground(new java.awt.Color(255, 255, 255));
-        goBackButton.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-go-back-50 .png")); // NOI18N
+        goBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/go-back-icon.png"))); // NOI18N
         goBackButton.setText("Go back");
         goBackButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -175,7 +174,7 @@ public final class AuctionById extends java.awt.Frame {
 
         auctionBidsHistoryLabel.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         auctionBidsHistoryLabel.setForeground(new java.awt.Color(255, 255, 255));
-        auctionBidsHistoryLabel.setIcon(new javax.swing.ImageIcon("/home/nrnbt/NetBeansProjects/master/src/main/java/images/icons8-refresh-30.png")); // NOI18N
+        auctionBidsHistoryLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/refresh-icon.png"))); // NOI18N
         auctionBidsHistoryLabel.setText("Bids History");
         auctionBidsHistoryLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
