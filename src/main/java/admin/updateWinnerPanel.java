@@ -5,6 +5,7 @@
 package admin;
 
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,8 +14,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author nrnbt_
@@ -64,6 +67,7 @@ public class updateWinnerPanel extends javax.swing.JPanel {
         cancelButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         winnerSelect = new javax.swing.JComboBox<>();
+        loadingIcon = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -99,55 +103,63 @@ public class updateWinnerPanel extends javax.swing.JPanel {
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
         add(winnerSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 250, -1));
+        add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 50, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        try (Socket socket = new Socket(ipAddress, 1234)) {
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            Object item = winnerSelect.getSelectedItem();
+        Object item = winnerSelect.getSelectedItem();
+        if(item == null){
+            JOptionPane.showMessageDialog(this, "Choose winner.", "Empty field", JOptionPane.ERROR_MESSAGE);
+        }else {
+            loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
             String value = ((ComboItem)item).getValue();
-            UpdateAuctionWinnerRequest request = new UpdateAuctionWinnerRequest(
-                    auctionId, 
-                    value
-                );
-            oos.writeObject(request);
-            oos.flush();
-            
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String response = in.readLine();
-            if(response.contains("Updated")){
-                int okClicked = JOptionPane.showOptionDialog(
-                    null, 
-                    "Successfully updated",
-                    "Update Result",
-                    JOptionPane.OK_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    new Object[]{"Ok"},
-                    null
-                );
-                if(okClicked == 0){
-                    Window[] windows = Window.getWindows();
-                    for (Window window : windows) {
-                        if (window instanceof JDialog) {
-                            JDialog dialog = (JDialog) window;
-                            if (dialog.getContentPane().getComponentCount() == 1
-                                && dialog.getContentPane().getComponent(0) instanceof JOptionPane){
-                                dialog.dispose();
-                                }
-                            }
-                        }  
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, response, "update auction error", JOptionPane.ERROR_MESSAGE);
-            }
-           
-            oos.close();
-            in.close();
-            socket.close();
+            try (Socket socket = new Socket(ipAddress, 1234)) {
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                UpdateAuctionWinnerRequest request = new UpdateAuctionWinnerRequest(
+                        auctionId, 
+                        value
+                    );
+                oos.writeObject(request);
+                oos.flush();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String response = in.readLine();
+                loadingIcon.setIcon( null);
+                if(response.contains("Updated")){
+                    int okClicked = JOptionPane.showOptionDialog(
+                        null, 
+                        "Successfully updated",
+                        "Update Result",
+                        JOptionPane.OK_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        new Object[]{"Ok"},
+                        null
+                    );
+                    if(okClicked == 0){
+                        Window[] windows = Window.getWindows();
+                        for (Window window : windows) {
+                            if (window instanceof JDialog) {
+                                JDialog dialog = (JDialog) window;
+                                if (dialog.getContentPane().getComponentCount() == 1
+                                    && dialog.getContentPane().getComponent(0) instanceof JOptionPane){
+                                    dialog.dispose();
+                                    }
+                                }
+                            }  
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, response, "update auction error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                oos.close();
+                in.close();
+                socket.close();
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error occured at server. Please contact to admin", "update auction error", JOptionPane.ERROR_MESSAGE);
+                loadingIcon.setIcon( null);
+            }
         }
     }//GEN-LAST:event_okButtonMouseClicked
 
@@ -166,6 +178,8 @@ public class updateWinnerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonMouseClicked
     
     public void getBids() throws ClassNotFoundException{
+        loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
+        winnerSelect.setVisible(false);
         try (Socket socket = new Socket(ipAddress, 1234)) {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -176,12 +190,22 @@ public class updateWinnerPanel extends javax.swing.JPanel {
 
             Object obj = ois.readObject();
             GetBidsByAuctionIdResponse response;
-
+            
+            loadingIcon.setIcon(null);
+            winnerSelect.setVisible(true);
             if (obj.getClass().getName().equals("admin.GetBidsByAuctionIdResponse")
                 && (response = (GetBidsByAuctionIdResponse) obj) != null) {
                 if(response.bidsList.isEmpty()){
-                    this.hide();
-                    JOptionPane.showMessageDialog(null, "No bids on this auction");
+                    this.setVisible(false);
+                    JOptionPane.showOptionDialog(
+                        null, 
+                        "No bids on this auction",
+                        "Update Winner",
+                        JOptionPane.OK_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        new Object[]{"Ok"},
+                        null);
                 } else {
                     for(int i = 0; i < response.bidsList.size(); i ++){
                         
@@ -202,13 +226,21 @@ public class updateWinnerPanel extends javax.swing.JPanel {
             ois.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            winnerSelect.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Error occured at server. Please contact to admin", "update auction error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        JComponent comp = (JComponent) e.getSource();
+        Window win = SwingUtilities.getWindowAncestor(comp);
+        win.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel loadingIcon;
     private javax.swing.JButton okButton;
     private javax.swing.JLabel userEmalLabel;
     private javax.swing.JLabel userNameLabel;

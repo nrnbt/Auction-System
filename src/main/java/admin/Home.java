@@ -4,7 +4,11 @@
  */
 package admin;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -12,6 +16,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,6 +41,7 @@ public class Home extends javax.swing.JFrame {
     
     public void showData(String stausFilter) throws ClassNotFoundException {
         ArrayList<FetchAuctionResponse> auctionList = new ArrayList<>();
+        loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
         try (Socket socket = new Socket(ipAddress, 1234)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -71,8 +77,9 @@ public class Home extends javax.swing.JFrame {
             ois.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        loadingIcon.setIcon(null);
     }
 
     /**
@@ -94,6 +101,7 @@ public class Home extends javax.swing.JFrame {
         showPendingButton = new javax.swing.JButton();
         showAcceptedButton = new javax.swing.JButton();
         showFinishedButton1 = new javax.swing.JButton();
+        loadingIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -124,7 +132,7 @@ public class Home extends javax.swing.JFrame {
                 showAllButtonMouseClicked(evt);
             }
         });
-        Background.add(showAllButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 98, -1));
+        Background.add(showAllButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 98, -1));
 
         CloseButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
         CloseButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -142,7 +150,7 @@ public class Home extends javax.swing.JFrame {
                 singleAuctionActionPerformed(evt);
             }
         });
-        Background.add(singleAuction, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, -1, -1));
+        Background.add(singleAuction, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, -1, -1));
 
         updateButton.setText("Update");
         updateButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -150,7 +158,7 @@ public class Home extends javax.swing.JFrame {
                 updateButtonMouseClicked(evt);
             }
         });
-        Background.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 90, -1));
+        Background.add(updateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 90, -1));
 
         showPendingButton.setText("Show Pending");
         showPendingButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -175,6 +183,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
         Background.add(showFinishedButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 40, -1, -1));
+        Background.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 50, 40));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-9, 0, 1070, 490));
 
@@ -200,6 +209,7 @@ public class Home extends javax.swing.JFrame {
 
     private void singleAuctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleAuctionActionPerformed
         if(auctionsTable.getSelectedRowCount() > 0){
+            loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
             try (Socket socket = new Socket(ipAddress, 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -213,7 +223,11 @@ public class Home extends javax.swing.JFrame {
 
                 if (obj.getClass().getName().equals("admin.Image")
                     && (img = (Image) obj) != null) {
+                    loadingIcon.setIcon(null);
                     if (img.size > 0) {
+                        InputStream is = new ByteArrayInputStream(img.imageByte);
+                        BufferedImage buff = ImageIO.read(is);
+                        java.awt.Image dimg = buff.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);
                         String description = AuctionList.auctionList.get(auctionsTable.getSelectedRow()).description;
                         String html = "<html><body style='width: %1spx'>%1s";
                         Object[] options = {"OK"};
@@ -223,7 +237,7 @@ public class Home extends javax.swing.JFrame {
                         auctionsTable.getValueAt(auctionsTable.getSelectedRow(), 1).toString(), 
                         JOptionPane.HEIGHT, 
                         JOptionPane.OK_OPTION,
-                        new ImageIcon(img.imageByte),
+                        new ImageIcon(dimg),
                         options,
                         options[0]);
                     }
@@ -235,15 +249,16 @@ public class Home extends javax.swing.JFrame {
                 socket.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            loadingIcon.setIcon(null);
         } else {
             if(auctionsTable.getRowCount() == 0){
                 JOptionPane.showMessageDialog(Background, "Nothing to show");
-            } else {
-                JOptionPane.showMessageDialog(Background, "Select one or more rows");
+            } else if(auctionsTable.getRowCount() != 1) {
+                JOptionPane.showMessageDialog(Background, "Select one row");
             }
         }
     }//GEN-LAST:event_singleAuctionActionPerformed
@@ -251,6 +266,7 @@ public class Home extends javax.swing.JFrame {
     private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
         if(auctionsTable.getSelectedRowCount() > 0){
             if(AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("pending")){
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
                 try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -264,6 +280,7 @@ public class Home extends javax.swing.JFrame {
 
                     if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
                         && (res = (FetchUserInfoResponse) obj) != null) {
+                        loadingIcon.setIcon(null);
                         JOptionPane.showOptionDialog(
                             Background, 
                             new updatePanel(res.userName, res.email, res.phone, res.registerNumber, AuctionList.auctionList.get(auctionsTable.getSelectedRow()).id, ipAddress),
@@ -281,11 +298,13 @@ public class Home extends javax.swing.JFrame {
                     socket.close();
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
                 } 
+                loadingIcon.setIcon(null);
             } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("accepted")){
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
                 try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -299,6 +318,7 @@ public class Home extends javax.swing.JFrame {
 
                     if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
                         && (res = (FetchUserInfoResponse) obj) != null) {
+                        loadingIcon.setIcon(null);
                         JOptionPane.showOptionDialog(
                             Background, 
                             new updateAcceptedPanel(
@@ -331,7 +351,10 @@ public class Home extends javax.swing.JFrame {
                 } catch (ParseException ex) {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } 
+                loadingIcon.setIcon(null);
             } else if (AuctionList.auctionList.get(auctionsTable.getSelectedRow()).status.equals("finished")){
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif"))
+                );
                 try (Socket socket = new Socket(ipAddress, 1234)) {
 
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -345,6 +368,7 @@ public class Home extends javax.swing.JFrame {
 
                     if (obj.getClass().getName().equals("admin.FetchUserInfoResponse")
                         && (res = (FetchUserInfoResponse) obj) != null) {
+                        loadingIcon.setIcon(null);
                         JOptionPane.showOptionDialog(
                             Background, 
                             new updateWinnerPanel(
@@ -370,16 +394,17 @@ public class Home extends javax.swing.JFrame {
                     socket.close();
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(Background, "Error occured at server. Please contact to admin", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                loadingIcon.setIcon(null);
             }
         } else {
              if(auctionsTable.getRowCount() == 0){
                 JOptionPane.showMessageDialog(Background, "Nothing to show");
             } else {
-                JOptionPane.showMessageDialog(Background, "Select one or more rows");
+                JOptionPane.showMessageDialog(Background, "Select one row");
             }  
         }
     }//GEN-LAST:event_updateButtonMouseClicked
@@ -452,6 +477,7 @@ public class Home extends javax.swing.JFrame {
     private keeptoo.KGradientPanel Background;
     private javax.swing.JLabel CloseButton;
     private javax.swing.JTable auctionsTable;
+    private javax.swing.JLabel loadingIcon;
     private javax.swing.JButton showAcceptedButton;
     private javax.swing.JButton showAllButton;
     private javax.swing.JButton showFinishedButton1;

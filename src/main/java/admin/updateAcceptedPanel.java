@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -71,6 +73,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
         endTime = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        loadingIcon = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -120,7 +123,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
                 okButtonMouseClicked(evt);
             }
         });
-        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, -1, -1));
+        add(okButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, -1, -1));
 
         cancelButton.setText("Cancel");
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -128,7 +131,8 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
                 cancelButtonMouseClicked(evt);
             }
         });
-        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, -1, -1));
+        add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, -1, -1));
+        add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 50, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void startTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTimeActionPerformed
@@ -140,62 +144,75 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_endTimeActionPerformed
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
-        try (Socket socket = new Socket(ipAddress, 1234)) {
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd");
+         if(jDateChooser1.getDate() == null || jDateChooser2.getDate() == null || startTime.getText().equals("") || endTime.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Fill the inputs", "Empty input error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                LocalTime.parse(startTime.getText());
+                LocalTime.parse(endTime.getText());
+                loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
+                try (Socket socket = new Socket(ipAddress, 1234)) {
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd");
 
-            Date startDay = jDateChooser1.getDate();
-            String startDayFormatted = DateFor.format(startDay);
-            
-            Date endDay = jDateChooser2.getDate();
-            String endDayFormatted = DateFor.format(endDay);
-            
-            UpdateAuctionDateRequest request = new UpdateAuctionDateRequest(
-                    auctionId, 
-                    startTime.getText(),
-                    endTime.getText(),
-                    startDayFormatted,
-                    endDayFormatted
-                );
-            oos.writeObject(request);
-            oos.flush();
-            
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String response = in.readLine();
-            if(response.contains("Updated")){
-                int okClicked = JOptionPane.showOptionDialog(
-                    null, 
-                    "Successfully updated",
-                    "Update Result",
-                    JOptionPane.OK_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    new Object[]{"Ok"},
-                    null
-                );
-                if(okClicked == 0){
-                    Window[] windows = Window.getWindows();
-                    for (Window window : windows) {
-                        if (window instanceof JDialog) {
-                            JDialog dialog = (JDialog) window;
-                            if (dialog.getContentPane().getComponentCount() == 1
-                                && dialog.getContentPane().getComponent(0) instanceof JOptionPane){
-                                dialog.dispose();
-                                }
-                            }
-                        }  
+                    Date startDay = jDateChooser1.getDate();
+                    String startDayFormatted = DateFor.format(startDay);
+
+                    Date endDay = jDateChooser2.getDate();
+                    String endDayFormatted = DateFor.format(endDay);
+
+                    UpdateAuctionDateRequest request = new UpdateAuctionDateRequest(
+                            auctionId, 
+                            startTime.getText(),
+                            endTime.getText(),
+                            startDayFormatted,
+                            endDayFormatted
+                        );
+                    oos.writeObject(request);
+                    oos.flush();
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    String response = in.readLine();
+                    loadingIcon.setIcon(null);
+                    if(response.contains("Updated")){
+                        int okClicked = JOptionPane.showOptionDialog(
+                            null, 
+                            "Successfully updated",
+                            "Update Result",
+                            JOptionPane.OK_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            new Object[]{"Ok"},
+                            null
+                        );
+                        if(okClicked == 0){
+                            Window[] windows = Window.getWindows();
+                            for (Window window : windows) {
+                                if (window instanceof JDialog) {
+                                    JDialog dialog = (JDialog) window;
+                                    if (dialog.getContentPane().getComponentCount() == 1
+                                        && dialog.getContentPane().getComponent(0) instanceof JOptionPane){
+                                        dialog.dispose();
+                                        }
+                                    }
+                                }  
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(endTime, response, "update auction error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    oos.close();
+                    in.close();
+                    socket.close();
+
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Enter correct time format", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(endTime, response, "update auction error", JOptionPane.ERROR_MESSAGE);
+            loadingIcon.setIcon(null);
+            } catch (DateTimeParseException | NullPointerException e) {
+                JOptionPane.showMessageDialog(this, "Enter correct time format", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
-           
-            oos.close();
-            in.close();
-            socket.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }    
     }//GEN-LAST:event_okButtonMouseClicked
 
 
@@ -222,6 +239,7 @@ public class updateAcceptedPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel loadingIcon;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField startTime;
     private javax.swing.JLabel userEmalLabel;

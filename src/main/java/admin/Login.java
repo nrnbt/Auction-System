@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +27,8 @@ public class Login extends javax.swing.JFrame {
     public Login(String ipAdress) {
         this.ipAddress = ipAdress;
         initComponents();
+//        profileIcon.setIcon(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/images/profile-icon.png"));
+//        usernameLabel.setIcon(new ImageIcon(System.getProperty("user.dir") + "/src/main/java/images/auction-icon.png"));
     }
 
     /**
@@ -43,9 +46,9 @@ public class Login extends javax.swing.JFrame {
         btnExit = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
         loginButton = new com.k33ptoo.components.KButton();
-        usernameLabel1 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
         abeyText = new javax.swing.JLabel();
-        adminIcon = new javax.swing.JLabel();
+        profileIcon = new javax.swing.JLabel();
         hammerIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -124,16 +127,19 @@ public class Login extends javax.swing.JFrame {
         });
         Background.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 370, 180, 40));
 
-        usernameLabel1.setFont(new java.awt.Font("URW Bookman", 1, 24)); // NOI18N
-        usernameLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        usernameLabel1.setText("ABEY Admin");
-        Background.add(usernameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 180, 40));
+        usernameLabel.setFont(new java.awt.Font("URW Bookman", 1, 24)); // NOI18N
+        usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        usernameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/auction-icon.png"))); // NOI18N
+        usernameLabel.setText("ABEY Admin");
+        Background.add(usernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 290, 40));
 
         abeyText.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         abeyText.setForeground(new java.awt.Color(255, 255, 255));
         abeyText.setText("Username");
         Background.add(abeyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 90, 20));
-        Background.add(adminIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
+
+        profileIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/profile-icon.png"))); // NOI18N
+        Background.add(profileIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 110, 100));
         Background.add(hammerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 480));
@@ -166,9 +172,9 @@ public class Login extends javax.swing.JFrame {
         String pass=passwordTextField.getText();
         
         if(username.equals("")){
-            JOptionPane.showMessageDialog(null,"Please enter your username.");
+            JOptionPane.showMessageDialog(Background, "Please enter your username.", "Empty field", JOptionPane.ERROR_MESSAGE);
         }else if(pass.equals("")){
-            JOptionPane.showMessageDialog(null,"Please enter your password.");
+            JOptionPane.showMessageDialog(Background, "Please enter your password.", "Empty field", JOptionPane.ERROR_MESSAGE);
         }else{
             try (Socket socket = new Socket(ipAddress, 1234)) {
 
@@ -186,11 +192,11 @@ public class Login extends javax.swing.JFrame {
                     this.hide();
                     new Home(ipAddress).setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(Background, result);
+                    JOptionPane.showMessageDialog(Background, result, "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
             } catch (IOException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(Background, "Connection error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
@@ -199,13 +205,13 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel Background;
     private javax.swing.JLabel abeyText;
-    private javax.swing.JLabel adminIcon;
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel hammerIcon;
     private com.k33ptoo.components.KButton loginButton;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordTextField;
-    private javax.swing.JLabel usernameLabel1;
+    private javax.swing.JLabel profileIcon;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 }
