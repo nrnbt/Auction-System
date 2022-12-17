@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -50,6 +49,7 @@ public class Login extends javax.swing.JFrame {
         abeyText = new javax.swing.JLabel();
         profileIcon = new javax.swing.JLabel();
         hammerIcon = new javax.swing.JLabel();
+        loadingIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -141,6 +141,7 @@ public class Login extends javax.swing.JFrame {
         profileIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/profile-icon.png"))); // NOI18N
         Background.add(profileIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 110, 100));
         Background.add(hammerIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+        Background.add(loadingIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 50, 40));
 
         getContentPane().add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 480));
 
@@ -176,6 +177,7 @@ public class Login extends javax.swing.JFrame {
         }else if(pass.equals("")){
             JOptionPane.showMessageDialog(Background, "Please enter your password.", "Empty field", JOptionPane.ERROR_MESSAGE);
         }else{
+            loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
             try (Socket socket = new Socket(ipAddress, 1234)) {
 
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -187,7 +189,7 @@ public class Login extends javax.swing.JFrame {
                 oos.flush();
                 
                 String result = in.readLine();
-                
+                loadingIcon.setIcon(null);
                 if(result.contains("access successful")){
                     this.hide();
                     new Home(ipAddress).setVisible(true);
@@ -198,6 +200,7 @@ public class Login extends javax.swing.JFrame {
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(Background, "Connection error", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            loadingIcon.setIcon(null);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -207,6 +210,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel abeyText;
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel hammerIcon;
+    private javax.swing.JLabel loadingIcon;
     private com.k33ptoo.components.KButton loginButton;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordTextField;
