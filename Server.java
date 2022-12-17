@@ -48,6 +48,8 @@ import admin.FetchAuctionRequest;
 import admin.FetchAuctionResponse;
 import admin.FetchUserInfoRequest;
 import admin.FetchUserInfoResponse;
+import admin.GetBidsByAuctionIdRequest;
+import admin.GetBidsByAuctionIdResponse;
 import admin.GetImageRequest;
 import admin.Image;
 
@@ -364,7 +366,7 @@ class Server {
 							}
 							connection.close();
 						} catch (Exception e) {
-							out.println(e);
+							out.println("Server error");
 						}
 					}
 
@@ -416,7 +418,7 @@ class Server {
 							ResultSet rs = stat.executeQuery(query);
 							if (rs.next()) {
 								FetchUserInfoResponse res = new FetchUserInfoResponse(rs.getString("userName"),
-										rs.getString("email"), rs.getString("phone"), rs.getString("registerNumber"));
+										rs.getString("email"), rs.getString("phone"));
 								objOut.writeObject(res);
 								objOut.flush();
 								objOut.close();
@@ -602,7 +604,7 @@ class Server {
 					if (obj.getClass().getName().equals("client.LoginRequest")
 							&& (loginRequest = (LoginRequest) obj) != null) {
 						try {
-							String getUserQuery = "select * from user where username = '" +
+							String getUserQuery = "select * from user where email = '" +
 									loginRequest.userName + "' and passWord = md5('" + loginRequest.passWord + "');";
 							CallableStatement cstmt = connection.prepareCall(getUserQuery);
 							ResultSet rs = cstmt.executeQuery(getUserQuery);
@@ -659,7 +661,7 @@ class Server {
 										+ "','" + imgName
 										+ "','" + createAuctionRequest.userId
 										+ "','" + usernameRs.getString("userName")
-										+ "','requested')";
+										+ "','pending')";
 								CallableStatement cstmt = connection.prepareCall(insertQuery);
 								if (cstmt.executeUpdate() > 0) {
 									out.println("Auction Created Successfully");
@@ -711,13 +713,34 @@ class Server {
 						}
 					}
 
+					GetBidsByAuctionIdRequest getBidsByAuctionIdRequest;
+					if (obj.getClass().getName().equals("admin.GetBidsByAuctionIdRequest")
+							&& (getBidsByAuctionIdRequest = (GetBidsByAuctionIdRequest) obj) != null) {
+						try {
+							GetBidsByAuctionIdResponse response = new GetBidsByAuctionIdResponse(
+								bidsData(getBidsByAuctionIdRequest.auctionId));
+							try {
+								objOut.writeObject(response);
+								objOut.flush();
+							} catch (Exception e) {
+								objOut.close();
+								logger.log(Level.WARNING, "Exception: " + e);
+							}
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Exception: " + e);
+						}
+					}
+
 					obj = null;
 				}
 			} catch (SQLException e1) {
+				out.println("Server error");
 				logger.log(Level.WARNING, "SQLException: " + e1);
 			} catch (IOException e) {
+				out.println("Server error");
 				logger.log(Level.WARNING, "IOException: " + e);
 			} catch (ClassNotFoundException ex) {
+				out.println("Server error");
 				logger.log(Level.WARNING, "ClassNotFoundException: " + ex);
 			} finally {
 				try {
@@ -731,6 +754,7 @@ class Server {
 						clientSocket.close();
 					}
 				} catch (IOException e) {
+					out.println("Server error");
 					logger.log(Level.INFO, "IOException: " + e);
 				}
 			}
