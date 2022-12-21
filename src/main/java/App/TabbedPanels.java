@@ -64,6 +64,11 @@ public class TabbedPanels extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
         }
+        showAuctions();
+    }
+    public static GetAllAuctionResponse AuctionList;
+    
+    public void showAuctions() throws ParseException{
         if(AuctionList != null && !AuctionList.auctionList.isEmpty()){
             emptyLabel.setVisible(false);
             int left = 15;
@@ -216,7 +221,6 @@ public class TabbedPanels extends javax.swing.JFrame {
            emptyLabel.setVisible(true); 
         }
     }
-    public static GetAllAuctionResponse AuctionList;
     
     public void showData(String stausFilter) throws ClassNotFoundException {
         try (Socket socket = new Socket(ipAddress, 1234)) {
@@ -567,6 +571,9 @@ public class TabbedPanels extends javax.swing.JFrame {
         tabs.setSelectedIndex(0);
         try {
             showData("accepted");
+            showAuctions();
+        } catch (ParseException ex) {
+            Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TabbedPanels.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -700,41 +707,42 @@ public class TabbedPanels extends javax.swing.JFrame {
                 byte[] imgData = bos.toByteArray();
                 
                 loadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loading-icon.gif")));
-//                try (Socket socket = new Socket(ipAddress, 1234)) {
-//                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-//                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                    
-//                    CreateAuctionRequest req = new CreateAuctionRequest(
-//                        userId,
-//                        title,
-//                        startPrice,
-//                        description,
-//                        imgData);
-//                    oos.writeObject(req);
-//                    oos.flush();
-//                    
-//                    String res = in.readLine();
-//                    loadingIcon.setIcon(null);
-//                    
-//                    int okClicked = JOptionPane.showOptionDialog(
-//                            null, 
-//                            res,
-//                            "Create Auction Result",
-//                            JOptionPane.OK_OPTION,
-//                            JOptionPane.INFORMATION_MESSAGE,
-//                            null,
-//                            new Object[]{"Ok"},
-//                            null
-//                        );
-//                    if(okClicked == 0){
-//                        titleTxt.setText("");
-//                        descriptionTxt.setText("");
-//                        startPriceInput.setText("");
-//                        f = null;
-//                    }
-//                } catch (IOException e) {
-//                    JOptionPane.showMessageDialog(this, "Connection time out", "Error", JOptionPane.ERROR_MESSAGE);
-//                }
+                try (Socket socket = new Socket(ipAddress, 1234)) {
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    
+                    CreateAuctionRequest req = new CreateAuctionRequest(
+                        userId,
+                        title,
+                        startPrice,
+                        description,
+                        imgData);
+                    oos.writeObject(req);
+                    oos.flush();
+                    
+                    String res = in.readLine();
+                    loadingIcon.setIcon(null);
+                    
+                    int okClicked = JOptionPane.showOptionDialog(
+                            null, 
+                            res,
+                            "Create Auction Result",
+                            JOptionPane.OK_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            new Object[]{"Ok"},
+                            null
+                        );
+                    if(okClicked == 0){
+                        titleTxt.setText("");
+                        descriptionTxt.setText("");
+                        startPriceInput.setText("");
+                        f = null;
+                        labelImage.setIcon(null);
+                    }
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(this, "Connection time out", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 loadingIcon.setIcon(null);
             }
         } catch (IOException ex) {

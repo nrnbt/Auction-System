@@ -34,12 +34,10 @@ Register/Registration$8.class
 types/MyBid.class
 App/TabbedPanels$1.class
 App/init$3.class
-Register/Registration$19.class
 Register/Registration$5.class
 Register/Registration$16.class
 Register/Registration$2.class
 client/LoginRequest.class
-Register/Registration$21.class
 client/GetMyAuctionsRequest.class
 Login/Login.class
 App/TabbedPanels$3.class
@@ -48,7 +46,6 @@ App/Home$1.class
 App/AuctionById$3.class
 Register/Registration$13.class
 Register/Registration$17.class
-Register/Registration$20.class
 Register/Registration$9.class
 Register/Registration$10.class
 App/init.class
