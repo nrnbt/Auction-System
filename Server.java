@@ -327,14 +327,13 @@ class Server {
 									} else {
 										DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 										LocalDateTime now = LocalDateTime.now();
-										String insertQuery = "insert into user(userName, passWord, email, firstName, lastName, phone, birthDay, registeredAt, registerNumber) values ('"
+										String insertQuery = "insert into user(userName, passWord, email, firstName, lastName, phone, birthDay, registeredAt) values ('"
 												+ regUser.userName + "',md5('" + regUser.passWord + "'),'"
 												+ regUser.email
 												+ "','" + regUser.firstName
 												+ "','" + regUser.lastName
 												+ "','" + regUser.phone
-												+ "','" + regUser.birthDay + "','" + dtf.format(now) + "', '"
-												+ regUser.registerNumber + "')";
+												+ "','" + regUser.birthDay + "','" + dtf.format(now) + "')";
 										CallableStatement cstmt = connection.prepareCall(insertQuery);
 										if (cstmt.executeUpdate() > 0) {
 											out.println("User registered");
