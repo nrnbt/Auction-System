@@ -777,7 +777,8 @@ public class TabbedPanels extends javax.swing.JFrame {
                         row[2] = response.auctionList.get(i).startPrice;
                         row[3] = response.auctionList.get(i).status;
                         row[4] = "<html>" + response.auctionList.get(i).description + "</html>";
-                        row[5] = new ImageIcon(response.auctionList.get(i).img);
+                        ImageIcon img = new ImageIcon(response.auctionList.get(i).img);
+                        row[5] = new ImageIcon(img.getImage().getScaledInstance(175, 175, Image.SCALE_SMOOTH));
                         model.addRow(row);
                     }
                 }
@@ -815,7 +816,8 @@ public class TabbedPanels extends javax.swing.JFrame {
                         row[0] = i + 1;
                         row[1] = response.myBidsList.get(i).bidAmount;
                         row[2] = response.myBidsList.get(i).AuctionTitle;
-                        row[3] = new ImageIcon(response.myBidsList.get(i).AuctionImg);
+                        ImageIcon img = new ImageIcon(response.myBidsList.get(i).AuctionImg);
+                        row[3] = new ImageIcon(img.getImage().getScaledInstance(175, 175, Image.SCALE_SMOOTH));
                         model.addRow(row);
                     }
                 }
